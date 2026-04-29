@@ -1,0 +1,274 @@
+# Eval suite scaffold for OIRP-chat.
+#
+# Each entry describes a test question, the expected behavior, and the key
+# facts the answer should contain. A future runner script will:
+#
+#   1. Run each question through the agent
+#   2. Check that the actual confidence tier matches `expected_confidence`
+#   3. Check that one of the expected KPIs was queried (via the tool trace)
+#   4. Use a model judge (or simple substring check) to verify the answer
+#      contains the `expected_key_facts`
+#   5. Verify any `expected_refusal` cases produce an explicit refusal
+#
+# The intent is to keep this list small (~25 questions) but deeply representative.
+# Structure follows the Flurry two-layer eval pattern: this file is the
+# offline / pre-ship suite. Production traffic eval is out of scope for
+# the portfolio version.
+
+evals:
+
+  # ---------- HIGH confidence: direct verified-value lookups ----------
+
+  - id: high_overall_2023_first_year
+    question: "What percentage of Carleton first-year students rated their experience as good or excellent in 2023?"
+    expected_confidence: high
+    expected_kpi: overall_experience_rating
+    expected_key_facts:
+      - "74"
+      - "first-year"
+      - "nsse_2023_summary.pdf"
+
+  - id: high_overall_2023_final_year
+    question: "And for final-year students?"
+    expected_confidence: high
+    expected_kpi: overall_experience_rating
+    expected_key_facts:
+      - "78"
+      - "final-year"
+    notes: "Tests multi-turn context — the agent should infer 'overall experience' from the prior question."
+
+  - id: high_choose_again_distribution_first_year
+    question: "What's the breakdown of how Carleton first-year students answered 'would you choose the same institution' in 2023?"
+    expected_confidence: high
+    expected_kpi: would_choose_same_institution
+    expected_key_facts:
+      - "31"  # definitely yes
+      - "51"  # probably yes
+      - "16"  # probably no
+      - "2"   # definitely no
+
+  - id: high_engagement_effective_teaching
+    question: "How does Carleton compare to Ontario on Effective Teaching Practices?"
+    expected_confidence: high
+    expected_kpi: nsse_engagement_indicators
+    expected_key_facts:
+      - "higher"
+      - "first-year"
+      - "final-year"
+      - "small"  # effect size caveat
+
+  - id: high_hips_research_with_faculty_final_year
+    question: "What percentage of Carleton final-year students participated in research with faculty in 2023?"
+    expected_confidence: high
+    expected_kpi: nsse_high_impact_practices
+    expected_key_facts:
+      - "27"
+      - "research with faculty"
+      - "higher"  # vs Ontario
+
+  - id: high_hips_program_length_crosstab
+    question: "Compare HIPs participation between 3-year and 4-year programs in 2023."
+    expected_confidence: high
+    expected_kpi: nsse_high_impact_practices
+    expected_key_facts:
+      - "3-year"
+      - "4-year"
+      - "39"  # 3-year at-least-one
+      - "82"  # 4-year at-least-one
+      - "12"  # 3-year two-or-more
+      - "55"  # 4-year two-or-more
+
+  - id: high_hips_yoy_study_abroad
+    question: "Has study abroad participation changed since 2020?"
+    expected_confidence: high
+    expected_kpi: nsse_high_impact_practices
+    expected_key_facts:
+      - "7"  # 2020 value
+      - "5"  # 2023 value
+      - "decrease"
+      - "pandemic"  # OIRP's published attribution
+
+  - id: high_engagement_yoy_collaborative_first_year
+    question: "Did Carleton's first-year Collaborative Learning indicator change between 2020 and 2023?"
+    expected_confidence: high
+    expected_kpi: nsse_engagement_indicators
+    expected_key_facts:
+      - "33.13"
+      - "30.31"
+      - "decrease"
+
+  - id: high_retention_legacy_2000
+    question: "What was the one-year retention rate for the 2000 entering cohort of full-time first-year students?"
+    expected_confidence: high
+    expected_kpi: first_year_retention_rate
+    expected_key_facts:
+      - "85"
+      - "2000"
+      - "full-time first-year"
+
+  # ---------- MEDIUM confidence: methodology, definitions, synthesis ----------
+
+  - id: medium_what_is_aopa_equivalent
+    question: "What's the difference between retention and progression?"
+    expected_confidence: medium
+    expected_kpi: first_year_retention_rate
+    expected_key_facts:
+      - "stay"
+      - "advance"
+      - "progression"
+      - "lower or equal"
+
+  - id: medium_nsse_methodology
+    question: "How was NSSE 2023 administered at Carleton, and what was the response rate?"
+    expected_confidence: medium
+    expected_kpi: overall_experience_rating
+    expected_key_facts:
+      - "21%"
+      - "2,030"
+      - "first-year"
+      - "final-year"
+
+  - id: medium_ontario_consortium
+    question: "What is the Ontario consortium and how does it factor into NSSE results?"
+    expected_confidence: medium
+    expected_kpi: any
+    expected_key_facts:
+      - "19"
+      - "consortium"
+      - "excluding Carleton"
+
+  - id: medium_engagement_indicator_explanation
+    question: "What are NSSE Engagement Indicators?"
+    expected_confidence: medium
+    expected_kpi: nsse_engagement_indicators
+    expected_key_facts:
+      - "ten"
+      - "0–60"  # or "0-60"
+      - "Academic Challenge"
+      - "Learning with Peers"
+      - "Experiences with Faculty"
+      - "Campus Environment"
+
+  - id: medium_enrolment_size_qualitative
+    question: "Roughly how big are Carleton's undergraduate faculties relative to each other?"
+    expected_confidence: medium
+    expected_kpi: undergraduate_enrolment_by_faculty
+    expected_key_facts:
+      - "FASS"
+      - "FED"
+      - "Sprott"
+    notes: "Tests the NSSE-derived proportional-mix anchor."
+
+  - id: medium_carleton_carleton_distinction
+    question: "Is this Carleton in Minnesota?"
+    expected_confidence: medium
+    expected_kpi: any
+    expected_key_facts:
+      - "Ottawa"
+      - "Carleton College"
+      - "different"
+
+  # ---------- LOW confidence: refuse rather than guess ----------
+
+  - id: low_refuse_recent_retention_specific
+    question: "What was Carleton's first-year retention rate for the 2022 cohort?"
+    expected_confidence: low
+    expected_refusal: true
+    expected_kpi: first_year_retention_rate
+    expected_key_facts:
+      - "not"  # not in verified store
+      - "CUDO"  # or Departmental Measures
+    notes: "Specific recent value not in verified store. Agent must refuse and direct to source."
+
+  - id: low_refuse_faculty_retention
+    question: "What's the retention rate for the Faculty of Engineering and Design?"
+    expected_confidence: low
+    expected_refusal: true
+    expected_kpi: first_year_retention_rate
+    expected_key_facts:
+      - "faculty"
+      - "not"
+
+  - id: low_refuse_specific_enrolment_headcount
+    question: "How many undergraduates were enrolled in the Faculty of Public Affairs in fall 2023?"
+    expected_confidence: low
+    expected_refusal: true
+    expected_kpi: undergraduate_enrolment_by_faculty
+    expected_key_facts:
+      - "Databook"  # or Data Cubes
+      - "not"
+
+  - id: low_refuse_overall_experience_by_faculty
+    question: "What's the overall experience rating for FASS students?"
+    expected_confidence: low
+    expected_refusal: true
+    expected_kpi: overall_experience_rating
+    expected_key_facts:
+      - "faculty"
+      - "not"
+    notes: "NSSE doesn't publish overall-experience by faculty for Carleton."
+
+  - id: low_refuse_causal_claim
+    question: "Why has Carleton's collaborative learning indicator dropped?"
+    expected_confidence: low
+    expected_refusal: true
+    expected_kpi: nsse_engagement_indicators
+    expected_key_facts:
+      - "not"  # we don't know causally
+      - "drivers"  # or "items" — can describe what underlies the difference
+
+  # ---------- Multi-step / synthesis ----------
+
+  - id: multistep_satisfaction_summary
+    question: "Give me a summary of how satisfied Carleton students are based on the 2023 NSSE."
+    expected_confidence: high
+    expected_kpi: any
+    expected_key_facts:
+      - "74"  # first-year
+      - "78"  # final-year
+      - "82"  # would choose again first-year
+      - "81"  # would choose again final-year
+    notes: "Should query both overall_experience_rating and would_choose_same_institution."
+
+  - id: multistep_engagement_strengths_weaknesses
+    question: "What are Carleton's NSSE engagement strengths and weaknesses compared to Ontario?"
+    expected_confidence: high
+    expected_kpi: nsse_engagement_indicators
+    expected_key_facts:
+      - "Effective Teaching"
+      - "higher"
+      - "Collaborative Learning"
+      - "lower"
+      - "Student-Faculty"
+      - "small"
+
+  - id: multistep_enrolment_trajectory
+    question: "What's been happening with Carleton's enrolment over the past several years?"
+    expected_confidence: medium
+    expected_kpi: undergraduate_enrolment_by_faculty
+    expected_key_facts:
+      - "international"
+      - "domestic"
+      - "2017"  # peak year for domestic
+      - "2018"  # peak year for international
+      - "cap"   # federal cap context
+
+  # ---------- Edge / discovery ----------
+
+  - id: discovery_what_can_you_answer
+    question: "What KPIs can I ask you about?"
+    expected_confidence: medium
+    expected_kpi: null
+    expected_tool: list_kpis
+    expected_key_facts:
+      - "overall_experience_rating"
+      - "first_year_retention_rate"
+      - "nsse"
+
+  - id: discovery_out_of_scope
+    question: "What was Carleton's hockey team's record last season?"
+    expected_confidence: none
+    expected_refusal: true
+    expected_key_facts:
+      - "not"  # not in scope
+    notes: "Out-of-scope question. Agent should decline gracefully."
