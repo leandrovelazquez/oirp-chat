@@ -26,3 +26,21 @@ __pycache__/
 # Build artifacts
 build/
 dist/
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Data pipeline outputs
+# ─────────────────────────────────────────────────────────────────────────────
+# We commit the manifest (small, diffable) and the extracted JSON (small,
+# diffable, useful as a snapshot of source data). We do NOT commit the binary
+# PDFs themselves (large, can be re-fetched via scripts/download_sources.py)
+# or the rendered PNGs (large, regeneratable from the PDFs).
+
+data/pdfs/*.pdf
+data/pdfs/*.tmp
+data/extracted/**/*.png
+
+# Intermediate proposed-values output (LLM drafts, not yet reviewed).
+# Whether to commit these is a judgment call — they're useful as a record of
+# what the LLM proposed, but they can also be regenerated. Default to NOT
+# committing them; flip if you want a review trail in Git.
+data/proposed/

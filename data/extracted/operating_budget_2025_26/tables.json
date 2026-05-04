@@ -1,0 +1,175 @@
+[
+  {
+    "page": 10,
+    "table_index": 0,
+    "n_rows": 3,
+    "n_cols": 15,
+    "rows": [
+      [
+        "",
+        "Domestic Tuition Fees",
+        "",
+        "",
+        "195,200",
+        "",
+        "",
+        "195,200",
+        "",
+        "",
+        "",
+        "7,000",
+        "",
+        "7,000",
+        ""
+      ],
+      [
+        "",
+        "Government Grant",
+        "",
+        "",
+        "192,601",
+        "",
+        "",
+        "198,459",
+        "",
+        "",
+        "",
+        "11,687",
+        "",
+        "17,545",
+        ""
+      ],
+      [
+        "",
+        "Provincially Regulated Income",
+        "",
+        "387,801",
+        null,
+        null,
+        "393,659",
+        null,
+        null,
+        "",
+        "18,687",
+        null,
+        null,
+        "24,545",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 10,
+    "table_index": 1,
+    "n_rows": 2,
+    "n_cols": 12,
+    "rows": [
+      [
+        "",
+        "",
+        "2024-25",
+        "",
+        "",
+        "2024-25",
+        "",
+        "",
+        "2025-26",
+        "",
+        "Budget\nChange",
+        ""
+      ],
+      [
+        null,
+        "",
+        "Budget",
+        "",
+        "",
+        "Projection",
+        "",
+        "",
+        "Budget",
+        "",
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "page": 11,
+    "table_index": 0,
+    "n_rows": 2,
+    "n_cols": 7,
+    "rows": [
+      [
+        "",
+        "",
+        "2024-25",
+        "2024-25",
+        "",
+        "2025-26",
+        "Budget\nChange"
+      ],
+      [
+        null,
+        null,
+        "Budget",
+        "Projection",
+        "",
+        "Budget",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 11,
+    "table_index": 2,
+    "n_rows": 2,
+    "n_cols": 7,
+    "rows": [
+      [
+        "",
+        "2024-25",
+        "2024-25",
+        "",
+        "2025-26",
+        "",
+        "Budget"
+      ],
+      [
+        null,
+        "Budget",
+        "Projection",
+        "",
+        "Budget",
+        null,
+        "Change"
+      ]
+    ]
+  },
+  {
+    "page": 11,
+    "table_index": 4,
+    "n_rows": 2,
+    "n_cols": 7,
+    "rows": [
+      [
+        "",
+        "2024-25",
+        "2024-25",
+        "",
+        "2025-26",
+        "Budge\nChange",
+        "t"
+      ],
+      [
+        null,
+        "Budget",
+        "Projection",
+        "",
+        "Budget",
+        null,
+        null
+      ]
+    ]
+  }
+]

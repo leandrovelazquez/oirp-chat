@@ -99,17 +99,141 @@ after a reviewer confirms them against the source PDF.
     },
     "verified_by": "manual_review",
     "verified_on": "2026-04-27"
+  },
+  {
+    "year": 2023,
+    "cohort": "first_year",
+    "comparison_group": "ontario_consortium_excl_carleton",
+    "value_pct": 73,
+    "metric_variant": "good_or_excellent",
+    "derivation_note": "Derived from Figure 1 stacked bar: 'Excellent' 20% + 'Good' 53% = 73%. The figure shows response categories Excellent/Good/Fair/Poor for Rest of Ontario first-year.",
+    "source": {
+      "file": "nsse_2023_summary.pdf",
+      "page": 5,
+      "figure": "Figure 1",
+      "quote_anchor": "Rest of Ontario 20% 53% 23% 4%"
+    },
+    "verified_by": "manual_review",
+    "verified_on": "2026-04-27"
+  },
+  {
+    "year": 2023,
+    "cohort": "final_year",
+    "comparison_group": "ontario_consortium_excl_carleton",
+    "value_pct": 75,
+    "metric_variant": "good_or_excellent",
+    "derivation_note": "Derived from Figure 1 stacked bar: 'Excellent' 24% + 'Good' 51% = 75%. The figure shows response categories Excellent/Good/Fair/Poor for Rest of Ontario final-year.",
+    "source": {
+      "file": "nsse_2023_summary.pdf",
+      "page": 5,
+      "figure": "Figure 1",
+      "quote_anchor": "Rest of Ontario 24% 51% 20% 5%"
+    },
+    "verified_by": "manual_review",
+    "verified_on": "2026-04-27"
   }
 ]
 ```
 
-> **Note for the agent.** Rest-of-Ontario consortium values for 2023 exist in
-> Figure 1 of the source PDF but are not yet manually verified into this file.
-> Until they are, do **not** report them as numerical values. You may
-> qualitatively note that "Carleton was slightly higher than the rest of the
-> Ontario consortium for both cohorts in 2023, but the difference was not
-> statistically significant" — this characterization is supported directly by
-> the source text.
+### Response Distribution Detail (2023)
+
+For users who ask about the full four-point response distribution
+(Excellent / Good / Fair / Poor) rather than just the good_or_excellent
+aggregate. Derived from Figure 1 chart-embedded values; reviewer-verified.
+
+```json
+[
+  {
+    "year": 2023,
+    "cohort": "first_year",
+    "comparison_group": "carleton",
+    "distribution": {
+      "excellent_pct": 20,
+      "good_pct": 55,
+      "fair_pct": 23,
+      "poor_pct": 3
+    },
+    "metric_variant": "full_distribution",
+    "source": {
+      "file": "nsse_2023_summary.pdf",
+      "page": 5,
+      "figure": "Figure 1",
+      "quote_anchor": "Carleton 20% 55% 23% 3%"
+    },
+    "note": "Distribution sum (20+55+23+3 = 101%) reflects rounding in source figure; the prose-stated good_or_excellent aggregate of 74% in the companion record is authoritative over the chart-implied 75% (20+55).",
+    "verified_by": "manual_review",
+    "verified_on": "2026-04-30"
+  },
+  {
+    "year": 2023,
+    "cohort": "final_year",
+    "comparison_group": "carleton",
+    "distribution": {
+      "excellent_pct": 22,
+      "good_pct": 56,
+      "fair_pct": 18,
+      "poor_pct": 4
+    },
+    "metric_variant": "full_distribution",
+    "source": {
+      "file": "nsse_2023_summary.pdf",
+      "page": 5,
+      "figure": "Figure 1",
+      "quote_anchor": "Carleton 22% 56% 18% 4%"
+    },
+    "verified_by": "manual_review",
+    "verified_on": "2026-04-30"
+  },
+  {
+    "year": 2023,
+    "cohort": "first_year",
+    "comparison_group": "ontario_consortium_excl_carleton",
+    "distribution": {
+      "excellent_pct": 20,
+      "good_pct": 53,
+      "fair_pct": 23,
+      "poor_pct": 4
+    },
+    "metric_variant": "full_distribution",
+    "source": {
+      "file": "nsse_2023_summary.pdf",
+      "page": 5,
+      "figure": "Figure 1",
+      "quote_anchor": "Rest of Ontario 20% 53% 23% 4%"
+    },
+    "verified_by": "manual_review",
+    "verified_on": "2026-04-30"
+  },
+  {
+    "year": 2023,
+    "cohort": "final_year",
+    "comparison_group": "ontario_consortium_excl_carleton",
+    "distribution": {
+      "excellent_pct": 24,
+      "good_pct": 51,
+      "fair_pct": 20,
+      "poor_pct": 5
+    },
+    "metric_variant": "full_distribution",
+    "source": {
+      "file": "nsse_2023_summary.pdf",
+      "page": 5,
+      "figure": "Figure 1",
+      "quote_anchor": "Rest of Ontario 24% 51% 20% 5%"
+    },
+    "verified_by": "manual_review",
+    "verified_on": "2026-04-30"
+  }
+]
+```
+
+> **Note for the agent.** Both Carleton and rest-of-Ontario consortium values
+> for 2023 are now verified above (good_or_excellent aggregate plus the full
+> four-point distribution). Carleton-vs-Ontario differences for 2023 were not
+> statistically significant for either cohort. Where chart-embedded
+> distributions sum to 101% (Carleton first-year), this is a rounding artifact
+> of the source figure; the prose-stated good_or_excellent aggregate is
+> authoritative.
 
 ## Comparison Context
 
@@ -197,6 +321,11 @@ tier based on which path produced the answer:
 - **Ontario consortium** — group of Ontario universities participating in NSSE
   in a coordinated administration. In 2023: 19 universities. In OIRP reporting,
   "rest of Ontario" = consortium *excluding* Carleton.
+- **Comparison groups (verified-values field).** This file's
+  `comparison_group` field uses two values: `carleton` (Carleton respondents
+  only) and `ontario_consortium_excl_carleton` (rest-of-Ontario consortium
+  average, excluding Carleton). Tool callers filtering by `comparison_group`
+  must use these exact values.
 - **First-year** — respondents in their first year of undergraduate study at
   Carleton at the time of survey.
 - **Final-year** — respondents in their third year (three-year program) or
@@ -208,3 +337,5 @@ tier based on which path produced the answer:
 | Date       | Change                                          | Reviewer |
 | ---------- | ----------------------------------------------- | -------- |
 | 2026-04-27 | Initial draft from `nsse_2023_summary.pdf`      | (you)    |
+| 2026-04-30 | Added rest-of-Ontario 2023 values for first-year and final-year, drafted by `scripts/draft_kpi_values.py` and verified by manual review. | (you) |
+| 2026-04-30 | Added Response Distribution Detail block with full four-point distributions (Carleton + Ontario, both cohorts) for 2023 from Figure 1; flagged the Carleton first-year 101% sum as a rounding artifact (prose-stated 74% authoritative). Added comparison_group glossary entry to clarify field vocabulary. Drafter-proposed at medium confidence; manually verified against source PDF Figure 1. | (you) |

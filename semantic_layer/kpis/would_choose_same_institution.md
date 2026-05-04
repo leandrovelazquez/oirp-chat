@@ -98,6 +98,38 @@ actual transfer behaviour, this metric is not the answer — clarify with them.
     },
     "verified_by": "manual_review",
     "verified_on": "2026-04-27"
+  },
+  {
+    "year": 2023,
+    "cohort": "first_year",
+    "comparison_group": "ontario_consortium_excl_carleton",
+    "value_pct": 81,
+    "metric_variant": "definitely_or_probably_yes",
+    "derivation_note": "Derived from Figure 4 stacked bar: 'Definitely Yes' 31% + 'Probably Yes' 50% = 81% for Rest of Ontario first-year.",
+    "source": {
+      "file": "nsse_2023_summary.pdf",
+      "page": 7,
+      "figure": "Figure 4",
+      "quote_anchor": "Rest of Ontario 31% 50% 16% 4%"
+    },
+    "verified_by": "manual_review",
+    "verified_on": "2026-04-27"
+  },
+  {
+    "year": 2023,
+    "cohort": "final_year",
+    "comparison_group": "ontario_consortium_excl_carleton",
+    "value_pct": 77,
+    "metric_variant": "definitely_or_probably_yes",
+    "derivation_note": "Derived from Figure 4 stacked bar: 'Definitely Yes' 30% + 'Probably Yes' 47% = 77% for Rest of Ontario final-year.",
+    "source": {
+      "file": "nsse_2023_summary.pdf",
+      "page": 7,
+      "figure": "Figure 4",
+      "quote_anchor": "Rest of Ontario 30% 47% 17% 6%"
+    },
+    "verified_by": "manual_review",
+    "verified_on": "2026-04-27"
   }
 ]
 ```
@@ -132,17 +164,42 @@ yes-aggregate:
       "definitely_no_pct": 4
     },
     "source": { "file": "nsse_2023_summary.pdf", "page": 6, "figure": "Figure 4" }
+  },
+  {
+    "year": 2023,
+    "cohort": "first_year",
+    "comparison_group": "ontario_consortium_excl_carleton",
+    "distribution": {
+      "definitely_yes_pct": 31,
+      "probably_yes_pct": 50,
+      "probably_no_pct": 16,
+      "definitely_no_pct": 4
+    },
+    "source": { "file": "nsse_2023_summary.pdf", "page": 7, "figure": "Figure 4" },
+    "note": "Distribution sum (31+50+16+4 = 101%) reflects rounding in the source stacked bar chart; the yes-aggregate companion record (81%) derived from Definitely Yes + Probably Yes is the authoritative summary value."
+  },
+  {
+    "year": 2023,
+    "cohort": "final_year",
+    "comparison_group": "ontario_consortium_excl_carleton",
+    "distribution": {
+      "definitely_yes_pct": 30,
+      "probably_yes_pct": 47,
+      "probably_no_pct": 17,
+      "definitely_no_pct": 6
+    },
+    "source": { "file": "nsse_2023_summary.pdf", "page": 7, "figure": "Figure 4" }
   }
 ]
 ```
 
-> **Note for the agent.** Rest-of-Ontario consortium values for 2023 exist in
-> Figure 4 of the source PDF but are not yet manually verified into this file.
-> Until they are, do **not** report Ontario point values numerically. You may
-> qualitatively note that *"Carleton's first-year and final-year results were
-> similar to the Ontario consortium (excluding Carleton) in 2023, with no
-> statistically significant difference"* — this characterization is supported
-> directly by the source text.
+> **Note for the agent.** Both Carleton and rest-of-Ontario consortium values
+> for 2023 are now verified — both as yes-aggregates and as full four-point
+> distributions. Carleton-vs-Ontario differences in 2023 were not
+> statistically significant for either cohort. Where a distribution sums to
+> 101% (Ontario first-year), this is a rounding artifact in the source figure;
+> the yes-aggregate value derived from Definitely Yes + Probably Yes is the
+> authoritative summary.
 
 ## Comparison Context
 
@@ -233,6 +290,11 @@ choice. Treat the metric as a satisfaction signal, not a retention predictor.
 - **Ontario consortium** — group of Ontario universities co-administering NSSE
   (19 institutions in 2023). "Rest of Ontario" = consortium *excluding*
   Carleton.
+- **Comparison groups (verified-values field).** This file's
+  `comparison_group` field uses two values: `carleton` (Carleton respondents
+  only) and `ontario_consortium_excl_carleton` (rest-of-Ontario consortium
+  average, excluding Carleton). Tool callers filtering by `comparison_group`
+  must use these exact values.
 - **First-year / Final-year** — see `overall_experience_rating.md` for full
   cohort definitions.
 - **Yes-aggregate** — shorthand used in this file for the sum of "Definitely
@@ -243,3 +305,5 @@ choice. Treat the metric as a satisfaction signal, not a retention predictor.
 | Date       | Change                                          | Reviewer |
 | ---------- | ----------------------------------------------- | -------- |
 | 2026-04-27 | Initial draft from `nsse_2023_summary.pdf`      | (you)    |
+| 2026-04-30 | Added rest-of-Ontario 2023 yes-aggregate values for first-year (81%) and final-year (77%), drafted by `scripts/draft_kpi_values.py` and verified by manual review against Figure 4. | (you) |
+| 2026-04-30 | Added rest-of-Ontario 2023 full four-point distributions for first-year (31/50/16/4) and final-year (30/47/17/6) to the Response Distribution Detail block; flagged Ontario first-year 101% sum as rounding artifact (yes-aggregate authoritative). Updated stale "Note for the agent" callout. Added comparison_group glossary entry. | (you) |

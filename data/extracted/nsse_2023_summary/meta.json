@@ -1,0 +1,31 @@
+{
+  "id": "nsse_2023_summary",
+  "source_filename": "nsse_2023_summary.pdf",
+  "source_sha256": "4d84a6d89724efcda637c1cde60ec5ae3189ce6505c94c2413259cbdb8aa67db",
+  "source_url": "https://carleton.ca/oirp/wp-content/uploads/sites/231/2025/11/nsse_2023_summary.pdf",
+  "doc_type": "nsse_summary",
+  "year": 2023,
+  "title": "NSSE 2023 Summary \u2014 Carleton University",
+  "page_count": 19,
+  "n_tables": 18,
+  "pages_with_tables": [
+    4,
+    5,
+    7,
+    8,
+    9,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "images_rendered": 12,
+  "extracted_at": "2026-04-30T17:02:37+00:00",
+  "tool_versions": {
+    "pdfplumber": "0.11.9",
+    "python": "3.11.0"
+  }
+}

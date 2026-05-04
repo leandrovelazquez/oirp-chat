@@ -1,0 +1,1857 @@
+[
+  {
+    "page": 4,
+    "table_index": 0,
+    "n_rows": 8,
+    "n_cols": 4,
+    "rows": [
+      [
+        "Table 1: Number of Respondents in 2023 by Faculty",
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "First-Year",
+        "Final-Year",
+        "Total"
+      ],
+      [
+        "Faculty of Arts and Social Sciences",
+        "232",
+        "293",
+        "525"
+      ],
+      [
+        "Faculty of Public Affairs",
+        "250",
+        "211",
+        "461"
+      ],
+      [
+        "Sprott School of Business",
+        "78",
+        "45",
+        "123"
+      ],
+      [
+        "Faculty of Science",
+        "247",
+        "170",
+        "417"
+      ],
+      [
+        "Faculty of Engineering and Design",
+        "283",
+        "221",
+        "504"
+      ],
+      [
+        "Total",
+        "1,090",
+        "940",
+        "2,030"
+      ]
+    ]
+  },
+  {
+    "page": 5,
+    "table_index": 0,
+    "n_rows": 10,
+    "n_cols": 4,
+    "rows": [
+      [
+        "Table 2: Percentage of Respondents Self-Identified as",
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "First-Year",
+        "Final-Year",
+        "Total"
+      ],
+      [
+        "Arab (Saudi, Egyptian, etc.)",
+        "10%",
+        "8%",
+        "9%"
+      ],
+      [
+        "Black",
+        "11%",
+        "9%",
+        "10%"
+      ],
+      [
+        "Chinese",
+        "7%",
+        "8%",
+        "7%"
+      ],
+      [
+        "Indigenous",
+        "4%",
+        "3%",
+        "4%"
+      ],
+      [
+        "Latin American",
+        "2%",
+        "3%",
+        "3%"
+      ],
+      [
+        "South Asian (East Indian, Pakistani, Sri Lankan, etc.)",
+        "11%",
+        "10%",
+        "11%"
+      ],
+      [
+        "White",
+        "54%",
+        "60%",
+        "57%"
+      ],
+      [
+        "Other",
+        "11%",
+        "9%",
+        "10%"
+      ]
+    ]
+  },
+  {
+    "page": 5,
+    "table_index": 1,
+    "n_rows": 9,
+    "n_cols": 12,
+    "rows": [
+      [
+        "",
+        "",
+        null,
+        null,
+        "",
+        "",
+        null,
+        null,
+        null,
+        "",
+        null,
+        null
+      ],
+      [
+        "20%",
+        "",
+        null,
+        null,
+        "55%",
+        "",
+        null,
+        "",
+        null,
+        "23%",
+        null,
+        ""
+      ],
+      [
+        "",
+        "",
+        null,
+        null,
+        "",
+        "",
+        null,
+        null,
+        null,
+        "",
+        null,
+        null
+      ],
+      [
+        "20%",
+        "",
+        null,
+        null,
+        "53%",
+        "",
+        "",
+        null,
+        null,
+        "23%",
+        "",
+        null
+      ],
+      [
+        "",
+        "",
+        null,
+        null,
+        "",
+        "",
+        null,
+        null,
+        null,
+        "",
+        null,
+        null
+      ],
+      [
+        "22%",
+        "",
+        "",
+        null,
+        "56%",
+        "",
+        null,
+        null,
+        "",
+        "18%",
+        "",
+        null
+      ],
+      [
+        "",
+        "",
+        null,
+        null,
+        "",
+        "",
+        null,
+        null,
+        null,
+        "",
+        null,
+        null
+      ],
+      [
+        "24%",
+        "",
+        null,
+        "",
+        "51%",
+        "",
+        null,
+        "",
+        null,
+        "20%",
+        "",
+        null
+      ],
+      [
+        "",
+        "",
+        null,
+        null,
+        "",
+        "",
+        null,
+        null,
+        null,
+        "",
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "page": 7,
+    "table_index": 0,
+    "n_rows": 9,
+    "n_cols": 10,
+    "rows": [
+      [
+        "",
+        "",
+        null,
+        "",
+        "",
+        null,
+        "",
+        null,
+        null,
+        null
+      ],
+      [
+        "31%",
+        "",
+        "",
+        "51%",
+        "",
+        null,
+        "16%",
+        null,
+        null,
+        ""
+      ],
+      [
+        "",
+        "",
+        null,
+        "",
+        "",
+        null,
+        "",
+        null,
+        null,
+        null
+      ],
+      [
+        "31%",
+        "",
+        "",
+        "50%",
+        "",
+        null,
+        "16%",
+        null,
+        "",
+        null
+      ],
+      [
+        "",
+        "",
+        null,
+        "",
+        "",
+        null,
+        "",
+        null,
+        null,
+        null
+      ],
+      [
+        "30%",
+        "",
+        "",
+        "51%",
+        "",
+        null,
+        "15%",
+        null,
+        "",
+        null
+      ],
+      [
+        "",
+        "",
+        null,
+        "",
+        "",
+        null,
+        "",
+        null,
+        null,
+        null
+      ],
+      [
+        "30%",
+        "",
+        "",
+        "47%",
+        "",
+        "",
+        "17%",
+        "",
+        null,
+        null
+      ],
+      [
+        "",
+        "",
+        null,
+        "",
+        "",
+        null,
+        "",
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "page": 8,
+    "table_index": 0,
+    "n_rows": 2,
+    "n_cols": 1,
+    "rows": [
+      [
+        "Figure 7: First-YearQuality of Intearctions With...\n1%\n100% 3% 6% 3% 4% 4%\n5% 4% 4% 6% 6%\n90% 8%\n12% 7% 9% 7%\n80%\n16% 17% 16% 16% 1 Poor\n70%\n30% 2\n60%\n26% 29% 24% 26% 3\n50%\n4\n40%\n28%\n30% 23% 20% 20% 5\n24%\n20% 6\n10% 21% 19% 16% 21% 21% 7 Excellent\n0%\nStudents Academic Faculty Student Services Admin Staff and\nAdvisors Staff Offices"
+      ],
+      [
+        "Figure 8: Final-YearQuality of Intearctions With...\n2%\n100%\n2% 5% 4% 6% 4%\n90% 4% 5% 6 4 % % 6% 5%\n12% 8% 8% 8%\n80%\n16%\n14%\n15% 14% 1 Poor\n70%\n27%\n2\n60%\n25% 23%\n22% 24% 3\n50%\n4\n40% 29%\n30% 21% 28% 24% 26% 5\n20% 6\n10% 25% 22% 18% 19% 20% 7 Excellent\n0%\nStudents Academic Faculty Student Services Admin Staff and\nAdvisors Staff Offices"
+      ]
+    ]
+  },
+  {
+    "page": 8,
+    "table_index": 1,
+    "n_rows": 11,
+    "n_cols": 11,
+    "rows": [
+      [
+        "",
+        "3%\n5%",
+        "",
+        "6%\n4%",
+        "",
+        "4%",
+        "",
+        "6%",
+        "",
+        "6%",
+        ""
+      ],
+      [
+        "",
+        "12%",
+        "",
+        "7%",
+        "",
+        "8%",
+        "",
+        "9%",
+        "",
+        "7%",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "16%",
+        "",
+        "17%",
+        "",
+        "16%",
+        "",
+        "16%",
+        ""
+      ],
+      [
+        "",
+        "30%",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "26%",
+        "",
+        "29%",
+        "",
+        "24%",
+        "",
+        "26%",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "28%",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "20%",
+        "",
+        "20%",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "23%",
+        "",
+        "24%",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "21%",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "21%",
+        "",
+        "",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        "",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "",
+        "",
+        "19%",
+        "",
+        "16%",
+        "",
+        "",
+        "",
+        "21%",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 8,
+    "table_index": 2,
+    "n_rows": 14,
+    "n_cols": 11,
+    "rows": [
+      [
+        "",
+        "2%\n4%",
+        "",
+        "5%",
+        "",
+        "4%\n4%",
+        "",
+        "6%",
+        "",
+        "4%",
+        ""
+      ],
+      [
+        "",
+        "12%",
+        "",
+        "5%\n8%",
+        "",
+        "6%",
+        "",
+        "6%\n8%",
+        "",
+        "5%\n8%",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        "",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "",
+        "",
+        "15%",
+        "",
+        "16%",
+        "",
+        "14%",
+        "",
+        "14%",
+        ""
+      ],
+      [
+        "",
+        "27%",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        "",
+        null,
+        null,
+        null,
+        "",
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "",
+        "",
+        "22%",
+        "",
+        "25%",
+        "",
+        "24%",
+        "",
+        "23%",
+        ""
+      ],
+      [
+        null,
+        "",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "29%",
+        "",
+        "21%",
+        "",
+        "28%",
+        "",
+        "",
+        "",
+        "26%",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "24%",
+        "",
+        "",
+        ""
+      ],
+      [
+        null,
+        "",
+        null,
+        "",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "25%",
+        "",
+        "22%",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "18%",
+        "",
+        "19%",
+        "",
+        "20%",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 9,
+    "table_index": 0,
+    "n_rows": 16,
+    "n_cols": 4,
+    "rows": [
+      [
+        "Table 3: NSSE Engagement Indicators",
+        null,
+        null,
+        "Legend\n-- : No statistical difference\nfrom Ontario Consortium\nHigher: Carleton’s indicator\nscore is higher than Ontario\nLower: Carleton’s indicator\nscore is lower than Ontario"
+      ],
+      [
+        "",
+        "First-Year",
+        "Final-Year",
+        null
+      ],
+      [
+        "Academic Challenge",
+        null,
+        null,
+        null
+      ],
+      [
+        "1. Higher-Order Learning",
+        "Lower",
+        "--",
+        null
+      ],
+      [
+        "2. Reflective & Integrative Learning",
+        "Lower",
+        "--",
+        null
+      ],
+      [
+        "3. Learning Strategies",
+        "Lower",
+        "Lower",
+        null
+      ],
+      [
+        "4. Quantitative Reasoning",
+        "--",
+        "--",
+        null
+      ],
+      [
+        "Learning with Peers",
+        null,
+        null,
+        null
+      ],
+      [
+        "5. Collaborative Learning",
+        "Lower",
+        "Lower",
+        null
+      ],
+      [
+        "6. Discussions with Diverse Others",
+        "--",
+        "--",
+        null
+      ],
+      [
+        "Experiences with Faculty",
+        null,
+        null,
+        null
+      ],
+      [
+        "7. Student Faculty Interaction",
+        "Lower",
+        "Lower",
+        null
+      ],
+      [
+        "8. Effective Teaching Practices",
+        "Higher",
+        "Higher",
+        null
+      ],
+      [
+        "Campus Environment",
+        null,
+        null,
+        null
+      ],
+      [
+        "9. Quality of Interactions",
+        "--",
+        "Higher",
+        null
+      ],
+      [
+        "10. Supportive Environment",
+        "--",
+        "--",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 11,
+    "table_index": 0,
+    "n_rows": 4,
+    "n_cols": 3,
+    "rows": [
+      [
+        "",
+        "2020",
+        "2023"
+      ],
+      [
+        "Quantitative Reasoning",
+        "24.87",
+        "26.72 (+)"
+      ],
+      [
+        "Collaborative Learning",
+        "33.13",
+        "30.31 (-)"
+      ],
+      [
+        "Discussions with Diverse Others",
+        "41.04",
+        "39.22 (-)"
+      ]
+    ]
+  },
+  {
+    "page": 11,
+    "table_index": 1,
+    "n_rows": 3,
+    "n_cols": 3,
+    "rows": [
+      [
+        "",
+        "2020",
+        "2023"
+      ],
+      [
+        "Higher-Order Learning",
+        "37.38",
+        "39.29 (+)"
+      ],
+      [
+        "Collaborative Learning",
+        "32.36",
+        "28.21 (-)"
+      ]
+    ]
+  },
+  {
+    "page": 12,
+    "table_index": 0,
+    "n_rows": 13,
+    "n_cols": 15,
+    "rows": [
+      [
+        "Table 4: High-Impact Practices",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null,
+        "First Year",
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Final-Year",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        "(% Participating)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        "(% Participating)",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null,
+        "Carleton",
+        null,
+        null,
+        "Ontario",
+        null,
+        null,
+        "Carleton",
+        null,
+        null,
+        "Ontario",
+        null,
+        null
+      ],
+      [
+        "Learning Community",
+        null,
+        null,
+        "7%",
+        null,
+        null,
+        "9%",
+        null,
+        null,
+        "14%",
+        null,
+        null,
+        "17%",
+        null,
+        null
+      ],
+      [
+        "Service Learning",
+        null,
+        null,
+        "41%",
+        null,
+        null,
+        "44%",
+        null,
+        null,
+        "37%",
+        null,
+        null,
+        "49% (+)",
+        null,
+        null
+      ],
+      [
+        "Research with Faculty",
+        null,
+        null,
+        "4%",
+        null,
+        null,
+        "3%",
+        null,
+        null,
+        "27%",
+        null,
+        null,
+        "21% (-)",
+        null,
+        null
+      ],
+      [
+        "Internship or Field Experience",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "44%",
+        null,
+        null,
+        "48% (+)",
+        null,
+        null
+      ],
+      [
+        "Study Abroad",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "5%",
+        null,
+        null,
+        "6%",
+        null,
+        null
+      ],
+      [
+        "Culminating Senior Experience",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "46%",
+        null,
+        null,
+        "33% (-)",
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null
+      ],
+      [
+        "",
+        "Participated in at least one",
+        "",
+        "",
+        "45%",
+        "",
+        "",
+        "49% (+)",
+        "",
+        "",
+        "79%",
+        "",
+        "",
+        "81%",
+        ""
+      ],
+      [
+        "",
+        "Participated in two or more",
+        "",
+        "",
+        "-",
+        "",
+        "",
+        "-",
+        "",
+        "",
+        "51%",
+        "",
+        "",
+        "51%",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 12,
+    "table_index": 1,
+    "n_rows": 12,
+    "n_cols": 9,
+    "rows": [
+      [
+        "Table 5: High-Impact Practices – Carleton 3, 4 year programs",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null,
+        "Final-Year",
+        null,
+        null,
+        "Final-Year",
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        "(3 year programs)",
+        null,
+        null,
+        "(4 year programs)",
+        null,
+        null
+      ],
+      [
+        "Learning Community",
+        null,
+        null,
+        "7%",
+        null,
+        null,
+        "15%",
+        null,
+        null
+      ],
+      [
+        "Service Learning*",
+        null,
+        null,
+        "24%",
+        null,
+        null,
+        "39%",
+        null,
+        null
+      ],
+      [
+        "Research with Faculty*",
+        null,
+        null,
+        "3%",
+        null,
+        null,
+        "29%",
+        null,
+        null
+      ],
+      [
+        "Internship or Field Experience*",
+        null,
+        null,
+        "14%",
+        null,
+        null,
+        "46%",
+        null,
+        null
+      ],
+      [
+        "Study Abroad",
+        null,
+        null,
+        "5%",
+        null,
+        null,
+        "5%",
+        null,
+        null
+      ],
+      [
+        "Culminating Senior Experience*",
+        null,
+        null,
+        "3%",
+        null,
+        null,
+        "50%",
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null
+      ],
+      [
+        "",
+        "Participated in at least one*",
+        "",
+        "",
+        "39%",
+        "",
+        "",
+        "82%",
+        ""
+      ],
+      [
+        "",
+        "Participated in two or more*",
+        "",
+        "",
+        "12%",
+        "",
+        "",
+        "55%",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 13,
+    "table_index": 0,
+    "n_rows": 13,
+    "n_cols": 15,
+    "rows": [
+      [
+        "Table 6: High-Impact Practices – Carleton over time",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null,
+        "First Year",
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Final-Year",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        "(% Participating)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        "(% Participating)",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null,
+        "2020",
+        null,
+        null,
+        "2023",
+        null,
+        null,
+        "2020",
+        null,
+        null,
+        "2023",
+        null,
+        null
+      ],
+      [
+        "Learning Community",
+        null,
+        null,
+        "7%",
+        null,
+        null,
+        "7%",
+        null,
+        null,
+        "13%",
+        null,
+        null,
+        "14%",
+        null,
+        null
+      ],
+      [
+        "Service Learning",
+        null,
+        null,
+        "39%",
+        null,
+        null,
+        "41%",
+        null,
+        null,
+        "39%",
+        null,
+        null,
+        "37%",
+        null,
+        null
+      ],
+      [
+        "Research with Faculty",
+        null,
+        null,
+        "2%",
+        null,
+        null,
+        "4% (+)",
+        null,
+        null,
+        "26%",
+        null,
+        null,
+        "27%",
+        null,
+        null
+      ],
+      [
+        "Internship or Field Experience",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "43%",
+        null,
+        null,
+        "44%",
+        null,
+        null
+      ],
+      [
+        "Study Abroad",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "7%",
+        null,
+        null,
+        "5% (-)",
+        null,
+        null
+      ],
+      [
+        "Culminating Senior Experience",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "45%",
+        null,
+        null,
+        "46%",
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null,
+        "",
+        null,
+        null
+      ],
+      [
+        "",
+        "Participated in at least one",
+        "",
+        "",
+        "43%",
+        "",
+        "",
+        "45%",
+        "",
+        "",
+        "80%",
+        "",
+        "",
+        "79%",
+        ""
+      ],
+      [
+        "",
+        "Participated in two or more",
+        "",
+        "",
+        "-",
+        "",
+        "",
+        "-",
+        "",
+        "",
+        "52%",
+        "",
+        "",
+        "51%",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 14,
+    "table_index": 0,
+    "n_rows": 12,
+    "n_cols": 5,
+    "rows": [
+      [
+        "Table 7: Perceived Gains - Final Year Carleton Respondents",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "Very little",
+        "Some",
+        "Quite a bit",
+        "Very much"
+      ],
+      [
+        "Thinking critically and analytically",
+        "3%",
+        "11%",
+        "40%",
+        "46%"
+      ],
+      [
+        "Writing clearly and effectively",
+        "6%",
+        "18%",
+        "39%",
+        "37%"
+      ],
+      [
+        "Analyzing numerical and statistical\ninformation",
+        "13%",
+        "21%",
+        "31%",
+        "35%"
+      ],
+      [
+        "Understanding people of other backgrounds",
+        "14%",
+        "25%",
+        "34%",
+        "26%"
+      ],
+      [
+        "Speaking clearly and effectively",
+        "13%",
+        "29%",
+        "35%",
+        "22%"
+      ],
+      [
+        "Working effectively with others",
+        "11%",
+        "28%",
+        "40%",
+        "22%"
+      ],
+      [
+        "Solving complex real-world problems",
+        "13%",
+        "32%",
+        "34%",
+        "21%"
+      ],
+      [
+        "Being an informed and active citizen",
+        "18%",
+        "33%",
+        "29%",
+        "20%"
+      ],
+      [
+        "Developing or clarifying a personal code of\nvalues and ethics",
+        "18%",
+        "29%",
+        "35%",
+        "19%"
+      ],
+      [
+        "Acquiring job- or work-related knowledge\nand skills",
+        "16%",
+        "35%",
+        "31%",
+        "18%"
+      ]
+    ]
+  },
+  {
+    "page": 14,
+    "table_index": 1,
+    "n_rows": 8,
+    "n_cols": 3,
+    "rows": [
+      [
+        "Statistically Significant Differences: % Quite a Bit or % Very Much",
+        null,
+        null
+      ],
+      [
+        "",
+        "Carleton",
+        "Ontario"
+      ],
+      [
+        "Writing clearly and effectively",
+        "76%",
+        "73% (-)"
+      ],
+      [
+        "Speaking clearly and effectively",
+        "57%",
+        "62% (+)"
+      ],
+      [
+        "Thinking critically and analytically",
+        "86%",
+        "83% (-)"
+      ],
+      [
+        "Acquiring job- or work-related knowledge and skills",
+        "49%",
+        "55% (+)"
+      ],
+      [
+        "Working effectively with others",
+        "61%",
+        "67% (+)"
+      ],
+      [
+        "Developing or clarifying a personal code of values and ethics",
+        "53%",
+        "56% (+)"
+      ]
+    ]
+  },
+  {
+    "page": 15,
+    "table_index": 0,
+    "n_rows": 14,
+    "n_cols": 3,
+    "rows": [
+      [
+        "Table 8: Improving the Student Academic Experience In the Classroom at Carleton\n(Proportion of Respondents who Selected Each Item5)",
+        null,
+        null
+      ],
+      [
+        "University most needs to address …",
+        "First-Year",
+        "Final-Year"
+      ],
+      [
+        "Improving the quality of course instruction by professors",
+        "34",
+        "31"
+      ],
+      [
+        "Ensuring a better fit between course content, assignments, and tests/exams",
+        "33",
+        "23"
+      ],
+      [
+        "Improving the quality of teaching assistants",
+        "22",
+        "12"
+      ],
+      [
+        "Improving the quality of classrooms or lecture halls",
+        "17",
+        "18"
+      ],
+      [
+        "Increasing the number or variety of course offerings in your major",
+        "16",
+        "34"
+      ],
+      [
+        "Increasing the number or variety of course offerings outside your major",
+        "10",
+        "8"
+      ],
+      [
+        "Reducing class sizes overall",
+        "10",
+        "6"
+      ],
+      [
+        "Increasing opportunities to learn more about global issues",
+        "9",
+        "8"
+      ],
+      [
+        "Providing more current/relevant courses and curriculum",
+        "9",
+        "15"
+      ],
+      [
+        "Changing the mix of lectures, seminars, tutorials, and labs",
+        "9",
+        "8"
+      ],
+      [
+        "Improving student access to information technology",
+        "5",
+        "4"
+      ],
+      [
+        "Improving the quality of labs",
+        "5",
+        "5"
+      ]
+    ]
+  },
+  {
+    "page": 16,
+    "table_index": 0,
+    "n_rows": 11,
+    "n_cols": 3,
+    "rows": [
+      [
+        "Table 9: Improving the Student Academic Experience Outside the Classroom at Carleton\n(Proportion of Respondents who Selected Each Item6)",
+        null,
+        null
+      ],
+      [
+        "University most needs to address …",
+        "First-Year",
+        "Final-Year"
+      ],
+      [
+        "Improving the quality/availability of study spaces",
+        "35",
+        "32"
+      ],
+      [
+        "Expanding and/or improving the quality of academic support services",
+        "27",
+        "22"
+      ],
+      [
+        "Increasing contact with professors outside of class (e.g., office hours)",
+        "25",
+        "17"
+      ],
+      [
+        "Working to provide a better social environment for students",
+        "24",
+        "19"
+      ],
+      [
+        "Providing students with more opportunities to undertake research with\nfaculty",
+        "22",
+        "34"
+      ],
+      [
+        "Expanding and/or improving the quality of personal support services",
+        "19",
+        "29"
+      ],
+      [
+        "Increasing opportunities for international experiences",
+        "14",
+        "14"
+      ],
+      [
+        "Improving library services",
+        "7",
+        "4"
+      ],
+      [
+        "Improving the library collection",
+        "5",
+        "5"
+      ]
+    ]
+  },
+  {
+    "page": 17,
+    "table_index": 0,
+    "n_rows": 12,
+    "n_cols": 5,
+    "rows": [
+      [
+        "Table 10: Obstacles to Academic Progress\n(Proportion of respondents selecting factors as major obstacles)",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "",
+        "First-Year",
+        null,
+        "Final-Year",
+        null
+      ],
+      [
+        "Factor:",
+        "Carleton",
+        "Ontario",
+        "Carleton",
+        "Ontario"
+      ],
+      [
+        "Financial pressures or work obligations",
+        "30",
+        "30",
+        "37",
+        "37"
+      ],
+      [
+        "Your academic performance at university",
+        "29",
+        "34 (+)",
+        "23",
+        "25"
+      ],
+      [
+        "Personal or family problems",
+        "18",
+        "21",
+        "28",
+        "28"
+      ],
+      [
+        "Course availability/scheduling",
+        "13",
+        "17 (+)",
+        "23",
+        "26"
+      ],
+      [
+        "Lack of good academic advising",
+        "7",
+        "13 (+)",
+        "11",
+        "17 (+)"
+      ],
+      [
+        "Difficulties associated with a disability or chronic\nhealth condition",
+        "7",
+        "9",
+        "13",
+        "12"
+      ],
+      [
+        "Difficulties with academic regulations",
+        "6",
+        "10 (+)",
+        "8",
+        "10 (+)"
+      ],
+      [
+        "Language/cultural barriers",
+        "4",
+        "5 (+)",
+        "3",
+        "4 (+)"
+      ],
+      [
+        "Primary care giving responsibilities for a dependent",
+        "2",
+        "3 (+)",
+        "4",
+        "5 (+)"
+      ]
+    ]
+  }
+]

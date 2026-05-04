@@ -1,0 +1,28 @@
+{
+  "id": "operating_budget_2024_25",
+  "source_filename": "operating_budget_2024_25.pdf",
+  "source_sha256": "8dc904bcc8268e9d9dc23ca60bc76fcaae8b3c032813cbd313f95031caa027cc",
+  "source_url": "https://carleton.ca/financialservices/wp-content/uploads/24-25-Operating-Budget-Report.pdf",
+  "doc_type": "operating_budget",
+  "year": 2024,
+  "title": "Carleton 2024-25 Operating Budget Report",
+  "page_count": 22,
+  "n_tables": 15,
+  "pages_with_tables": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    20,
+    21
+  ],
+  "images_rendered": 9,
+  "extracted_at": "2026-04-30T17:02:40+00:00",
+  "tool_versions": {
+    "pdfplumber": "0.11.9",
+    "python": "3.11.0"
+  }
+}

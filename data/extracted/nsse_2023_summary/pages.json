@@ -1,0 +1,1983 @@
+[
+  {
+    "page": 1,
+    "text": "2023 NSSE\nSummary of Selected Carleton Results\nfrom the 2023 National Survey of\nStudent Engagement\nN 2023\nOVEMBER\ncarleton.ca/oirp",
+    "n_tables": 0,
+    "tables": []
+  },
+  {
+    "page": 2,
+    "text": "Table of Contents\nIntroduction ........................................................................................................................................................ 3\nA Profile of Carleton’s NSSE Respondents .................................................................................................. 3\nOverall Experience ............................................................................................................................................ 5\nNSSE Engagement Indicators ......................................................................................................................... 9\nHigh-Impact Practices (HIPs) ........................................................................................................................ 11\nContributions of University Experience to Knowledge, Skills, and Personal Development ............... 13\nMost Needed Improvement ........................................................................................................................... 14\nObstacles to Academic Progress ................................................................................................................... 17\nConclusion ........................................................................................................................................................ 18\n2",
+    "n_tables": 0,
+    "tables": []
+  },
+  {
+    "page": 3,
+    "text": "Introduction\nThe National Survey of Student Engagement (NSSE) is an annual survey which collects data on\nfirst-year and final-year undergraduate students. This survey’s focus is on assessing the level of\nstudent participation and engagement in activities deemed to be educationally effective. NSSE is\nconducted by Indiana University’s Center for Postsecondary Research.\nCarleton participates in NSSE every three years. In March 2023, Carleton took part in NSSE for the\nninth time. As was done for the previous NSSE administration at Carleton, all students who were in\ntheir first or final year were invited to participate in the survey. Altogether, 2,030 students\nresponded, resulting in a 21% response rate. This included 1,090 first-year respondents, and 940\nfinal-year respondents (third-year students in a three-year program and fourth-year students in a\nfour-year program). This year’s response rate is even lower than 2020 response rate, when email\nreminders were cancelled because of the COVID-19 pandemic.\nIn 2023, 19 Ontario universities participated in NSSE as a consortium. Throughout this summary\nwe compare Carleton’s results to those of the rest of the Ontario consortium1, on average. In\ngeneral, the Ontario consortium is a comparison group for Carleton that is especially meaningful\nsince all Ontario universities are subject to the same provincial policies and funding arrangements.\nHowever, it is important to keep in mind that each university has a distinct mission and program\nmix. In addition, while final-year at Carleton includes students in their last year of both three-year\nand four-year undergraduate programs, not all universities in Ontario have three-year degree\nprograms. These factors may explain some of the variation.\nA Profile of Carleton’s NSSE Respondents\nFifty-six percent of first-year and 61 percent of final-year Carleton respondents were female. This\nindicates a female response bias. To control for some of this known gender response bias, NSSE\nweights institutional results to better reflect the actual gender distribution at an institution. The\ninstitutional level results in this report for both Carleton and the Ontario Consortium are weighted.\n1 Throughout this summary, including charts and tables, any reference to the Ontario Consortium excludes Carleton (for both\ncomparative purposes and statistical testing). Highlighted differences are statistically significant, unless otherwise noted.\n3",
+    "n_tables": 0,
+    "tables": []
+  },
+  {
+    "page": 4,
+    "text": "Table 1 shows the breakdown of Carleton respondents by academic faculty and year level. The\ndistribution of respondents across faculties is similar to the faculty distribution of first and final-year\nstudents at Carleton.\nTable 1: Number of Respondents in 2023 by Faculty\nFirst-Year Final-Year Total\nFaculty of Arts and Social Sciences 232 293 525\nFaculty of Public Affairs 250 211 461\nSprott School of Business 78 45 123\nFaculty of Science 247 170 417\nFaculty of Engineering and Design 283 221 504\nTotal 1,090 940 2,030\nOf respondents who were in their final year, 8 percent were in their 3rd year of study and 92 percent\nwere in their 4th year of study. This is a slight under-representation of 3rd year students (in a three-\nyear program) since they accounted for 11% of the survey population.\nAt the time of the survey most first-year respondents were full-time students (96 percent); this\nproportion was slightly lower for final-year respondents (87 percent).\nForty-eight percent of first-year respondents reported living on-campus, compared to only 4 percent\nof final-year respondents.\nA first generation status was determined based on a question that asked: “What is the highest level\nof education completed by either of your parents (or those who raised you)?” Thirty-three percent\nof Carleton respondents reported that neither parent/guardian had a bachelor’s degree. Compared\nto the rest of the Ontario consortium, on average, Carleton has a lower proportion of first-\ngeneration respondents (first-year respondents: 31% vs 34% for the rest of Ontario; final-year\nrespondents: 35% vs 38% for the rest of Ontario)2.\nRespondents were asked to “choose the categories that best described your ethnic or cultural\nbackground”. Table 2 shows the data. Compared to the rest of the Ontario consortium, on\n2 There are many definitions of first generation. Using the definition of neither parent having any post-secondary, 14% of\nCarleton respondents are first generation (for both first-year and final-year). The difference between definitions includes roughly\n4% who attended but never completed university, and the remaining difference (15%) had at least some college or CEGEP.\n4",
+    "n_tables": 1,
+    "tables": [
+      {
+        "page": 4,
+        "table_index": 0,
+        "n_rows": 8,
+        "n_cols": 4,
+        "rows": [
+          [
+            "Table 1: Number of Respondents in 2023 by Faculty",
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "First-Year",
+            "Final-Year",
+            "Total"
+          ],
+          [
+            "Faculty of Arts and Social Sciences",
+            "232",
+            "293",
+            "525"
+          ],
+          [
+            "Faculty of Public Affairs",
+            "250",
+            "211",
+            "461"
+          ],
+          [
+            "Sprott School of Business",
+            "78",
+            "45",
+            "123"
+          ],
+          [
+            "Faculty of Science",
+            "247",
+            "170",
+            "417"
+          ],
+          [
+            "Faculty of Engineering and Design",
+            "283",
+            "221",
+            "504"
+          ],
+          [
+            "Total",
+            "1,090",
+            "940",
+            "2,030"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 5,
+    "text": "average, Carleton respondents were less likely to self-identify as Chinese, South Asian, and more\nlikely to identify as Arab.\nTable 2: Percentage of Respondents Self-Identified as\nFirst-Year Final-Year Total\nArab (Saudi, Egyptian, etc.) 10% 8% 9%\nBlack 11% 9% 10%\nChinese 7% 8% 7%\nIndigenous 4% 3% 4%\nLatin American 2% 3% 3%\nSouth Asian (East Indian, Pakistani, Sri Lankan, etc.) 11% 10% 11%\nWhite 54% 60% 57%\nOther 11% 9% 10%\nNote: ‘Other’ includes Filipino, Southeast Asian (Cambodian, Indonesian, Laotian, Vietnamese, etc.), West Asian\n(Afghan, Iranian, etc.), Japanese, Korean, and Other. Respondents can choose more than one category.\nOverall Experience\nCarleton respondents continue the long-standing trend of reporting satisfaction levels at or above\nthe provincial average. Seventy-four percent of first-year respondents and 78% of final-year\nrespondents rated their overall experience as either good or excellent. While both first and final-year\nrespondents reported slightly higher overall satisfaction levels compared to their provincial\ncounterparts, this difference is not statistically significant. Figure 1 shows the 2023 results for\nCarleton, in comparison to the rest of the Ontario consortium.\nFigure 1: How would you evaluate your entire\neducational experience at this institution?\nr a Carleton 20% 55% 23% 3%\ne\nY\n-\nt\ns r Rest of Ontario 20% 53% 23% 4%\niF\nr\na\ne\nY - Carleton 22% 56% 18% 4%\nla\nn\niF\nRest of Ontario 24% 51% 20% 5%\n0% 20% 40% 60% 80% 100%\nExcellent Good Fair Poor\n5",
+    "n_tables": 2,
+    "tables": [
+      {
+        "page": 5,
+        "table_index": 0,
+        "n_rows": 10,
+        "n_cols": 4,
+        "rows": [
+          [
+            "Table 2: Percentage of Respondents Self-Identified as",
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "First-Year",
+            "Final-Year",
+            "Total"
+          ],
+          [
+            "Arab (Saudi, Egyptian, etc.)",
+            "10%",
+            "8%",
+            "9%"
+          ],
+          [
+            "Black",
+            "11%",
+            "9%",
+            "10%"
+          ],
+          [
+            "Chinese",
+            "7%",
+            "8%",
+            "7%"
+          ],
+          [
+            "Indigenous",
+            "4%",
+            "3%",
+            "4%"
+          ],
+          [
+            "Latin American",
+            "2%",
+            "3%",
+            "3%"
+          ],
+          [
+            "South Asian (East Indian, Pakistani, Sri Lankan, etc.)",
+            "11%",
+            "10%",
+            "11%"
+          ],
+          [
+            "White",
+            "54%",
+            "60%",
+            "57%"
+          ],
+          [
+            "Other",
+            "11%",
+            "9%",
+            "10%"
+          ]
+        ]
+      },
+      {
+        "page": 5,
+        "table_index": 1,
+        "n_rows": 9,
+        "n_cols": 12,
+        "rows": [
+          [
+            "",
+            "",
+            null,
+            null,
+            "",
+            "",
+            null,
+            null,
+            null,
+            "",
+            null,
+            null
+          ],
+          [
+            "20%",
+            "",
+            null,
+            null,
+            "55%",
+            "",
+            null,
+            "",
+            null,
+            "23%",
+            null,
+            ""
+          ],
+          [
+            "",
+            "",
+            null,
+            null,
+            "",
+            "",
+            null,
+            null,
+            null,
+            "",
+            null,
+            null
+          ],
+          [
+            "20%",
+            "",
+            null,
+            null,
+            "53%",
+            "",
+            "",
+            null,
+            null,
+            "23%",
+            "",
+            null
+          ],
+          [
+            "",
+            "",
+            null,
+            null,
+            "",
+            "",
+            null,
+            null,
+            null,
+            "",
+            null,
+            null
+          ],
+          [
+            "22%",
+            "",
+            "",
+            null,
+            "56%",
+            "",
+            null,
+            null,
+            "",
+            "18%",
+            "",
+            null
+          ],
+          [
+            "",
+            "",
+            null,
+            null,
+            "",
+            "",
+            null,
+            null,
+            null,
+            "",
+            null,
+            null
+          ],
+          [
+            "24%",
+            "",
+            null,
+            "",
+            "51%",
+            "",
+            null,
+            "",
+            null,
+            "20%",
+            "",
+            null
+          ],
+          [
+            "",
+            "",
+            null,
+            null,
+            "",
+            "",
+            null,
+            null,
+            null,
+            "",
+            null,
+            null
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 6,
+    "text": "There is a downward trend in the overall satisfaction levels of first-year students for both Carleton\nand the provincial average. The difference for first-year respondents is statistically significant for\nCarleton between 2020 and 2023. And while the trend for Carleton’s final-year respondents between\n2014 and 2020 is a statistically significant decline, there was a little bounce in 2023, however, it does\nnot reach the proportion from 2017. (Figures 2 and 3).\nRespondents were asked if they had to make the decision again, would they choose the same\ninstitution. Results are shown in Figure 4. Eighty-two percent of first-year respondents and 81\npercent of final-year respondents reported that they would choose Carleton again. Both first and\nfinal-year results were similar to the Ontario consortium, excluding Carleton. Differences between\n2020 and 2023 are not statistically significant.\n6",
+    "n_tables": 0,
+    "tables": []
+  },
+  {
+    "page": 7,
+    "text": "Figure 4: If you could start over again, would you\nchoose the same institution?\nr a Carleton 31% 51% 16% 2%\ne\nY\n-\nt\ns r Rest of Ontario 31% 50% 16% 4%\niF\nr\na\ne\nY - Carleton 30% 51% 15% 4%\nla\nn\niF\nRest of Ontario 30% 47% 17% 6%\n0% 20% 40% 60% 80% 100%\nDefinitely Yes Probably Yes Probably No Definitely No\nAlong with the downward trend in satisfaction, first-year respondents from both Carleton and the\nrest of Ontario are less likely to choose the same university if they were to start over, however, this\ndecrease is not statistically significant. Compared to the rest of the province, at Carleton there is an\nuptick in 2020 that is maintained in 2023 for final year students, although that increase is not\nstatistically significant (Figures 5 and 6).\nThere were five questions on the survey which asked about the quality of the interactions that the\nrespondents had with others on campus3. Figures 7 and 8 below summarize the 2023 results for\n3 In the survey, the possible answers to these questions were on a seven-point scale ranging from 1 to 7, with only the low and\nhigh values labelled as 1=Poor, and 7=Excellent (plus an option of not applicable). Student services staff in this question was\nexplained as “career services, student activities, housing, etc.” Administrative staff and offices was explained as “registrar,\nfinancial aid, etc.”\n7",
+    "n_tables": 1,
+    "tables": [
+      {
+        "page": 7,
+        "table_index": 0,
+        "n_rows": 9,
+        "n_cols": 10,
+        "rows": [
+          [
+            "",
+            "",
+            null,
+            "",
+            "",
+            null,
+            "",
+            null,
+            null,
+            null
+          ],
+          [
+            "31%",
+            "",
+            "",
+            "51%",
+            "",
+            null,
+            "16%",
+            null,
+            null,
+            ""
+          ],
+          [
+            "",
+            "",
+            null,
+            "",
+            "",
+            null,
+            "",
+            null,
+            null,
+            null
+          ],
+          [
+            "31%",
+            "",
+            "",
+            "50%",
+            "",
+            null,
+            "16%",
+            null,
+            "",
+            null
+          ],
+          [
+            "",
+            "",
+            null,
+            "",
+            "",
+            null,
+            "",
+            null,
+            null,
+            null
+          ],
+          [
+            "30%",
+            "",
+            "",
+            "51%",
+            "",
+            null,
+            "15%",
+            null,
+            "",
+            null
+          ],
+          [
+            "",
+            "",
+            null,
+            "",
+            "",
+            null,
+            "",
+            null,
+            null,
+            null
+          ],
+          [
+            "30%",
+            "",
+            "",
+            "47%",
+            "",
+            "",
+            "17%",
+            "",
+            null,
+            null
+          ],
+          [
+            "",
+            "",
+            null,
+            "",
+            "",
+            null,
+            "",
+            null,
+            null,
+            null
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 8,
+    "text": "first-year and final-year respondents at Carleton, respectively, for each of the five relationship types\n(excluding ‘not applicable’).\nFigure 7: First-Year Quality of Intearctions With...\n1%\n100% 3% 6% 3% 4% 4%\n5% 4% 4% 6% 6%\n90% 8%\n12% 7% 9% 7%\n80%\n16% 17% 16% 16% 1 Poor\n70%\n30% 2\n60%\n26% 29% 24% 26% 3\n50%\n4\n40%\n28%\n30% 23% 20% 20% 5\n24%\n20% 6\n10% 21% 19% 16% 21% 21% 7 Excellent\n0%\nStudents Academic Faculty Student Services Admin Staff and\nAdvisors Staff Offices\nFigure 8: Final-Year Quality of Intearctions With...\n2%\n100%\n2% 5% 4% 6% 4%\n90% 4% 5% 6 4 % % 6% 5%\n12% 8% 8% 8%\n80%\n16%\n14%\n15% 14% 1 Poor\n70%\n27%\n2\n60%\n25% 23%\n22% 24% 3\n50%\n4\n40% 29%\n30% 21% 28% 24% 26% 5\n20% 6\n10% 25% 22% 18% 19% 20% 7 Excellent\n0%\nStudents Academic Faculty Student Services Admin Staff and\nAdvisors Staff Offices\nCompared to those at other Ontario institutions, on average, first-year respondents at Carleton\nreported better interactions with Administrative Staff and Offices, and final-year respondents at\nCarleton reported better interactions with Academic Advisors, Student Services Staff and\nAdministrative Staff and Offices. Carleton results are similar to those of 2020.\n8",
+    "n_tables": 3,
+    "tables": [
+      {
+        "page": 8,
+        "table_index": 0,
+        "n_rows": 2,
+        "n_cols": 1,
+        "rows": [
+          [
+            "Figure 7: First-YearQuality of Intearctions With...\n1%\n100% 3% 6% 3% 4% 4%\n5% 4% 4% 6% 6%\n90% 8%\n12% 7% 9% 7%\n80%\n16% 17% 16% 16% 1 Poor\n70%\n30% 2\n60%\n26% 29% 24% 26% 3\n50%\n4\n40%\n28%\n30% 23% 20% 20% 5\n24%\n20% 6\n10% 21% 19% 16% 21% 21% 7 Excellent\n0%\nStudents Academic Faculty Student Services Admin Staff and\nAdvisors Staff Offices"
+          ],
+          [
+            "Figure 8: Final-YearQuality of Intearctions With...\n2%\n100%\n2% 5% 4% 6% 4%\n90% 4% 5% 6 4 % % 6% 5%\n12% 8% 8% 8%\n80%\n16%\n14%\n15% 14% 1 Poor\n70%\n27%\n2\n60%\n25% 23%\n22% 24% 3\n50%\n4\n40% 29%\n30% 21% 28% 24% 26% 5\n20% 6\n10% 25% 22% 18% 19% 20% 7 Excellent\n0%\nStudents Academic Faculty Student Services Admin Staff and\nAdvisors Staff Offices"
+          ]
+        ]
+      },
+      {
+        "page": 8,
+        "table_index": 1,
+        "n_rows": 11,
+        "n_cols": 11,
+        "rows": [
+          [
+            "",
+            "3%\n5%",
+            "",
+            "6%\n4%",
+            "",
+            "4%",
+            "",
+            "6%",
+            "",
+            "6%",
+            ""
+          ],
+          [
+            "",
+            "12%",
+            "",
+            "7%",
+            "",
+            "8%",
+            "",
+            "9%",
+            "",
+            "7%",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "16%",
+            "",
+            "17%",
+            "",
+            "16%",
+            "",
+            "16%",
+            ""
+          ],
+          [
+            "",
+            "30%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "26%",
+            "",
+            "29%",
+            "",
+            "24%",
+            "",
+            "26%",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "28%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "20%",
+            "",
+            "20%",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "23%",
+            "",
+            "24%",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "21%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "21%",
+            "",
+            "",
+            ""
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            "",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "",
+            "",
+            "19%",
+            "",
+            "16%",
+            "",
+            "",
+            "",
+            "21%",
+            ""
+          ]
+        ]
+      },
+      {
+        "page": 8,
+        "table_index": 2,
+        "n_rows": 14,
+        "n_cols": 11,
+        "rows": [
+          [
+            "",
+            "2%\n4%",
+            "",
+            "5%",
+            "",
+            "4%\n4%",
+            "",
+            "6%",
+            "",
+            "4%",
+            ""
+          ],
+          [
+            "",
+            "12%",
+            "",
+            "5%\n8%",
+            "",
+            "6%",
+            "",
+            "6%\n8%",
+            "",
+            "5%\n8%",
+            ""
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            "",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "",
+            "",
+            "15%",
+            "",
+            "16%",
+            "",
+            "14%",
+            "",
+            "14%",
+            ""
+          ],
+          [
+            "",
+            "27%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            null,
+            null,
+            null,
+            "",
+            null,
+            null,
+            null,
+            "",
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "",
+            "",
+            "22%",
+            "",
+            "25%",
+            "",
+            "24%",
+            "",
+            "23%",
+            ""
+          ],
+          [
+            null,
+            "",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "29%",
+            "",
+            "21%",
+            "",
+            "28%",
+            "",
+            "",
+            "",
+            "26%",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "24%",
+            "",
+            "",
+            ""
+          ],
+          [
+            null,
+            "",
+            null,
+            "",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "25%",
+            "",
+            "22%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "18%",
+            "",
+            "19%",
+            "",
+            "20%",
+            ""
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 9,
+    "text": "NSSE Engagement Indicators\nAs a way of summarizing the data and establishing indicators, NSSE clusters survey items to create\n10 indicators. This allows for comparisons across a number of themes. Results of the statistically\nsignificant differences4 between Carleton and the Ontario Consortium are presented in Table 3\nbelow.\nTable 3: NSSE Engagement Indicators Legend\nFirst-Year Final-Year\n-- : No statistical difference\nAcademic Challenge\nfrom Ontario Consortium\n1. Higher-Order Learning Lower --\n2. Reflective & Integrative Learning Lower -- Higher: Carleton’s indicator\n3. Learning Strategies Lower Lower score is higher than Ontario\n4. Quantitative Reasoning -- --\nLower: Carleton’s indicator\nLearning with Peers\nscore is lower than Ontario\n5. Collaborative Learning Lower Lower\n6. Discussions with Diverse Others -- --\nExperiences with Faculty\n7. Student Faculty Interaction Lower Lower\n8. Effective Teaching Practices Higher Higher\nCampus Environment\n9. Quality of Interactions -- Higher\n10. Supportive Environment -- --\nA breakout of the statistically significantly different indicators is presented below in an effort to\nunderstand the drivers of the differences noted in Table 3.\nBreakout of Differences Noted in Table 3 (NSSE Engagement Indicators)\nHigher-Order Learning (First-Year). Out of four items, first-year Carleton respondents were less\nlikely than the Ontario average to report having done two items: Evaluating a point of view,\ndecision, or information source, and Forming a new idea or understanding from various pieces of\ninformation.\n4 All statistical significant differences between Carleton and Ontario had an effect size of less than .3, which essentially means\nthey are small differences in practical terms.\n9",
+    "n_tables": 1,
+    "tables": [
+      {
+        "page": 9,
+        "table_index": 0,
+        "n_rows": 16,
+        "n_cols": 4,
+        "rows": [
+          [
+            "Table 3: NSSE Engagement Indicators",
+            null,
+            null,
+            "Legend\n-- : No statistical difference\nfrom Ontario Consortium\nHigher: Carleton’s indicator\nscore is higher than Ontario\nLower: Carleton’s indicator\nscore is lower than Ontario"
+          ],
+          [
+            "",
+            "First-Year",
+            "Final-Year",
+            null
+          ],
+          [
+            "Academic Challenge",
+            null,
+            null,
+            null
+          ],
+          [
+            "1. Higher-Order Learning",
+            "Lower",
+            "--",
+            null
+          ],
+          [
+            "2. Reflective & Integrative Learning",
+            "Lower",
+            "--",
+            null
+          ],
+          [
+            "3. Learning Strategies",
+            "Lower",
+            "Lower",
+            null
+          ],
+          [
+            "4. Quantitative Reasoning",
+            "--",
+            "--",
+            null
+          ],
+          [
+            "Learning with Peers",
+            null,
+            null,
+            null
+          ],
+          [
+            "5. Collaborative Learning",
+            "Lower",
+            "Lower",
+            null
+          ],
+          [
+            "6. Discussions with Diverse Others",
+            "--",
+            "--",
+            null
+          ],
+          [
+            "Experiences with Faculty",
+            null,
+            null,
+            null
+          ],
+          [
+            "7. Student Faculty Interaction",
+            "Lower",
+            "Lower",
+            null
+          ],
+          [
+            "8. Effective Teaching Practices",
+            "Higher",
+            "Higher",
+            null
+          ],
+          [
+            "Campus Environment",
+            null,
+            null,
+            null
+          ],
+          [
+            "9. Quality of Interactions",
+            "--",
+            "Higher",
+            null
+          ],
+          [
+            "10. Supportive Environment",
+            "--",
+            "--",
+            null
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 10,
+    "text": "Reflective & Integrative Learning (First-Year). Out of seven items, first-year Carleton\nrespondents were less likely than the Ontario average to report having done four items: Connected\nyour learning to societal problems or issues, Examined the strengths and weaknesses of your own\nviews on a topic or issue, Tried to better understand someone else's views by imagining how an issue\nlooks from their perspective, and Learned something that changed the way you understand an issue\nor concept.\nLearning Strategies (First-Year and Final-Year). Out of three items, both first-year and final-year\nCarleton respondents were less likely than the Ontario average to have done two items each: (both\nfirst-year and final-year respondents) Reviewed your notes after class, and (first-year respondents\nonly) Identified key information from reading assignments, (final-year respondents only)\nSummarized what you learned in class or from course materials.\nCollaborative Learning (First-Year and Final-year). Out of four items, first-year and final-year\nCarleton respondents were less likely than the Ontario average to have done three items: Asked\nanother student to help you understand course material, Prepared for exams by discussing or\nworking through course material with other students and Worked with other students on course\nprojects or assignments. Additionally, final-year respondents were less likely than the Ontario\naverage to have Explained course material to one or more students.\nStudent Faculty Interaction (First-Year and Final-Year). Out of four items, first-year Carleton\nrespondents were less likely than the Ontario average to have done three of them: Talked about\ncareer plans with a faculty member, Worked with a faculty member on activities other than\ncoursework (committees, student groups, etc.), and Discussed course topics, ideas, or concepts with\na faculty member outside of class. And final-year respondents were less likely than the Ontario\naverage to have Worked with a faculty member on activities other than coursework (committees,\nstudent groups, etc.).\nEffective Teaching Practices (First-Year and Final-Year). Out of five items, first and final-year\nCarleton respondents were more likely than the Ontario average to report that their instructors have\ndone one item: Provided prompt and detailed feedback on tests or completed assignments.\nAdditionally, final-year Carleton respondents were more likely than the Ontario average to report\nthat their instructors have Provided feedback on a draft or work in progress.\n10",
+    "n_tables": 0,
+    "tables": []
+  },
+  {
+    "page": 11,
+    "text": "Quality of Interactions (Final-Year). Out of five categories of interactions, final-year Carleton\nrespondents rated three types of relationships as better than the Ontario average: Academic\nadvisors, Student services staff (career services, student activities, housing, etc.), and Other\nadministrative staff and offices (registrar, financial aid, etc.).\nComparing 2023’s NSSE Engagement Indicators to 2020’s shows mixed results.\nFirst-Year: 3 out of 10 indicators were different. Only one was higher in 2023.\n2020 2023\nQuantitative Reasoning 24.87 26.72 (+)\nCollaborative Learning 33.13 30.31 (-)\nDiscussions with Diverse Others 41.04 39.22 (-)\nNote: (+) and (-) denote statistically significant difference over time.\nFinal-Year: 2 out of 10 indicators were different. Only one was higher in 2023.\n2020 2023\nHigher-Order Learning 37.38 39.29 (+)\nCollaborative Learning 32.36 28.21 (-)\nNote: (+) and (-) denote statistically significant difference over time.\nHigh-Impact Practices (HIPs)\nAccording to NSSE, “High-Impact Practices (HIPs) represent enriching educational experiences\nthat can be life changing. They typically demand considerable time and effort, facilitate learning\noutside of the classroom, require meaningful interactions with faculty and other students, encourage\ncollaboration with diverse other students, and provide frequent and substantive feedback”.\nThere are six survey items that are considered HIPs, three for first-year students, and all six for final-\nyear students. The goal of HIPs, according to NSSE’s best practices, is for all students to have\nparticipated in at least two HIPs by the time they have graduated.\nTable 4 shows Carleton and Ontario’s rates of participation in the NSSE HIPs. Generally, where\nthere is a difference, Carleton students are less likely to participate in the high-impact practice\ncompared to the Ontario consortium average.\n11",
+    "n_tables": 2,
+    "tables": [
+      {
+        "page": 11,
+        "table_index": 0,
+        "n_rows": 4,
+        "n_cols": 3,
+        "rows": [
+          [
+            "",
+            "2020",
+            "2023"
+          ],
+          [
+            "Quantitative Reasoning",
+            "24.87",
+            "26.72 (+)"
+          ],
+          [
+            "Collaborative Learning",
+            "33.13",
+            "30.31 (-)"
+          ],
+          [
+            "Discussions with Diverse Others",
+            "41.04",
+            "39.22 (-)"
+          ]
+        ]
+      },
+      {
+        "page": 11,
+        "table_index": 1,
+        "n_rows": 3,
+        "n_cols": 3,
+        "rows": [
+          [
+            "",
+            "2020",
+            "2023"
+          ],
+          [
+            "Higher-Order Learning",
+            "37.38",
+            "39.29 (+)"
+          ],
+          [
+            "Collaborative Learning",
+            "32.36",
+            "28.21 (-)"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 12,
+    "text": "Table 4: High-Impact Practices\nFirst Year Final-Year\n(% Participating) (% Participating)\nCarleton Ontario Carleton Ontario\nLearning Community 7% 9% 14% 17%\nService Learning 41% 44% 37% 49% (+)\nResearch with Faculty 4% 3% 27% 21% (-)\nInternship or Field Experience 44% 48% (+)\nStudy Abroad 5% 6%\nCulminating Senior Experience 46% 33% (-)\nParticipated in at least one 45% 49% (+) 79% 81%\nParticipated in two or more - - 51% 51%\nNotes:\n% participated is % who responded “Done or in progress”, except for service learning (% reported at least some).\n(+) and (-) denote statistically significant difference between Carleton and the rest of the Ontario Consortium.\nSince final-year at Carleton is made up of 3rd year students in three year programs, and 4th year\nstudents in four year programs, it’s helpful to see how ‘final-year’ is broken down by 3 and 4 year\nprograms. Students in 3 year programs are more similar to first-year students than they are to\nstudents in 4 year programs, in terms of their participation rates in HIPs.\nTable 5: High-Impact Practices – Carleton 3, 4 year programs\nFinal-Year Final-Year\n(3 year programs) (4 year programs)\nLearning Community 7% 15%\nService Learning* 24% 39%\nResearch with Faculty* 3% 29%\nInternship or Field Experience* 14% 46%\nStudy Abroad 5% 5%\nCulminating Senior Experience* 3% 50%\nParticipated in at least one* 39% 82%\nParticipated in two or more* 12% 55%\n*Difference between 3rd and 4th year programs is statistically significant.\nComparing Carleton’s 2023 results to the 2020 results shows that not much changed regarding the\nrate of participation in HIPs. The only increase is seen in first-year respondents participating in\n12",
+    "n_tables": 2,
+    "tables": [
+      {
+        "page": 12,
+        "table_index": 0,
+        "n_rows": 13,
+        "n_cols": 15,
+        "rows": [
+          [
+            "Table 4: High-Impact Practices",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            null,
+            null,
+            "First Year",
+            null,
+            null,
+            null,
+            null,
+            null,
+            "Final-Year",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            "(% Participating)",
+            null,
+            null,
+            null,
+            null,
+            null,
+            "(% Participating)",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            null,
+            null,
+            "Carleton",
+            null,
+            null,
+            "Ontario",
+            null,
+            null,
+            "Carleton",
+            null,
+            null,
+            "Ontario",
+            null,
+            null
+          ],
+          [
+            "Learning Community",
+            null,
+            null,
+            "7%",
+            null,
+            null,
+            "9%",
+            null,
+            null,
+            "14%",
+            null,
+            null,
+            "17%",
+            null,
+            null
+          ],
+          [
+            "Service Learning",
+            null,
+            null,
+            "41%",
+            null,
+            null,
+            "44%",
+            null,
+            null,
+            "37%",
+            null,
+            null,
+            "49% (+)",
+            null,
+            null
+          ],
+          [
+            "Research with Faculty",
+            null,
+            null,
+            "4%",
+            null,
+            null,
+            "3%",
+            null,
+            null,
+            "27%",
+            null,
+            null,
+            "21% (-)",
+            null,
+            null
+          ],
+          [
+            "Internship or Field Experience",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "44%",
+            null,
+            null,
+            "48% (+)",
+            null,
+            null
+          ],
+          [
+            "Study Abroad",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "5%",
+            null,
+            null,
+            "6%",
+            null,
+            null
+          ],
+          [
+            "Culminating Senior Experience",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "46%",
+            null,
+            null,
+            "33% (-)",
+            null,
+            null
+          ],
+          [
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null
+          ],
+          [
+            "",
+            "Participated in at least one",
+            "",
+            "",
+            "45%",
+            "",
+            "",
+            "49% (+)",
+            "",
+            "",
+            "79%",
+            "",
+            "",
+            "81%",
+            ""
+          ],
+          [
+            "",
+            "Participated in two or more",
+            "",
+            "",
+            "-",
+            "",
+            "",
+            "-",
+            "",
+            "",
+            "51%",
+            "",
+            "",
+            "51%",
+            ""
+          ]
+        ]
+      },
+      {
+        "page": 12,
+        "table_index": 1,
+        "n_rows": 12,
+        "n_cols": 9,
+        "rows": [
+          [
+            "Table 5: High-Impact Practices – Carleton 3, 4 year programs",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            null,
+            null,
+            "Final-Year",
+            null,
+            null,
+            "Final-Year",
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            "(3 year programs)",
+            null,
+            null,
+            "(4 year programs)",
+            null,
+            null
+          ],
+          [
+            "Learning Community",
+            null,
+            null,
+            "7%",
+            null,
+            null,
+            "15%",
+            null,
+            null
+          ],
+          [
+            "Service Learning*",
+            null,
+            null,
+            "24%",
+            null,
+            null,
+            "39%",
+            null,
+            null
+          ],
+          [
+            "Research with Faculty*",
+            null,
+            null,
+            "3%",
+            null,
+            null,
+            "29%",
+            null,
+            null
+          ],
+          [
+            "Internship or Field Experience*",
+            null,
+            null,
+            "14%",
+            null,
+            null,
+            "46%",
+            null,
+            null
+          ],
+          [
+            "Study Abroad",
+            null,
+            null,
+            "5%",
+            null,
+            null,
+            "5%",
+            null,
+            null
+          ],
+          [
+            "Culminating Senior Experience*",
+            null,
+            null,
+            "3%",
+            null,
+            null,
+            "50%",
+            null,
+            null
+          ],
+          [
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null
+          ],
+          [
+            "",
+            "Participated in at least one*",
+            "",
+            "",
+            "39%",
+            "",
+            "",
+            "82%",
+            ""
+          ],
+          [
+            "",
+            "Participated in two or more*",
+            "",
+            "",
+            "12%",
+            "",
+            "",
+            "55%",
+            ""
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 13,
+    "text": "Research with Faculty (from 2% in 2020 to 4% in 2023), and a decrease for final-year respondents in\ntheir participation in Study Abroad (from 7% in 2020 to 5% in 2023, which might be the effect of\nthe pandemic and travel restrictions during that time).\nTable 6: High-Impact Practices – Carleton over time\nFirst Year Final-Year\n(% Participating) (% Participating)\n2020 2023 2020 2023\nLearning Community 7% 7% 13% 14%\nService Learning 39% 41% 39% 37%\nResearch with Faculty 2% 4% (+) 26% 27%\nInternship or Field Experience 43% 44%\nStudy Abroad 7% 5% (-)\nCulminating Senior Experience 45% 46%\nParticipated in at least one 43% 45% 80% 79%\nParticipated in two or more - - 52% 51%\nNote: (+) and (-) denote statistically significant difference over time.\nContributions of University Experience to Knowledge, Skills, and\nPersonal Development\nRespondents were asked “How much has your experience at this institution contributed to your\nknowledge, skills, and personal development in the following areas?” with respondents being able to\nselect Very little, Some, Quite a bit, or Very Much.\nA focus on final-year respondents is presented in Table 7.\n13",
+    "n_tables": 1,
+    "tables": [
+      {
+        "page": 13,
+        "table_index": 0,
+        "n_rows": 13,
+        "n_cols": 15,
+        "rows": [
+          [
+            "Table 6: High-Impact Practices – Carleton over time",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            null,
+            null,
+            "First Year",
+            null,
+            null,
+            null,
+            null,
+            null,
+            "Final-Year",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            "(% Participating)",
+            null,
+            null,
+            null,
+            null,
+            null,
+            "(% Participating)",
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            null,
+            null,
+            "2020",
+            null,
+            null,
+            "2023",
+            null,
+            null,
+            "2020",
+            null,
+            null,
+            "2023",
+            null,
+            null
+          ],
+          [
+            "Learning Community",
+            null,
+            null,
+            "7%",
+            null,
+            null,
+            "7%",
+            null,
+            null,
+            "13%",
+            null,
+            null,
+            "14%",
+            null,
+            null
+          ],
+          [
+            "Service Learning",
+            null,
+            null,
+            "39%",
+            null,
+            null,
+            "41%",
+            null,
+            null,
+            "39%",
+            null,
+            null,
+            "37%",
+            null,
+            null
+          ],
+          [
+            "Research with Faculty",
+            null,
+            null,
+            "2%",
+            null,
+            null,
+            "4% (+)",
+            null,
+            null,
+            "26%",
+            null,
+            null,
+            "27%",
+            null,
+            null
+          ],
+          [
+            "Internship or Field Experience",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "43%",
+            null,
+            null,
+            "44%",
+            null,
+            null
+          ],
+          [
+            "Study Abroad",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "7%",
+            null,
+            null,
+            "5% (-)",
+            null,
+            null
+          ],
+          [
+            "Culminating Senior Experience",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "45%",
+            null,
+            null,
+            "46%",
+            null,
+            null
+          ],
+          [
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null,
+            "",
+            null,
+            null
+          ],
+          [
+            "",
+            "Participated in at least one",
+            "",
+            "",
+            "43%",
+            "",
+            "",
+            "45%",
+            "",
+            "",
+            "80%",
+            "",
+            "",
+            "79%",
+            ""
+          ],
+          [
+            "",
+            "Participated in two or more",
+            "",
+            "",
+            "-",
+            "",
+            "",
+            "-",
+            "",
+            "",
+            "52%",
+            "",
+            "",
+            "51%",
+            ""
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 14,
+    "text": "Table 7: Perceived Gains - Final Year Carleton Respondents\nVery little Some Quite a bit Very much\nThinking critically and analytically 3% 11% 40% 46%\nWriting clearly and effectively 6% 18% 39% 37%\nAnalyzing numerical and statistical\n13% 21% 31% 35%\ninformation\nUnderstanding people of other backgrounds 14% 25% 34% 26%\nSpeaking clearly and effectively 13% 29% 35% 22%\nWorking effectively with others 11% 28% 40% 22%\nSolving complex real-world problems 13% 32% 34% 21%\nBeing an informed and active citizen 18% 33% 29% 20%\nDeveloping or clarifying a personal code of\n18% 29% 35% 19%\nvalues and ethics\nAcquiring job- or work-related knowledge\n16% 35% 31% 18%\nand skills\nComparing Carleton’s results to the Ontario average highlights a few statistically significant\ndifferences.\nStatistically Significant Differences: % Quite a Bit or % Very Much\nCarleton Ontario\nWriting clearly and effectively 76% 73% (-)\nSpeaking clearly and effectively 57% 62% (+)\nThinking critically and analytically 86% 83% (-)\nAcquiring job- or work-related knowledge and skills 49% 55% (+)\nWorking effectively with others 61% 67% (+)\nDeveloping or clarifying a personal code of values and ethics 53% 56% (+)\nNote: (+) and (-) denote statistically significant difference between Carleton and the rest of Ontario Consortium.\nDifferences between 2023 and 2020 Carleton final-year respondents were not statistically significant.\nMost Needed Improvement\nParticipating as a consortium, the Ontario institutions were able to add a set of questions to the\nstandard NSSE survey instrument. The results in this section come from these Ontario consortium\nquestions. The Ontario NSSE respondents were asked to select up to two items that they believed\ntheir university most needed to address to improve the student academic/learning experience, both\nin and out of the classroom (two separate questions).\n14",
+    "n_tables": 2,
+    "tables": [
+      {
+        "page": 14,
+        "table_index": 0,
+        "n_rows": 12,
+        "n_cols": 5,
+        "rows": [
+          [
+            "Table 7: Perceived Gains - Final Year Carleton Respondents",
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "Very little",
+            "Some",
+            "Quite a bit",
+            "Very much"
+          ],
+          [
+            "Thinking critically and analytically",
+            "3%",
+            "11%",
+            "40%",
+            "46%"
+          ],
+          [
+            "Writing clearly and effectively",
+            "6%",
+            "18%",
+            "39%",
+            "37%"
+          ],
+          [
+            "Analyzing numerical and statistical\ninformation",
+            "13%",
+            "21%",
+            "31%",
+            "35%"
+          ],
+          [
+            "Understanding people of other backgrounds",
+            "14%",
+            "25%",
+            "34%",
+            "26%"
+          ],
+          [
+            "Speaking clearly and effectively",
+            "13%",
+            "29%",
+            "35%",
+            "22%"
+          ],
+          [
+            "Working effectively with others",
+            "11%",
+            "28%",
+            "40%",
+            "22%"
+          ],
+          [
+            "Solving complex real-world problems",
+            "13%",
+            "32%",
+            "34%",
+            "21%"
+          ],
+          [
+            "Being an informed and active citizen",
+            "18%",
+            "33%",
+            "29%",
+            "20%"
+          ],
+          [
+            "Developing or clarifying a personal code of\nvalues and ethics",
+            "18%",
+            "29%",
+            "35%",
+            "19%"
+          ],
+          [
+            "Acquiring job- or work-related knowledge\nand skills",
+            "16%",
+            "35%",
+            "31%",
+            "18%"
+          ]
+        ]
+      },
+      {
+        "page": 14,
+        "table_index": 1,
+        "n_rows": 8,
+        "n_cols": 3,
+        "rows": [
+          [
+            "Statistically Significant Differences: % Quite a Bit or % Very Much",
+            null,
+            null
+          ],
+          [
+            "",
+            "Carleton",
+            "Ontario"
+          ],
+          [
+            "Writing clearly and effectively",
+            "76%",
+            "73% (-)"
+          ],
+          [
+            "Speaking clearly and effectively",
+            "57%",
+            "62% (+)"
+          ],
+          [
+            "Thinking critically and analytically",
+            "86%",
+            "83% (-)"
+          ],
+          [
+            "Acquiring job- or work-related knowledge and skills",
+            "49%",
+            "55% (+)"
+          ],
+          [
+            "Working effectively with others",
+            "61%",
+            "67% (+)"
+          ],
+          [
+            "Developing or clarifying a personal code of values and ethics",
+            "53%",
+            "56% (+)"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 15,
+    "text": "Starting with the results of most needed improvements inside the classroom, we see in Table 8 that\nfirst-year Carleton respondents were most likely to choose Improving the quality of course\ninstruction by professors (34%), Ensuring a better fit between course content, assignments and\ntests/exams (33%), and Improving the quality of teaching assistants (22%). Final-year respondents\nwere most likely to choose Increasing the number or variety of course offerings in their major\n(34%), Improving the quality of course instruction by professors (31%) as well as Ensuring a better\nfit between course content, assignments, and tests/exams (23%). Table 8 is sorted by first-year\npriorities.\nTable 8: Improving the Student Academic Experience In the Classroom at Carleton\n(Proportion of Respondents who Selected Each Item5)\nUniversity most needs to address … First-Year Final-Year\nImproving the quality of course instruction by professors 34 31\nEnsuring a better fit between course content, assignments, and tests/exams 33 23\nImproving the quality of teaching assistants 22 12\nImproving the quality of classrooms or lecture halls 17 18\nIncreasing the number or variety of course offerings in your major 16 34\nIncreasing the number or variety of course offerings outside your major 10 8\nReducing class sizes overall 10 6\nIncreasing opportunities to learn more about global issues 9 8\nProviding more current/relevant courses and curriculum 9 15\nChanging the mix of lectures, seminars, tutorials, and labs 9 8\nImproving student access to information technology 5 4\nImproving the quality of labs 5 5\nCompared to their provincial counterparts, final-year respondents at Carleton were less likely to\nidentify Reducing class sizes overall (6% vs. 9% for rest of Ontario).\nCompared to Carleton respondents in 2020, Carleton first-year respondents were less likely to select\nImproving the quality of teaching assistants (22% in 2023 vs. 33% in 2020), and Increasing the\nnumber of variety in course offerings in your major (17% vs. 22%). They were also more likely to\nselect Improving the quality of course instruction by professors (34% in 2023 vs. 27% in 2020) and\nEnsuring a better fit between course content, assignments, and tests/exams (33% vs. 28%).\n5 Columns will add up to more than 100% since respondents could choose up to two items from the list.\n15",
+    "n_tables": 1,
+    "tables": [
+      {
+        "page": 15,
+        "table_index": 0,
+        "n_rows": 14,
+        "n_cols": 3,
+        "rows": [
+          [
+            "Table 8: Improving the Student Academic Experience In the Classroom at Carleton\n(Proportion of Respondents who Selected Each Item5)",
+            null,
+            null
+          ],
+          [
+            "University most needs to address …",
+            "First-Year",
+            "Final-Year"
+          ],
+          [
+            "Improving the quality of course instruction by professors",
+            "34",
+            "31"
+          ],
+          [
+            "Ensuring a better fit between course content, assignments, and tests/exams",
+            "33",
+            "23"
+          ],
+          [
+            "Improving the quality of teaching assistants",
+            "22",
+            "12"
+          ],
+          [
+            "Improving the quality of classrooms or lecture halls",
+            "17",
+            "18"
+          ],
+          [
+            "Increasing the number or variety of course offerings in your major",
+            "16",
+            "34"
+          ],
+          [
+            "Increasing the number or variety of course offerings outside your major",
+            "10",
+            "8"
+          ],
+          [
+            "Reducing class sizes overall",
+            "10",
+            "6"
+          ],
+          [
+            "Increasing opportunities to learn more about global issues",
+            "9",
+            "8"
+          ],
+          [
+            "Providing more current/relevant courses and curriculum",
+            "9",
+            "15"
+          ],
+          [
+            "Changing the mix of lectures, seminars, tutorials, and labs",
+            "9",
+            "8"
+          ],
+          [
+            "Improving student access to information technology",
+            "5",
+            "4"
+          ],
+          [
+            "Improving the quality of labs",
+            "5",
+            "5"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 16,
+    "text": "Carleton final-year respondents in 2023 were less likely than final-year respondents in 2020 to select\nImproving the quality of teaching assistants (12% in 2023 vs. 19% in 2020), and Increasing\nopportunities to learn more about global issues (8% vs. 11%).\nTable 9 shows the results of a similarly question that sought to find out what students felt was most\nneeded to improve their academic/learning experience outside the classroom. First-year Carleton\nrespondents selected Improving the quality/availability of study spaces most often (35%), followed\nby Expanding and/or improving the quality of personal support services (27%), and Increasing\ncontact with professors outside of class (e.g., office hours) (25%). Final-year Carleton respondents\nselected Providing students with more opportunities to undertake research with faculty most often\n(34%), followed by Improving the quality/availability of study spaces (32%), and Expanding and/or\nimproving the quality of personal support services (29%).\nTable 9: Improving the Student Academic Experience Outside the Classroom at Carleton\n(Proportion of Respondents who Selected Each Item6)\nUniversity most needs to address … First-Year Final-Year\nImproving the quality/availability of study spaces 35 32\nExpanding and/or improving the quality of academic support services 27 22\nIncreasing contact with professors outside of class (e.g., office hours) 25 17\nWorking to provide a better social environment for students 24 19\nProviding students with more opportunities to undertake research with\n22 34\nfaculty\nExpanding and/or improving the quality of personal support services 19 29\nIncreasing opportunities for international experiences 14 14\nImproving library services 7 4\nImproving the library collection 5 5\nCompared to their provincial counterparts, Carleton final-year respondents were less likely to select\nExpanding and/or improving the quality of academic support services (22% vs. 26% for rest of\nOntario).\n6 Columns will add up to more than 100% since respondents could choose up to two items from the list.\n16",
+    "n_tables": 1,
+    "tables": [
+      {
+        "page": 16,
+        "table_index": 0,
+        "n_rows": 11,
+        "n_cols": 3,
+        "rows": [
+          [
+            "Table 9: Improving the Student Academic Experience Outside the Classroom at Carleton\n(Proportion of Respondents who Selected Each Item6)",
+            null,
+            null
+          ],
+          [
+            "University most needs to address …",
+            "First-Year",
+            "Final-Year"
+          ],
+          [
+            "Improving the quality/availability of study spaces",
+            "35",
+            "32"
+          ],
+          [
+            "Expanding and/or improving the quality of academic support services",
+            "27",
+            "22"
+          ],
+          [
+            "Increasing contact with professors outside of class (e.g., office hours)",
+            "25",
+            "17"
+          ],
+          [
+            "Working to provide a better social environment for students",
+            "24",
+            "19"
+          ],
+          [
+            "Providing students with more opportunities to undertake research with\nfaculty",
+            "22",
+            "34"
+          ],
+          [
+            "Expanding and/or improving the quality of personal support services",
+            "19",
+            "29"
+          ],
+          [
+            "Increasing opportunities for international experiences",
+            "14",
+            "14"
+          ],
+          [
+            "Improving library services",
+            "7",
+            "4"
+          ],
+          [
+            "Improving the library collection",
+            "5",
+            "5"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 17,
+    "text": "Compared to Carleton respondents in 2020, 2023 Carleton first-year respondents were less likely to\nselect Improving the quality/availability of study spaces (35% vs. 40% in 2020), and Expanding\nand/or improving the quality of personal support services (19% vs. 25%).\nCarleton final-year respondents in 2023 were less likely to select Improving the quality/availability of\nstudy spaces (32% vs. 44% in 2020), and Expanding and/or improving the quality of personal\nsupport services (29% vs. 34%). And more likely to select Increasing opportunities for international\nexperiences (14% vs. 10% in 2020).\nObstacles to Academic Progress\nAnother Ontario consortium question focused on obstacles to academic progress. Given a list of\npotential factors which may be considered an obstacle to a student’s academic progress, respondents\nwere asked to indicate the degree to which each factor is or was an obstacle to their academic\nprogress (respondents chose from: ‘not an obstacle’, ‘a minor obstacle’, or ‘a major obstacle’).\nTable 10 shows the breakdown for Carleton, alongside the results of the rest of the Ontario\nconsortium, on average. Where differences exist, Carleton respondents are less likely to choose the\nitem as major obstacle to academic progress.\nTable 10: Obstacles to Academic Progress\n(Proportion of respondents selecting factors as major obstacles)\nFirst-Year Final-Year\nFactor: Carleton Ontario Carleton Ontario\nFinancial pressures or work obligations 30 30 37 37\nYour academic performance at university 29 34 (+) 23 25\nPersonal or family problems 18 21 28 28\nCourse availability/scheduling 13 17 (+) 23 26\nLack of good academic advising 7 13 (+) 11 17 (+)\nDifficulties associated with a disability or chronic\n7 9 13 12\nhealth condition\nDifficulties with academic regulations 6 10 (+) 8 10 (+)\nLanguage/cultural barriers 4 5 (+) 3 4 (+)\nPrimary care giving responsibilities for a dependent 2 3 (+) 4 5 (+)\nNote: (+) and (-) denote statistically significant difference between Carleton and the rest of Ontario Consortium.\n17",
+    "n_tables": 1,
+    "tables": [
+      {
+        "page": 17,
+        "table_index": 0,
+        "n_rows": 12,
+        "n_cols": 5,
+        "rows": [
+          [
+            "Table 10: Obstacles to Academic Progress\n(Proportion of respondents selecting factors as major obstacles)",
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "",
+            "First-Year",
+            null,
+            "Final-Year",
+            null
+          ],
+          [
+            "Factor:",
+            "Carleton",
+            "Ontario",
+            "Carleton",
+            "Ontario"
+          ],
+          [
+            "Financial pressures or work obligations",
+            "30",
+            "30",
+            "37",
+            "37"
+          ],
+          [
+            "Your academic performance at university",
+            "29",
+            "34 (+)",
+            "23",
+            "25"
+          ],
+          [
+            "Personal or family problems",
+            "18",
+            "21",
+            "28",
+            "28"
+          ],
+          [
+            "Course availability/scheduling",
+            "13",
+            "17 (+)",
+            "23",
+            "26"
+          ],
+          [
+            "Lack of good academic advising",
+            "7",
+            "13 (+)",
+            "11",
+            "17 (+)"
+          ],
+          [
+            "Difficulties associated with a disability or chronic\nhealth condition",
+            "7",
+            "9",
+            "13",
+            "12"
+          ],
+          [
+            "Difficulties with academic regulations",
+            "6",
+            "10 (+)",
+            "8",
+            "10 (+)"
+          ],
+          [
+            "Language/cultural barriers",
+            "4",
+            "5 (+)",
+            "3",
+            "4 (+)"
+          ],
+          [
+            "Primary care giving responsibilities for a dependent",
+            "2",
+            "3 (+)",
+            "4",
+            "5 (+)"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "page": 18,
+    "text": "Compared to the 2020 results, 2023 Carleton’s first-year respondents are more likely to identify the\nfollowing items as an obstacle to academic progress:\n- Your academic performance at university (29% vs. 23% as a major obstacle in 2020)\n- Lack of good academic advising (7% and 40% as major and minor obstacles in 2023\nrespectively vs. 7% and 29% as major and minor obstacles in 2020 respectively )\n- Difficulties with academic regulations (6% and 33% in 2023 vs. 6% and 26% as major and\nminor obstacles in 2020 respectively)\n- Difficulties associated with a disability or chronic health condition (7% and 19% in 2023 vs.\n7% and 15% as major and minor obstacles in 2020 respectively)\nCarleton’s 2023 final-year respondents are more likely to identify Lack of good academic advising as\nan obstacle, 11% of respondents in 2023 selected it as a major obstacle and 38% as a minor obstacle,\ncompared to 12% and 31% for major and minor obstacles respectively in 2020.\nConclusion\nIn 2023 Carleton University invited all first-year and final-year students to participate in NSSE. The\nresults chosen for this report were those that are used for external reporting purposes, were of\nparticular interest last time, or both.\nThe participation of 19 Ontario Universities in NSSE in 2023 has meant particularly meaningful\ncomparisons can be made. Both first-year and final-year respondents at Carleton reported slightly\nhigher overall satisfaction levels with their entire educational experience at their institution,\ncompared to the rest of the Ontario consortium, however, this difference is not statistically\nsignificant.\nOther highlights from this summary when comparing Carleton to the rest of Ontario consortium:\n- Comparison of 10 engagement indicators resulted in a mixed bag of differences, although in\nall cases the differences were considered small.\n- Carleton respondents were less likely to participate in the high-impact practices (HIPs)\nwhere there were differences.\n- Carleton respondents reported better interactions with others where there were differences.\n18",
+    "n_tables": 0,
+    "tables": []
+  },
+  {
+    "page": 19,
+    "text": "- Carleton first-year respondents identified Improving the quality of course instruction by\nprofessors and Ensuring a better fit between course content, assignments, and tests/exams\nas the areas most in need of improvement inside the classroom. Improving the\nquality/availability of study spaces was the area most selected as needing improvement\noutside the classroom. This is similar to the comparison group.\n- Carleton final-year respondents identified Increasing the number or variety of course\nofferings in your major and Improving the quality of course instruction by professors as the\nareas most in need of improvement inside the classroom. The top improvements outside\nthe classroom were Providing students with more opportunities to undertake research with\nfaculty and Improving the quality/availability of study spaces. Similar to the comparison\ngroup.\n- Where differences existed, Carleton respondents were less likely to consider factors to be\nmajor obstacles to their academic progress.\nA trend worth paying attention to is that over the past three surveys, both first and final-year overall\nsatisfaction decreased (a similar decrease was seen in Ontario), though the difference is only\nstatistically significant for first-year respondents between the two most recent survey years.\nFor more information on NSSE, please go to nsse.iub.edu. For more information on Carleton\nUniversity, and the results of the surveys in which it participates, please go to www.carleton.ca/oirp.\n19",
+    "n_tables": 0,
+    "tables": []
+  }
+]

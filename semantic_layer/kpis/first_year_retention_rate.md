@@ -176,23 +176,27 @@ from Carleton-published sources and may be reported by the agent:
   {
     "scope": "two_year_retention",
     "period": "fall_2023_cohort_outcome",
-    "characterization": "Two-year retention rate remains amongst historic highs.",
+    "characterization": "Two-year retention rate remains amongst historic highs at 83%.",
     "source": {
       "file": "Students and Enrolment 2023-2024 Annual Report",
-      "url": "https://carleton.ca/students-enrolment/wp-content/uploads/sites/36/2024/10/Students-and-Enrolment-2023-2024-Annual-Report-WEB.pdf"
+      "url": "https://carleton.ca/students-enrolment/wp-content/uploads/sites/36/2024/10/Students-and-Enrolment-2023-2024-Annual-Report-WEB.pdf",
+      "page": 12,
+      "quote_anchor": "the two-year retention rate remains amongst historic highs at 83%"
     },
-    "verified_on": "2026-04-27",
-    "agent_guidance": "Report as a qualitative finding only; do not fabricate a specific percentage."
+    "verified_on": "2026-04-30",
+    "agent_guidance": "Report this as a published *characterization* with the verbatim 83% wording — NOT as a structured cohort/variant retention value. The Annual Report does not specify the cohort year (likely fall 2021 entering, measured at fall 2023 by standard two-year-lag convention) nor the variant (FTFY vs all-first-year). For a structured cohort/variant value, direct users to CUDO Section E or Departmental Measures."
   },
   {
     "scope": "retention_general",
     "period": "2024-25_planning",
-    "characterization": "Strong retention rates cited as a main driver of Carleton's financial sustainability.",
+    "characterization": "Strong retention rates cited as a main driver of Carleton's financial sustainability, alongside healthy first-year undergraduate enrolment.",
     "source": {
       "file": "Carleton 2024-25 Operating Budget Report",
-      "url": "https://carleton.ca/financialservices/wp-content/uploads/24-25-Operating-Budget-Report.pdf"
+      "url": "https://carleton.ca/financialservices/wp-content/uploads/24-25-Operating-Budget-Report.pdf",
+      "page": 8,
+      "quote_anchor": "Healthy first-year undergraduate student enrolment, in addition to strong retention rates, are among the main drivers of the University's financial sustainability."
     },
-    "verified_on": "2026-04-27",
+    "verified_on": "2026-04-30",
     "agent_guidance": "Useful for context; not a specific numerical value."
   }
 ]
@@ -339,3 +343,4 @@ rate" can mean different cohort years depending on the source.
 | Date       | Change                                                                                                          | Reviewer |
 | ---------- | --------------------------------------------------------------------------------------------------------------- | -------- |
 | 2026-04-27 | Initial draft. Verified legacy 1999/2000 values from PI-2001 series. Recent values flagged as not yet extracted. | (you)    |
+| 2026-04-30 | Updated existing qualitative anchors based on drafter review of `nsse_2023_summary` and operating-budget PDFs: (1) added verbatim 83% wording to `two_year_retention` characterization (Annual Report 2023-24, p.12) and added page+quote_anchor to its source block; (2) fixed `retention_general / 2024-25_planning` quote_anchor from a paraphrase to the verbatim source text (Operating Budget 2024-25, p.8). Drafter-proposed structured cohort/variant retention record (cohort_year=2021, variant=retention_FTFY_2yr, value=83) was deliberately NOT adopted — cohort year and variant are not specified in the source and assigning them would violate this file's strict rule against inventing structured retention values. | (you) |

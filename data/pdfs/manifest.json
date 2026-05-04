@@ -1,0 +1,47 @@
+[
+  {
+    "id": "nsse_2023_summary",
+    "url": "https://carleton.ca/oirp/wp-content/uploads/sites/231/2025/11/nsse_2023_summary.pdf",
+    "doc_type": "nsse_summary",
+    "year": 2023,
+    "title": "NSSE 2023 Summary \u2014 Carleton University",
+    "filename": "nsse_2023_summary.pdf",
+    "sha256": "4d84a6d89724efcda637c1cde60ec5ae3189ce6505c94c2413259cbdb8aa67db",
+    "size_bytes": 1202087,
+    "downloaded_at": "2026-04-30T17:02:16+00:00",
+    "notes": "Verified URL. Re-uploaded by OIRP in November 2025 \u2014 sha256 in manifest will reflect that version."
+  },
+  {
+    "id": "operating_budget_2024_25",
+    "url": "https://carleton.ca/financialservices/wp-content/uploads/24-25-Operating-Budget-Report.pdf",
+    "doc_type": "operating_budget",
+    "year": 2024,
+    "title": "Carleton 2024-25 Operating Budget Report",
+    "filename": "operating_budget_2024_25.pdf",
+    "sha256": "8dc904bcc8268e9d9dc23ca60bc76fcaae8b3c032813cbd313f95031caa027cc",
+    "size_bytes": 614640,
+    "downloaded_at": "2026-04-30T17:02:16+00:00"
+  },
+  {
+    "id": "operating_budget_2025_26",
+    "url": "https://carleton.ca/financialservices/wp-content/uploads/250513-2025-26-Operating-Budget-Report.pdf",
+    "doc_type": "operating_budget",
+    "year": 2025,
+    "title": "Carleton 2025-26 Operating Budget Report",
+    "filename": "operating_budget_2025_26.pdf",
+    "sha256": "533b87d5b72c1686cea777297d9805727598bc68f4d43bbdb889941153c7b2d0",
+    "size_bytes": 430329,
+    "downloaded_at": "2026-04-30T17:02:17+00:00"
+  },
+  {
+    "id": "students_enrolment_2023_24_annual_report",
+    "url": "https://carleton.ca/students-enrolment/wp-content/uploads/sites/36/2024/10/Students-and-Enrolment-2023-2024-Annual-Report-WEB.pdf",
+    "doc_type": "annual_report",
+    "year": 2024,
+    "title": "Students and Enrolment 2023-2024 Annual Report",
+    "filename": "students_enrolment_2023_24_annual_report.pdf",
+    "sha256": "fbdadbff539b22477bb8741972a76e77aae9e67125313529546ffe58038299b6",
+    "size_bytes": 2695297,
+    "downloaded_at": "2026-04-30T17:02:16+00:00"
+  }
+]

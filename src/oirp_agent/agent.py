@@ -41,7 +41,7 @@ from .tools import TOOL_SCHEMAS, ToolDispatcher
 
 
 # Default model. Easy to override at construction time.
-DEFAULT_MODEL = "claude-opus-4-7"
+DEFAULT_MODEL = "claude-sonnet-4-6"
 DEFAULT_MAX_TOKENS = 4096
 
 # Safety bound on the inner tool loop to avoid runaway calls.
@@ -96,7 +96,13 @@ class OIRPAgent:
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=self.max_tokens,
-                system=self.system_prompt,
+                system=[
+                    {
+                        "type": "text",
+                        "text": self.system_prompt,
+                        "cache_control": {"type": "ephemeral"},
+                    }
+                ],
                 tools=TOOL_SCHEMAS,
                 messages=self.history,
             )
@@ -140,13 +146,13 @@ class OIRPAgent:
         """Run every tool_use block in the assistant message; return tool_result blocks."""
         results: list[dict] = []
         for block in assistant_content:
-            block_type = getattr(block, "type", None) or block.get("type")
+            block_type = getattr(block, "type", None)
             if block_type != "tool_use":
                 continue
 
-            name = getattr(block, "name", None) or block["name"]
-            tool_input = getattr(block, "input", None) or block["input"]
-            tool_use_id = getattr(block, "id", None) or block["id"]
+            name = block.name
+            tool_input = block.input
+            tool_use_id = block.id
 
             result = self.dispatcher.dispatch(name, tool_input)
 

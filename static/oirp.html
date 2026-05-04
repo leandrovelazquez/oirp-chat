@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OIRP — Office of Institutional Research and Planning (concept demo)</title>
+  <style>
+    /* ─────────────────────────────────────────────────────────────────
+       Design tokens
+       Carleton-adjacent palette: deep institutional red, generous
+       whitespace, serif headings, clean sans body. NOT pixel-cloned.
+       ───────────────────────────────────────────────────────────────── */
+    :root {
+      /* Brand-adjacent reds — close enough to feel institutional,
+         not exact match to Carleton's brand assets. */
+      --red-700: #a4001f;
+      --red-600: #b8002a;
+      --red-50:  #fdf2f4;
+
+      --ink-900: #1a1a1a;
+      --ink-700: #3a3a3a;
+      --ink-500: #6b6b6b;
+      --ink-300: #c8c8c8;
+      --ink-100: #ececec;
+      --ink-50:  #f7f7f7;
+
+      --bg:      #ffffff;
+      --canvas:  #fafaf8;
+
+      --high:    #1f7a3f;
+      --medium:  #b76b00;
+      --low:     #b8002a;
+      --none:    #6b6b6b;
+
+      --serif: Georgia, "Times New Roman", "Lora", serif;
+      --sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --mono:  ui-monospace, "SF Mono", Menlo, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      color: var(--ink-900);
+      background: var(--canvas);
+      font-size: 15px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Concept-demo banner — sits above everything so it's read first
+       ───────────────────────────────────────────────────────────────── */
+    .concept-banner {
+      background: var(--ink-900);
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      padding: 8px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .concept-banner strong { color: #ffd0d6; font-weight: 600; }
+    .concept-banner a { color: #ffd0d6; text-decoration: underline; }
+    .concept-banner a:hover { color: #fff; }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Top bar — wordmark + nav stubs
+       ───────────────────────────────────────────────────────────────── */
+    header.topbar {
+      background: var(--bg);
+      border-bottom: 1px solid var(--ink-100);
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 32px;
+    }
+    .wordmark {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--red-700);
+      letter-spacing: 0.01em;
+      line-height: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .wordmark .small {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--ink-500);
+      font-family: var(--sans);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    nav.nav-stubs {
+      display: flex;
+      gap: 28px;
+    }
+    nav.nav-stubs a {
+      color: var(--ink-700);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    nav.nav-stubs a:hover {
+      color: var(--red-700);
+      border-bottom-color: var(--red-700);
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Layout grid — main content + chat side panel
+       Desktop: 2 columns. Mobile: stacked, chat becomes floating button.
+       ───────────────────────────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 48px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 48px 32px;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 24px 20px;
+        gap: 24px;
+      }
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Hero / page content
+       ───────────────────────────────────────────────────────────────── */
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: 38px;
+      line-height: 1.15;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin: 0 0 12px 0;
+      max-width: 680px;
+    }
+    .hero h1 .accent { color: var(--red-700); }
+    .hero .lede {
+      font-size: 17px;
+      color: var(--ink-700);
+      max-width: 620px;
+      margin: 0 0 28px 0;
+    }
+
+    .accent-bar {
+      width: 64px;
+      height: 4px;
+      background: var(--red-600);
+      margin: 0 0 24px 0;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin: 36px 0 12px 0;
+    }
+
+    .body-prose {
+      max-width: 620px;
+      color: var(--ink-700);
+    }
+    .body-prose p { margin: 0 0 14px 0; }
+
+    .pull-quote {
+      border-left: 3px solid var(--red-600);
+      padding: 4px 0 4px 18px;
+      margin: 24px 0;
+      max-width: 620px;
+      font-family: var(--serif);
+      font-size: 16px;
+      color: var(--ink-700);
+      font-style: italic;
+    }
+
+    .footer-note {
+      margin-top: 56px;
+      padding: 20px 0;
+      border-top: 1px solid var(--ink-100);
+      font-size: 13px;
+      color: var(--ink-500);
+      max-width: 620px;
+    }
+    .footer-note a {
+      color: var(--red-700);
+      text-decoration: none;
+    }
+    .footer-note a:hover { text-decoration: underline; }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Chat side panel
+       ───────────────────────────────────────────────────────────────── */
+    .chat-panel {
+      background: var(--bg);
+      border: 1px solid var(--ink-100);
+      border-radius: 10px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 200px);
+      min-height: 540px;
+      max-height: 760px;
+      position: sticky;
+      top: 24px;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 14px 18px;
+      background: var(--red-700);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .chat-header .title {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .chat-header .title .small {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 400;
+      opacity: 0.85;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .chat-header button {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+    }
+    .chat-header button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .chat-meta {
+      padding: 8px 18px;
+      background: var(--ink-50);
+      border-bottom: 1px solid var(--ink-100);
+      font-size: 12px;
+      color: var(--ink-500);
+    }
+
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 18px;
+    }
+
+    .placeholder {
+      color: var(--ink-700);
+    }
+    .placeholder h2 {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: var(--ink-900);
+    }
+    .placeholder p {
+      margin: 0 0 14px 0;
+      font-size: 14px;
+    }
+    .examples {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .examples button {
+      background: var(--bg);
+      border: 1px solid var(--ink-100);
+      color: var(--ink-900);
+      padding: 10px 12px;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 13.5px;
+      font-family: inherit;
+      width: 100%;
+      line-height: 1.4;
+      transition: border-color 0.15s ease;
+    }
+    .examples button:hover {
+      border-color: var(--red-700);
+    }
+    .examples em {
+      color: var(--ink-500);
+      font-style: normal;
+      font-size: 12px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .msg {
+      margin-bottom: 14px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .msg.user {
+      background: var(--red-50);
+      border: 1px solid #f4d4d9;
+    }
+    .msg.bot {
+      background: var(--bg);
+      border: 1px solid var(--ink-100);
+    }
+    .msg .role {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-500);
+      margin-bottom: 6px;
+    }
+    .msg .role.bot-role { color: var(--red-700); }
+    .msg .body code {
+      background: var(--ink-50);
+      border: 1px solid var(--ink-100);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+    .meta-row {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--ink-500);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge.high { background: #e3f3e8; color: var(--high); }
+    .badge.medium { background: #fbeed5; color: var(--medium); }
+    .badge.low { background: #fadcdc; color: var(--low); }
+    .badge.none { background: var(--ink-100); color: var(--none); }
+    .trace-toggle {
+      cursor: pointer;
+      color: var(--ink-500);
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 11px;
+      font-family: inherit;
+    }
+    .trace {
+      margin-top: 6px;
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--ink-500);
+      background: var(--ink-50);
+      padding: 6px 8px;
+      border-radius: 4px;
+      display: none;
+    }
+    .trace.shown { display: block; }
+    .error {
+      color: var(--low);
+      font-size: 12px;
+      padding: 6px 10px;
+      background: #fadcdc;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+
+    .composer {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid var(--ink-100);
+      background: var(--bg);
+    }
+    .composer textarea {
+      flex: 1;
+      resize: none;
+      padding: 9px 11px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid var(--ink-100);
+      background: var(--bg);
+      color: var(--ink-900);
+      font-family: inherit;
+      line-height: 1.4;
+      min-height: 40px;
+      max-height: 120px;
+    }
+    .composer textarea:focus {
+      outline: none;
+      border-color: var(--red-700);
+    }
+    .composer button.send {
+      padding: 0 16px;
+      background: var(--red-700);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .composer button.send:hover { background: var(--red-600); }
+    .composer button.send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Mobile: chat collapses to a floating launcher
+       ───────────────────────────────────────────────────────────────── */
+    .chat-fab {
+      display: none;
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      background: var(--red-700);
+      color: #fff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 28px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(164, 0, 31, 0.32);
+      cursor: pointer;
+      z-index: 50;
+      gap: 8px;
+      align-items: center;
+    }
+    @media (max-width: 960px) {
+      .chat-panel {
+        position: fixed;
+        inset: 0;
+        height: 100vh;
+        max-height: none;
+        min-height: 0;
+        border-radius: 0;
+        border: none;
+        z-index: 60;
+        transform: translateY(100%);
+        transition: transform 0.25s ease;
+      }
+      .chat-panel.open { transform: translateY(0); }
+      .chat-fab { display: inline-flex; }
+      .chat-fab.hidden { display: none; }
+      .chat-header .close-mobile {
+        display: inline-flex;
+      }
+    }
+    .chat-header .close-mobile { display: none; }
+  </style>
+</head>
+<body>
+  <!-- ─────────── Concept-demo banner ─────────── -->
+  <div class="concept-banner" role="note">
+    <span><strong>Concept demo</strong> — unaffiliated portfolio project. Not endorsed by Carleton University or its Office of Institutional Research and Planning.</span>
+    <a href="/">View dev/technical version →</a>
+  </div>
+
+  <!-- ─────────── Top bar ─────────── -->
+  <header class="topbar">
+    <div class="wordmark">
+      OIRP
+      <span class="small">Office of Institutional Research and Planning</span>
+    </div>
+    <nav class="nav-stubs" aria-label="Primary navigation (illustrative)">
+      <a href="#">Home</a>
+      <a href="#">Surveys</a>
+      <a href="#">Data Cubes</a>
+      <a href="#">Reports</a>
+      <a href="#">Methodology</a>
+    </nav>
+  </header>
+
+  <!-- ─────────── Main layout: content + chat panel ─────────── -->
+  <div class="layout">
+    <main class="hero">
+      <div class="accent-bar" aria-hidden="true"></div>
+
+      <h1>Institutional research, <span class="accent">on demand</span>.</h1>
+
+      <p class="lede">
+        OIRP curates and publishes the data Carleton uses to plan, evaluate,
+        and improve. This concept explores what it could look like to ask
+        questions of that data directly — in plain language — and get
+        cited, source-grounded answers.
+      </p>
+
+      <div class="body-prose">
+        <p>
+          Most institutional questions don't need a dashboard. They need an
+          answer with a footnote: <em>"What was first-year retention last year?
+          And where can I read more?"</em> The data is already published — the
+          friction is in finding it.
+        </p>
+
+        <p>
+          The assistant on the right is grounded in OIRP-published source
+          documents (NSSE summaries, Annual Reports, Operating Budget Reports).
+          Every numerical claim is traced to its source PDF and page.
+          When a value isn't in the verified store, the assistant declines
+          and points you to the right OIRP source rather than guessing.
+        </p>
+
+        <div class="pull-quote">
+          Schema is not the same thing as business context. Real institutional
+          questions live in the gap between the two.
+        </div>
+
+        <h2 class="section-title">How it works</h2>
+
+        <p>
+          A curated <strong>semantic layer</strong> documents each KPI Carleton
+          tracks — its definitions, calculation methods, synonyms,
+          comparison groups, and verified values with page-level citations.
+          The assistant queries this layer through structured tools, then
+          composes answers in natural language with explicit confidence
+          tiers (high / medium / low) so reviewers know how much to trust
+          each response.
+        </p>
+
+        <p>
+          Today the verified store covers six KPIs across student
+          engagement, retention, and enrolment. The architecture is
+          designed so OIRP's existing Power BI / Data Cubes back-end could
+          plug in without changing the assistant layer above.
+        </p>
+      </div>
+
+      <div class="footer-note">
+        Built as a portfolio project to demonstrate how a semantic-layer-grounded
+        agent could fit alongside OIRP's existing reporting tools.
+        <a href="https://github.com/leandrovelazquez/oirp-chat" target="_blank" rel="noopener">
+          View source on GitHub →
+        </a>
+      </div>
+    </main>
+
+    <!-- ─────────── Chat side panel ─────────── -->
+    <aside class="chat-panel" id="chatPanel" aria-label="OIRP assistant">
+      <div class="chat-header">
+        <div class="title">
+          OIRP Assistant
+          <span class="small" id="info">loading…</span>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button id="reset" type="button">Reset</button>
+          <button class="close-mobile" id="closeMobile" type="button">Close</button>
+        </div>
+      </div>
+
+      <div class="chat-meta" id="chatMeta">
+        Concept demo. Verified-value answers only — refuses on values not yet in the verified store.
+      </div>
+
+      <div id="messages">
+        <div class="placeholder" id="placeholder">
+          <h2>Ask about Carleton's institutional data</h2>
+          <p>Try one of these to start:</p>
+          <ul class="examples">
+            <li><button data-q="What percentage of first-year Carleton students rated their experience as good or excellent in 2023?">What percentage of first-year students rated their experience as good or excellent in 2023?</button></li>
+            <li><button data-q="Compare HIPs participation between 3-year and 4-year programs in 2023.">Compare HIPs participation between 3-year and 4-year programs in 2023.</button></li>
+            <li><button data-q="What was Carleton's first-year retention rate in 2022?">What was Carleton's first-year retention rate in 2022? <em>(Should refuse — not in verified store)</em></button></li>
+            <li><button data-q="What's projected for international undergraduate intake by Fall 2025?">What's projected for international undergraduate intake by Fall 2025?</button></li>
+          </ul>
+        </div>
+      </div>
+
+      <form class="composer" id="form">
+        <textarea id="input" placeholder="Ask a question…" rows="1"></textarea>
+        <button type="submit" class="send" id="send">Send</button>
+      </form>
+    </aside>
+  </div>
+
+  <!-- ─────────── Mobile FAB (hidden on desktop) ─────────── -->
+  <button class="chat-fab" id="chatFab" type="button">💬 Ask OIRP</button>
+
+<script>
+const messagesEl   = document.getElementById("messages");
+const placeholderEl = document.getElementById("placeholder");
+const inputEl      = document.getElementById("input");
+const formEl       = document.getElementById("form");
+const sendBtn      = document.getElementById("send");
+const resetBtn     = document.getElementById("reset");
+const infoEl       = document.getElementById("info");
+const chatPanel    = document.getElementById("chatPanel");
+const chatFab      = document.getElementById("chatFab");
+const closeMobile  = document.getElementById("closeMobile");
+
+// ── info banner (KPI count, model) ──
+fetch("/api/info").then(r => r.json()).then(d => {
+  if (d.error) {
+    infoEl.textContent = "configuration error";
+    return;
+  }
+  infoEl.textContent = `${d.kpi_count} KPIs loaded`;
+}).catch(() => {
+  infoEl.textContent = "—";
+});
+
+// ── DOM helpers ──
+function escapeHtml(s) {
+  const div = document.createElement("div");
+  div.textContent = s;
+  return div.innerHTML;
+}
+function lightFormat(s) {
+  let out = escapeHtml(s);
+  out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
+  out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  return out;
+}
+
+function appendMessage(role, text, extra) {
+  if (placeholderEl && placeholderEl.parentNode) placeholderEl.remove();
+
+  const msg = document.createElement("div");
+  msg.className = "msg " + role;
+
+  const roleEl = document.createElement("div");
+  roleEl.className = "role" + (role === "bot" ? " bot-role" : "");
+  roleEl.textContent = role === "user" ? "You" : "OIRP Assistant";
+  msg.appendChild(roleEl);
+
+  const body = document.createElement("div");
+  body.className = "body";
+  body.innerHTML = lightFormat(text);
+  msg.appendChild(body);
+
+  if (extra && extra.confidence) {
+    const meta = document.createElement("div");
+    meta.className = "meta-row";
+    const badge = document.createElement("span");
+    badge.className = "badge " + extra.confidence;
+    badge.textContent = extra.confidence;
+    meta.appendChild(badge);
+
+    if (extra.trace && extra.trace.length) {
+      const toggle = document.createElement("button");
+      toggle.className = "trace-toggle";
+      toggle.type = "button";
+      toggle.textContent = `${extra.trace.length} tool call${extra.trace.length === 1 ? "" : "s"}`;
+      const traceEl = document.createElement("div");
+      traceEl.className = "trace";
+      traceEl.textContent = extra.trace
+        .map((c, i) => `${i + 1}. ${c.name}(${c.summary})`)
+        .join("\n");
+      toggle.addEventListener("click", () => {
+        traceEl.classList.toggle("shown");
+      });
+      meta.appendChild(toggle);
+      msg.appendChild(meta);
+      msg.appendChild(traceEl);
+    } else {
+      msg.appendChild(meta);
+    }
+  } else if (extra && extra.error) {
+    const err = document.createElement("div");
+    err.className = "error";
+    err.textContent = extra.error;
+    msg.appendChild(err);
+  }
+
+  messagesEl.appendChild(msg);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+async function sendMessage(text) {
+  if (!text.trim()) return;
+  appendMessage("user", text);
+  inputEl.value = "";
+  inputEl.style.height = "auto";
+  sendBtn.disabled = true;
+
+  const pending = document.createElement("div");
+  pending.className = "msg bot";
+  pending.innerHTML = '<div class="role bot-role">OIRP Assistant</div><div class="body" style="color: var(--ink-500);">thinking…</div>';
+  messagesEl.appendChild(pending);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+
+  try {
+    const r = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ message: text }),
+    });
+    const data = await r.json();
+    pending.remove();
+
+    if (!r.ok || data.error) {
+      const errMsg = data.detail || data.error || `HTTP ${r.status}`;
+      const hint = data.hint ? `\n\n${data.hint}` : "";
+      appendMessage("bot", "Something went wrong.", { error: errMsg + hint });
+      return;
+    }
+    appendMessage("bot", data.text || "(empty response)", {
+      confidence: data.confidence,
+      trace: data.trace || [],
+    });
+  } catch (e) {
+    pending.remove();
+    appendMessage("bot", "Network error.", { error: String(e) });
+  } finally {
+    sendBtn.disabled = false;
+    inputEl.focus();
+  }
+}
+
+// ── form wiring ──
+formEl.addEventListener("submit", e => { e.preventDefault(); sendMessage(inputEl.value); });
+inputEl.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage(inputEl.value);
+  }
+});
+inputEl.addEventListener("input", () => {
+  inputEl.style.height = "auto";
+  inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
+});
+
+document.addEventListener("click", e => {
+  const btn = e.target.closest("button[data-q]");
+  if (btn) sendMessage(btn.dataset.q);
+});
+
+resetBtn.addEventListener("click", async () => {
+  if (!confirm("Clear the conversation?")) return;
+  await fetch("/api/reset", { method: "POST", credentials: "same-origin" });
+  location.reload();
+});
+
+// ── mobile launcher ──
+chatFab.addEventListener("click", () => {
+  chatPanel.classList.add("open");
+  chatFab.classList.add("hidden");
+  inputEl.focus();
+});
+closeMobile.addEventListener("click", () => {
+  chatPanel.classList.remove("open");
+  chatFab.classList.remove("hidden");
+});
+
+inputEl.focus();
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+# Manifest of OIRP source documents to download.
+#
+# This file is the single source of truth for what PDFs the project knows about.
+# Edit it, run `python scripts/download_sources.py`, and the script will fetch
+# any new/changed documents into data/pdfs/ and update data/pdfs/manifest.json
+# with verified hashes.
+#
+# How to add a new PDF:
+#   1. Find the URL on carleton.ca/oirp (or one of the linked Carleton sites).
+#   2. Add a new [[source]] entry below.
+#   3. Run scripts/download_sources.py.
+#
+# Verified sources are already filled in below — you can safely run
+# download_sources.py against this manifest as-is.
+#
+# Fields:
+#   id         — short slug used as the filename and as the key for downstream
+#                extraction output. Snake_case, no spaces.
+#   url        — direct URL to the PDF.
+#   doc_type   — one of: nsse_summary, cusc_summary, cgpss_summary,
+#                annual_report, operating_budget, departmental_measures, other.
+#   year       — year the document describes (NOT necessarily the year it was
+#                published). For surveys, the survey administration year.
+#   title      — human-readable title; used in citations.
+#   notes      — optional free text.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NSSE summaries (triennial)
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[source]]
+id = "nsse_2023_summary"
+url = "https://carleton.ca/oirp/wp-content/uploads/sites/231/2025/11/nsse_2023_summary.pdf"
+doc_type = "nsse_summary"
+year = 2023
+title = "NSSE 2023 Summary — Carleton University"
+notes = "Verified URL. Re-uploaded by OIRP in November 2025 — sha256 in manifest will reflect that version."
+
+# Add the older NSSE summaries below as you locate the URLs on the OIRP site.
+# OIRP's URL pattern in past years has been roughly:
+#   https://carleton.ca/oirp/wp-content/uploads/sites/231/<YYYY>/<MM>/nsse_<YEAR>_summary.pdf
+# but the upload year/month can change after revisions, so verify each one.
+
+# [[source]]
+# id = "nsse_2020_summary"
+# url = "FILL_IN"
+# doc_type = "nsse_summary"
+# year = 2020
+# title = "NSSE 2020 Summary — Carleton University"
+
+# [[source]]
+# id = "nsse_2017_summary"
+# url = "FILL_IN"
+# doc_type = "nsse_summary"
+# year = 2017
+# title = "NSSE 2017 Summary — Carleton University"
+
+# [[source]]
+# id = "nsse_2014_summary"
+# url = "FILL_IN"
+# doc_type = "nsse_summary"
+# year = 2014
+# title = "NSSE 2014 Summary — Carleton University"
+
+# [[source]]
+# id = "nsse_2011_summary"
+# url = "FILL_IN"
+# doc_type = "nsse_summary"
+# year = 2011
+# title = "NSSE 2011 Summary — Carleton University"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Carleton corporate / planning documents (verified)
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[source]]
+id = "students_enrolment_2023_24_annual_report"
+url = "https://carleton.ca/students-enrolment/wp-content/uploads/sites/36/2024/10/Students-and-Enrolment-2023-2024-Annual-Report-WEB.pdf"
+doc_type = "annual_report"
+year = 2024
+title = "Students and Enrolment 2023-2024 Annual Report"
+
+[[source]]
+id = "operating_budget_2024_25"
+url = "https://carleton.ca/financialservices/wp-content/uploads/24-25-Operating-Budget-Report.pdf"
+doc_type = "operating_budget"
+year = 2024
+title = "Carleton 2024-25 Operating Budget Report"
+
+[[source]]
+id = "operating_budget_2025_26"
+url = "https://carleton.ca/financialservices/wp-content/uploads/250513-2025-26-Operating-Budget-Report.pdf"
+doc_type = "operating_budget"
+year = 2025
+title = "Carleton 2025-26 Operating Budget Report"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CUSC and CGPSS summaries — fill in URLs as you find them
+# ─────────────────────────────────────────────────────────────────────────────
+
+# [[source]]
+# id = "cusc_2023_summary"
+# url = "FILL_IN"
+# doc_type = "cusc_summary"
+# year = 2023
+# title = "CUSC 2023 Summary — Carleton University"
+
+# [[source]]
+# id = "cgpss_2022_summary"
+# url = "FILL_IN"
+# doc_type = "cgpss_summary"
+# year = 2022
+# title = "CGPSS 2022 Summary — Carleton University"

@@ -206,6 +206,45 @@ rough indicator of relative faculty size for those two cohorts.
     },
     "verified_on": "2026-04-27",
     "agent_guidance": "Frame as a Carleton-published projection, not an observed value."
+  },
+  {
+    "scope": "new_international_first_year_undergraduate",
+    "period": "2024_25_projected_change_vs_2023_24",
+    "characterization": "Budget scenario for 2024-25 assumes a 25% decrease in new first-year international undergraduate students relative to the prior year, driven by federal visa-cap confusion and processing delays.",
+    "source": {
+      "file": "Carleton 2024-25 Operating Budget Report",
+      "url": "https://carleton.ca/financialservices/wp-content/uploads/24-25-Operating-Budget-Report.pdf",
+      "page": 19,
+      "quote_anchor": "the scenario used for the 2024-25 budget includes a 25% decrease in new first-year international undergraduate students"
+    },
+    "verified_on": "2026-04-30",
+    "agent_guidance": "This is a budget planning assumption (projection), not an observed outcome. Frame accordingly: 'Carleton's 2024-25 budget was built on an assumption of a 25% decline in new first-year international undergraduate intake.'"
+  },
+  {
+    "scope": "international_undergraduate_intake",
+    "period": "fall_2025_vs_2018_peak_projection",
+    "characterization": "Based on current projections, as of Fall 2025 Carleton expects to have dropped by 86% in international undergraduate intake from the peak in 2018.",
+    "source": {
+      "file": "Carleton 2025-26 Operating Budget Report",
+      "url": "https://carleton.ca/financialservices/wp-content/uploads/250513-2025-26-Operating-Budget-Report.pdf",
+      "page": 3,
+      "quote_anchor": "Based on current projections, we are expecting as of Fall 2025 to have dropped by 86% from the peak in 2018."
+    },
+    "verified_on": "2026-04-30",
+    "agent_guidance": "Frame as a Carleton-published projection for Fall 2025, not an observed value. Consistent with the confirmed 72% drop already observed by 2024-25."
+  },
+  {
+    "scope": "domestic_undergraduate_intake",
+    "period": "2025_26_assumption",
+    "characterization": "Domestic enrolment assumption for 2025-26 is to maintain 2024-25 undergraduate intake levels (flat year-over-year).",
+    "source": {
+      "file": "Carleton 2025-26 Operating Budget Report",
+      "url": "https://carleton.ca/financialservices/wp-content/uploads/250513-2025-26-Operating-Budget-Report.pdf",
+      "page": 10,
+      "quote_anchor": "Domestic enrolment assumptions are to maintain 2024-25 undergraduate intake levels in 2025-26 and for a 2% increase in graduate intake."
+    },
+    "verified_on": "2026-04-30",
+    "agent_guidance": "Report as a budget planning assumption (flat domestic undergraduate intake in 2025-26), not an observed enrolment count."
   }
 ]
 ```
@@ -374,3 +413,4 @@ data. That is a different institution. See `glossary.md`.
 | Date       | Change                                                                                                       | Reviewer |
 | ---------- | ------------------------------------------------------------------------------------------------------------ | -------- |
 | 2026-04-27 | Initial draft. Verified NSSE-derived proportional mix and qualitative anchors from Annual Report and Operating Budgets. Absolute headcounts and FTE flagged as not yet extracted. | (you)    |
+| 2026-04-30 | Added 3 new qualitative anchors drafted by `scripts/draft_kpi_values.py` and verified at high confidence: (1) 25% projected decrease in new international first-year undergraduate intake for 2024-25 (Operating Budget 2024-25, p.19); (2) 86% projected cumulative drop in international undergraduate intake by Fall 2025 vs 2018 peak (Operating Budget 2025-26, p.3); (3) flat domestic undergraduate intake assumption for 2025-26 (Operating Budget 2025-26, p.10). Drafter-proposed graduate enrolment anchor was deliberately not adopted (out of scope; defer to a future graduate_enrolment KPI). | (you) |

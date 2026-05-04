@@ -1,0 +1,740 @@
+[
+  {
+    "page": 12,
+    "table_index": 0,
+    "n_rows": 2,
+    "n_cols": 10,
+    "rows": [
+      [
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2024-25",
+        ""
+      ],
+      [
+        null,
+        "",
+        "Budget",
+        "",
+        "",
+        "Projected Actuals",
+        "",
+        "",
+        "Proposed Budget",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 13,
+    "table_index": 0,
+    "n_rows": 2,
+    "n_cols": 13,
+    "rows": [
+      [
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2024-25",
+        "",
+        "",
+        "Budget",
+        ""
+      ],
+      [
+        null,
+        "",
+        "Budget",
+        "",
+        "",
+        "Projection",
+        "",
+        "",
+        "Proposed Budget",
+        "",
+        null,
+        "Change",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 13,
+    "table_index": 1,
+    "n_rows": 5,
+    "n_cols": 15,
+    "rows": [
+      [
+        "",
+        "Total",
+        "",
+        "",
+        "304,407",
+        "",
+        "",
+        "303,366",
+        "",
+        "",
+        "309,200",
+        "",
+        "",
+        "4,793",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Domestic Fees",
+        "",
+        "",
+        "175,707",
+        "",
+        "",
+        "185,099",
+        "",
+        "",
+        "188,200",
+        "",
+        "",
+        "12,493",
+        ""
+      ],
+      [
+        "",
+        "International Fees",
+        "",
+        "",
+        "128,700",
+        "",
+        "",
+        "118,267",
+        "",
+        "",
+        "121,000",
+        "",
+        "",
+        "(7,700)",
+        ""
+      ],
+      [
+        "",
+        "Total",
+        "",
+        "",
+        "304,407",
+        "",
+        "",
+        "303,366",
+        "",
+        "",
+        "309,200",
+        "",
+        "",
+        "4,793",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 14,
+    "table_index": 0,
+    "n_rows": 2,
+    "n_cols": 13,
+    "rows": [
+      [
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2024-25",
+        "",
+        "",
+        "Budget",
+        ""
+      ],
+      [
+        null,
+        "",
+        "Budget",
+        "",
+        "",
+        "Projection",
+        "",
+        "",
+        "Proposed Budget",
+        "",
+        null,
+        "Change",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 14,
+    "table_index": 2,
+    "n_rows": 2,
+    "n_cols": 13,
+    "rows": [
+      [
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2024-25",
+        "",
+        "",
+        "Budget",
+        ""
+      ],
+      [
+        null,
+        "",
+        "Budget",
+        "",
+        "",
+        "Projection",
+        "",
+        "",
+        "Proposed Budget",
+        "",
+        null,
+        "Change",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 15,
+    "table_index": 0,
+    "n_rows": 2,
+    "n_cols": 13,
+    "rows": [
+      [
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2024-25",
+        "",
+        "",
+        "Budget",
+        ""
+      ],
+      [
+        null,
+        "",
+        "Budget",
+        "",
+        "",
+        "Projection",
+        "",
+        "",
+        "Proposed Budget",
+        "",
+        null,
+        "Change",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 16,
+    "table_index": 0,
+    "n_rows": 2,
+    "n_cols": 10,
+    "rows": [
+      [
+        "",
+        "",
+        "2023-24",
+        "",
+        "",
+        "2024-25",
+        "",
+        "",
+        "Budget",
+        ""
+      ],
+      [
+        null,
+        "",
+        "Budget",
+        "",
+        "",
+        "Proposed Budget",
+        "",
+        null,
+        "Change",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 17,
+    "table_index": 0,
+    "n_rows": 2,
+    "n_cols": 8,
+    "rows": [
+      [
+        "",
+        "",
+        "",
+        "Base Budget",
+        "",
+        "",
+        "Fiscal Budget",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        "Allocation",
+        null,
+        null,
+        "Allocation",
+        null
+      ]
+    ]
+  },
+  {
+    "page": 18,
+    "table_index": 1,
+    "n_rows": 2,
+    "n_cols": 1,
+    "rows": [
+      [
+        "Existing Base"
+      ],
+      [
+        "Budget"
+      ]
+    ]
+  },
+  {
+    "page": 18,
+    "table_index": 2,
+    "n_rows": 2,
+    "n_cols": 1,
+    "rows": [
+      [
+        "New"
+      ],
+      [
+        "Allocations"
+      ]
+    ]
+  },
+  {
+    "page": 18,
+    "table_index": 3,
+    "n_rows": 2,
+    "n_cols": 1,
+    "rows": [
+      [
+        "2024-25"
+      ],
+      [
+        "Proposed Budget"
+      ]
+    ]
+  },
+  {
+    "page": 20,
+    "table_index": 0,
+    "n_rows": 4,
+    "n_cols": 16,
+    "rows": [
+      [
+        "",
+        "",
+        "2024-25",
+        "",
+        "",
+        "2025-26",
+        "",
+        "",
+        "2026-27",
+        "",
+        "",
+        "2027-28",
+        "",
+        "",
+        "2028-29",
+        ""
+      ],
+      [
+        null,
+        "",
+        "Base Budget",
+        "",
+        "",
+        "Outlook",
+        "",
+        "",
+        "Outlook",
+        "",
+        "",
+        "Outlook",
+        "",
+        "",
+        "Outlook",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "",
+        "($M’s)",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "",
+        "",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 20,
+    "table_index": 1,
+    "n_rows": 3,
+    "n_cols": 18,
+    "rows": [
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "",
+        "635",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "",
+        null,
+        null
+      ],
+      [
+        "",
+        "Fiscal amount available",
+        "",
+        "",
+        "(32)",
+        "",
+        "",
+        "(46)",
+        "",
+        "",
+        "(56)",
+        "",
+        "",
+        "(74)",
+        "",
+        "",
+        "(80)",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 21,
+    "table_index": 0,
+    "n_rows": 4,
+    "n_cols": 3,
+    "rows": [
+      [
+        "Carleton University",
+        null,
+        null
+      ],
+      [
+        null,
+        "Carleton University",
+        null
+      ],
+      [
+        "",
+        "2024-25 Proposed Operating Budget",
+        ""
+      ],
+      [
+        "",
+        "( 000's )",
+        ""
+      ]
+    ]
+  },
+  {
+    "page": 21,
+    "table_index": 1,
+    "n_rows": 35,
+    "n_cols": 3,
+    "rows": [
+      [
+        "",
+        "Proposed",
+        ""
+      ],
+      [
+        "",
+        "Budget",
+        ""
+      ],
+      [
+        "",
+        "2024-25",
+        ""
+      ],
+      [
+        "",
+        null,
+        null
+      ],
+      [
+        "",
+        null,
+        null
+      ],
+      [
+        "309,200",
+        null,
+        null
+      ],
+      [
+        null,
+        "309,200",
+        null
+      ],
+      [
+        "",
+        "180,914",
+        ""
+      ],
+      [
+        "",
+        "22,000",
+        ""
+      ],
+      [
+        "",
+        "21,476",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "533,590",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "10,649",
+        ""
+      ],
+      [
+        "",
+        "15,342",
+        ""
+      ],
+      [
+        "",
+        "35,225",
+        ""
+      ],
+      [
+        "",
+        "26,856",
+        ""
+      ],
+      [
+        "",
+        "6,808",
+        ""
+      ],
+      [
+        "",
+        "65,450",
+        ""
+      ],
+      [
+        "",
+        "50,840",
+        ""
+      ],
+      [
+        "",
+        "43,834",
+        ""
+      ],
+      [
+        "",
+        "49,820",
+        ""
+      ],
+      [
+        "",
+        "16,149",
+        ""
+      ],
+      [
+        "",
+        "11,575",
+        ""
+      ],
+      [
+        "",
+        "174,460",
+        ""
+      ],
+      [
+        "",
+        "52,737",
+        ""
+      ],
+      [
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "559,745",
+        ""
+      ],
+      [
+        "(26,155)",
+        null,
+        null
+      ],
+      [
+        "26,155",
+        null,
+        null
+      ],
+      [
+        "-",
+        null,
+        null
+      ]
+    ]
+  }
+]
