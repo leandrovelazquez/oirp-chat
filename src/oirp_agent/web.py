@@ -42,13 +42,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from .agent import DEFAULT_MODEL, OIRPAgent
-from .kpi_store import KPIStore
-from .prompt_loader import (
-    KPIDocument,
-    assemble_system_prompt,
-    load_semantic_layer,
-)
+from .agent import DEFAULT_MODEL, OIRPAgent, SemanticLayer
 
 
 # ---------- Paths (resolved relative to the project root) ----------
@@ -64,23 +58,23 @@ MODEL = os.environ.get("OIRP_MODEL", DEFAULT_MODEL)
 
 BASE_PROMPT_PATH = SEMANTIC_LAYER_DIR / "base_prompt.md"
 KPI_DIR = SEMANTIC_LAYER_DIR / "kpis"
+WAREHOUSE_DIR = SEMANTIC_LAYER_DIR / "warehouse"
 
 
 # ---------- Shared semantic layer (loaded once at startup) ----------
 
-# We load the KPI documents once and share them across all sessions.
-# Each session gets its own OIRPAgent (for isolated conversation history),
-# but they share the documents/store/system_prompt by reference where possible.
+# The published KPI files, the warehouse cube models, the synthetic warehouse
+# connection and the assembled system prompt are loaded once and shared by
+# reference. Each session gets its own OIRPAgent only for its own history.
 
-_DOCUMENTS: list[KPIDocument] | None = None
-_SYSTEM_PROMPT: str | None = None
+_LAYER: SemanticLayer | None = None
 
 
-def _ensure_semantic_layer_loaded() -> None:
-    global _DOCUMENTS, _SYSTEM_PROMPT
-    if _DOCUMENTS is None:
-        _DOCUMENTS = load_semantic_layer(KPI_DIR)
-        _SYSTEM_PROMPT = assemble_system_prompt(BASE_PROMPT_PATH, _DOCUMENTS)
+def _ensure_semantic_layer_loaded() -> SemanticLayer:
+    global _LAYER
+    if _LAYER is None:
+        _LAYER = SemanticLayer.load(KPI_DIR, BASE_PROMPT_PATH, WAREHOUSE_DIR)
+    return _LAYER
 
 
 # ---------- Per-session agent registry ----------
@@ -96,6 +90,7 @@ def _get_or_create_agent(session_id: str) -> OIRPAgent:
             semantic_layer_dir=KPI_DIR,
             base_prompt_path=BASE_PROMPT_PATH,
             model=MODEL,
+            layer=_ensure_semantic_layer_loaded(),
         )
         _SESSIONS[session_id] = agent
     return _SESSIONS[session_id]
@@ -111,11 +106,13 @@ class ChatRequest(BaseModel):
 class ToolCallSummary(BaseModel):
     name: str
     summary: str
+    detail: str | None = None   # e.g. the SQL a query_metric call compiled to
 
 
 class ChatResponse(BaseModel):
     text: str
     confidence: str
+    sources: list[str]          # "published" and/or "synthetic"
     trace: list[ToolCallSummary]
 
 
@@ -135,10 +132,10 @@ def _startup() -> None:
 
 @app.get("/api/info")
 def info() -> dict[str, Any]:
-    _ensure_semantic_layer_loaded()
-    assert _DOCUMENTS is not None
+    layer = _ensure_semantic_layer_loaded()
+    cubes = layer.engine.describe()["cubes"] if layer.engine else []
     return {
-        "kpi_count": len(_DOCUMENTS),
+        "kpi_count": len(layer.documents),
         "kpis": [
             {
                 "kpi_id": d.kpi_id,
@@ -146,7 +143,12 @@ def info() -> dict[str, Any]:
                 "status": d.status,
                 "record_count": sum(len(b) for b in d.json_blocks),
             }
-            for d in _DOCUMENTS
+            for d in layer.documents
+        ],
+        "cube_count": len(cubes),
+        "cubes": [
+            {"cube": c["cube"], "data_as_of": c.get("data_as_of"), "stale": c.get("stale")}
+            for c in cubes
         ],
         "model": MODEL,
         "active_sessions": len(_SESSIONS),
@@ -187,8 +189,9 @@ def chat(req: ChatRequest, request: Request, response: Response) -> ChatResponse
     return ChatResponse(
         text=result.text,
         confidence=result.confidence.value,
+        sources=result.trace.sources,
         trace=[
-            ToolCallSummary(name=c.name, summary=c.result_summary)
+            ToolCallSummary(name=c.name, summary=c.result_summary, detail=c.detail)
             for c in result.trace.calls
         ],
     )
@@ -228,11 +231,12 @@ def root() -> FileResponse:
 
 @app.get("/oirp")
 def oirp_page() -> FileResponse:
-    """OIRP-styled mock page with chat as a side panel.
+    """The "What would you like to know?" page: one question box, answers as cards.
 
     Concept demo intended for OIRP-facing presentations. Uses the same
     /api/chat backend as the dev page at /. Watermarked as an unaffiliated
-    portfolio project — not endorsed by Carleton or its OIRP.
+    portfolio project — not endorsed by Carleton or its OIRP. `?q=` asks a
+    question on load, so a question can be shared as a link.
     """
     page = STATIC_DIR / "oirp.html"
     if not page.exists():

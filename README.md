@@ -2,7 +2,10 @@
 
 A semantic-layer-grounded chat agent for institutional-research questions about Carleton University. Portfolio demo.
 
-The bot answers questions about student engagement, retention, and enrolment using **only** verified values from a curated semantic layer — every numerical claim is traced to a specific source PDF and page, and the bot **refuses to answer** when a value isn't in its verified store. No hallucinated percentages.
+The bot answers questions about student engagement, retention, enrolment, and admissions from two governed sources, and never from memory:
+
+- **Published layer**: real, hand-verified values from Carleton's public PDFs. Every number is traced to a source PDF and page, and the bot **refuses to answer** when a value isn't in the verified store.
+- **Synthetic warehouse**: **generated demo data** in a DuckDB warehouse whose tables, columns, grain, measures, and MDX calculated members mirror an institutional-research data warehouse's Retention, Enrolment, and Admissions cubes. The agent asks for measures by dimension through a governed query tool. It cannot write SQL, and every number it reports from here is labelled synthetic.
 
 > **Disclaimer.** Unaffiliated portfolio project. Not endorsed by Carleton University or its Office of Institutional Research and Planning (OIRP). All data is extracted from publicly published OIRP and Carleton sources, with citations.
 
@@ -13,7 +16,7 @@ The bot answers questions about student engagement, retention, and enrolment usi
 The project ships with two web UIs sharing the same agent:
 
 - **`/`** — engineering view. Shows confidence badges, tool-call traces, and the loaded-semantic-layer table. For technical demos and debugging.
-- **`/oirp`** — institutional view. OIRP-styled mock page with the chat as a side panel. For pitching what this could look like in production.
+- **`/oirp`** — institutional view. A "What would you like to know?" home page in a calm, frosted-glass style: ask in your own words and each answer arrives as a card labelled with its source (published or synthetic), its confidence, and a "How this was answered" trace. A six-step student journey (Apply → Graduated) across the top starts a question from any step and lights up as answers use it. `/oirp?q=...` asks a question straight from a link.
 
 Both call the same `OIRPAgent.chat()`, the same Claude model, and the same verified store.
 
@@ -23,10 +26,13 @@ Both call the same `OIRPAgent.chat()`, the same Claude model, and the same verif
 
 | Layer | What it is | Built? |
 |---|---|---|
-| **Semantic layer** | 6 KPI markdown files with frontmatter, prose, and verified-value JSON blocks | ✅ 73 records across 6 KPIs |
+| **Semantic layer: published** | 6 KPI markdown files with frontmatter, prose, and verified-value JSON blocks | ✅ 73 records across 6 KPIs |
+| **Semantic layer: warehouse** | 3 cube files (Retention, Enrolment, Admissions): grain, answer recipes, and a JSON cube model of measure groups, measures, MDX-ported calculated members, and dimension hierarchies | ✅ |
+| **Synthetic warehouse** | Seeded generator → DuckDB: `URET_FACT`, `STDCOUNT`, `STDACADUNIT`, `ADM_FACT`, and ~70 dimension tables; one simulated population across all three stars | ✅ ~4.4M fact rows |
+| **Metric engine** | Validates names against the cube model, compiles parameterised SQL, enforces counting rules, suppresses small cells, reports freshness | ✅ 23 tests |
 | **Agent** | Manual tool-use loop with prompt caching against Claude Sonnet 4.6 | ✅ |
-| **Tools** | `get_kpi_value`, `search_methodology`, `list_kpis` | ✅ |
-| **Confidence tracking** | Per-turn classification: HIGH (verified lookup), MEDIUM (methodology/synthesis), LOW (refused) | ✅ |
+| **Tools** | `get_kpi_value`, `search_methodology`, `list_kpis`, `query_metric`, `describe_cube` | ✅ |
+| **Confidence tracking** | Per-turn classification: HIGH (verified lookup or governed query), MEDIUM (methodology/discovery), LOW (refused/no value), plus per-turn source labels (published / synthetic) | ✅ |
 | **Web server** | FastAPI + uvicorn serving both UIs | ✅ |
 | **Data pipeline** | TOML-driven download → pdfplumber extraction → LLM-assisted KPI drafter | ✅ |
 | **Eval suite** | 25 hand-written questions across confidence tiers | ✅ scaffold; runner pending |
@@ -98,7 +104,41 @@ This split — deterministic extraction below, LLM drafting in the middle, human
 
 ---
 
-## What's in the semantic layer (today)
+## The synthetic warehouse
+
+The published layer can say what Carleton *published*. It can't answer "first-year retention by entry faculty, international vs domestic, for the last five cohorts", because nobody publishes that. A real institutional-research warehouse can. So the demo carries a fake one.
+
+**What's mirrored from the real warehouse:**
+
+- Table and column names: the full 84-column `URET_FACT`, 26-column `STDCOUNT`, 72-column `ADM_FACT`, and the `URET_*` / `ADM_*` dimension tables.
+- Grain:
+
+  | Table | One row per |
+  |---|---|
+  | `URET_FACT` | student × academic year since entry ("Years After") |
+  | `STDCOUNT` | student × term × count date |
+  | `ADM_FACT` | application, weighted per applicant |
+
+- Each cube's measures and their aggregations.
+- The cubes' MDX calculated members, ported as-is, for example `% Continuing = [Continuing]/[Cohort]` and `% Registered of Confirmed`.
+
+**What's synthetic:** every value. A seeded simulation generates applicants. Registrants become new students in `STDCOUNT` and cohort members in `URET_FACT`, and they progress, switch units, stop out, or graduate year by year. Because all three stars share one population, the numbers reconcile across cubes: 2024's `Registered` = the 2024 `Cohort` at Years After 0 = new undergraduates in Fall 2024.
+
+**What the engine enforces:**
+
+| Guard | Why it exists |
+|---|---|
+| Names only from the cube model; values are bound parameters | The agent can't reach a column or expression nobody declared |
+| Required single-valued dimensions (`Years After`, `Time`, `Count Date`, `Application Year`) | Stops two counting bases being silently summed, e.g. fall + winter headcount, or every year of a cohort |
+| Reported defaults (`Count Date` → official count) | The answer can state its counting base |
+| Small-cell suppression (< 10 distinct people) | What a real warehouse needs before anyone sees a cross-tab |
+| Load-log freshness (`data_as_of`, `stale`) | The retention star is deliberately loaded three weeks behind, so the agent has to caveat it, the way a real star falls behind when its pipeline isn't scheduled |
+
+The warehouse builds automatically on first run (about 1 minute), or explicitly with `python -m oirp_agent.synthetic_warehouse --force`.
+
+---
+
+## What's in the published layer (today)
 
 | KPI | Source | Records | Status |
 |---|---|---|---|
@@ -138,6 +178,11 @@ Open `http://localhost:8000/oirp` in your browser. Try:
 - *"Compare HIPs participation between 3-year and 4-year programs in 2023."* → answers with the cross-tab from Table 5, HIGH confidence.
 - *"What was Carleton's first-year retention rate in 2022?"* → **refuses** and points you to CUDO Section E. LOW confidence by design.
 - *"What's projected for international undergraduate intake by Fall 2025?"* → answers with the Operating Budget projection (86% drop from 2018 peak), MEDIUM confidence with appropriate framing.
+- *"What was first-year retention by faculty for the 2024 cohort?"* → queries the synthetic Retention cube (`% Continuing`, Years After = 1, by entry faculty), labels it synthetic, and gives the stale as-of date.
+- *"How many undergraduates were enrolled in fall 2025, and what share were international?"* → synthetic Enrolment cube, official count date (reported as an applied default), international = tuition fee status.
+- *"Walk me through the admissions funnel for the fall 2025 intake."* → synthetic Admissions cube: applicants → approved → confirmed → registered.
+
+Run the test suite with `pip install -e ".[dev]"` and then `python -m pytest tests -q`.
 
 Visit `http://localhost:8000/` for the engineering view that exposes tool-call tracing.
 
@@ -153,8 +198,12 @@ oirp-chat/
 ├── .env                               API key (gitignored)
 │
 ├── semantic_layer/
-│   ├── base_prompt.md                 system prompt with {{KPI_DOCUMENTS}} placeholder
-│   └── kpis/                          ── the actual ground truth ──
+│   ├── base_prompt.md                 system prompt: {{KPI_DOCUMENTS}} + {{WAREHOUSE_DOCUMENTS}}
+│   ├── warehouse/                     ── synthetic cube models ──
+│   │   ├── retention.md
+│   │   ├── enrolment.md
+│   │   └── admissions.md
+│   └── kpis/                          ── published ground truth ──
 │       ├── overall_experience_rating.md
 │       ├── would_choose_same_institution.md
 │       ├── nsse_engagement_indicators.md
@@ -168,13 +217,17 @@ oirp-chat/
 │   ├── web.py                         FastAPI server, /  and /oirp routes
 │   ├── prompt_loader.py               markdown → KPIDocument parser
 │   ├── kpi_store.py                   in-memory store with filter queries
-│   ├── tools.py                       3 tool schemas + dispatcher
-│   ├── confidence.py                  per-turn HIGH/MEDIUM/LOW classifier
+│   ├── tools.py                       5 tool schemas + dispatcher
+│   ├── confidence.py                  per-turn HIGH/MEDIUM/LOW classifier + source labels
+│   ├── warehouse.py                   cube-model loader + governed metric engine
+│   ├── synthetic_warehouse.py         seeded generator for the DuckDB warehouse
 │   └── agent.py                       manual tool-use loop with prompt caching
+│
+├── tests/test_warehouse.py            engine guarantees + cross-cube consistency
 │
 ├── static/
 │   ├── index.html                     /  — engineering view
-│   └── oirp.html                      /oirp — OIRP-styled mock page
+│   └── oirp.html                      /oirp — "What would you like to know?" page
 │
 ├── scripts/                           ── data pipeline ──
 │   ├── sources.toml                   editable PDF manifest
@@ -183,6 +236,7 @@ oirp-chat/
 │   └── draft_kpi_values.py            LLM-assisted drafter with quote validation
 │
 ├── data/
+│   ├── warehouse/                     gitignored: generated cudw_synthetic.duckdb
 │   ├── pdfs/                          gitignored binaries + manifest.json
 │   ├── extracted/                     committed JSON: pages, tables, meta
 │   └── proposed/                      drafter review files (markdown)
@@ -199,9 +253,9 @@ The current demo is **tier 1 + 2** of a notional tier-3 architecture:
 
 - **Tier 1 (done)**: hand-verified values from public PDFs, in JSON blocks within the KPI markdown files.
 - **Tier 2 (done)**: prose methodology, definitions, and caveats searchable via keyword over the markdown files.
-- **Tier 3 (architecture-ready)**: live connections to OIRP's warehouse and Data Cubes via a read-only role, swapping the static JSON store for parameterized SQL queries against the same schema. **The agent layer doesn't change.**
+- **Tier 3 (demonstrated on synthetic data)**: the agent queries a warehouse shaped like the real one through governed measure × dimension queries. Pointing it at the real warehouse means changing the connection in `WarehouseEngine` (DuckDB → a read-only Oracle role) and the generated tables for the real ones. The cube models, tools, and agent stay the same, because the names already match.
 
-The boundary is the `KPIStore` interface in `src/oirp_agent/kpi_store.py`. Replace its implementation with SQL queries or HTTP calls to OIRP's Data Cubes API; everything above it stays identical. Same with `search_methodology` — swap the keyword scoring for pgvector + Voyage embeddings without touching `tools.py` or `agent.py`.
+The boundaries are the `KPIStore` interface in `src/oirp_agent/kpi_store.py` and the `WarehouseEngine` in `src/oirp_agent/warehouse.py`. Everything above them stays identical. Same with `search_methodology` — swap the keyword scoring for pgvector + Voyage embeddings without touching `tools.py` or `agent.py`.
 
 This separation is what would make the system shippable inside Carleton: the chat layer is institution-agnostic, the semantic layer encodes Carleton-specific business logic, and the data layer plugs into Carleton's warehouse. Three concerns, three swappable parts.
 
@@ -223,8 +277,10 @@ This separation is what would make the system shippable inside Carleton: the cha
 
 ## Limitations (deliberate, named)
 
-- **No live OIRP data connection.** The verified store is hand-extracted from public PDFs at a point in time. Recent absolute headcount and FTE values are flagged as "not yet extracted" and the agent refuses rather than guesses.
-- **No PII concerns.** Public aggregate data only. A real OIRP integration would need column-level masking and small-cell suppression rules.
+- **No live OIRP data connection.** The verified store is hand-extracted from public PDFs at a point in time. The warehouse is synthetic. Real recent headcounts and retention values are still refused and routed to the published source.
+- **Synthetic data is plausible, not calibrated.** Rates and trends are shaped to look like an Ontario university's, not fitted to any real figures. Don't read anything into a synthetic number.
+- **No PII.** The synthetic warehouse is student-level, but every student is generated, and name columns are left null. A real integration would add role-based access and complementary suppression on top of the small-cell rule implemented here.
+- **The system prompt grew to ~36k tokens** with the cube models included. Prompt caching keeps the per-turn cost low, but the cold-cache first turn is bigger than before.
 - **No conversation memory across sessions.** Each browser session has its own conversation history; nothing persists.
 - **Methodology search is keyword-based, not semantic.** Production would use pgvector with Voyage or Cohere embeddings.
 - **6 KPIs, not 60.** Coverage is intentionally narrow to demonstrate pattern depth over breadth. The structural typology — simple percentages, composite scores, multi-dimensional cross-tabs, behavioural rates with multi-variant disambiguation, headcount with counting-base ambiguity — is fully exercised.

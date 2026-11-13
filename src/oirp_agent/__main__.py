@@ -7,7 +7,7 @@ Usage:
 
 Optional flags:
     --semantic-layer PATH    Override the path to the semantic_layer/ directory
-    --model MODEL_ID         Override the model (default: claude-opus-4-7)
+    --model MODEL_ID         Override the model (default: claude-sonnet-4-6)
     --once "QUESTION"        Single-shot mode (don't enter the REPL)
     --show-trace             Print the per-turn tool trace alongside the response
 """
@@ -82,8 +82,30 @@ def _print_loaded_summary(console: Console, agent: OIRPAgent) -> None:
     console.print(
         f"[dim]Total: {len(agent.documents)} KPIs, "
         f"{total_records} verified records, "
-        f"{total_sections} prose sections.[/]\n"
+        f"{total_sections} prose sections.[/]"
     )
+    if agent.engine is not None:
+        for c in agent.engine.describe()["cubes"]:
+            stale = " [yellow](stale)[/]" if c.get("stale") else ""
+            console.print(
+                f"[magenta]Synthetic cube[/] {c['cube']}: {len(c['measures'])} measures, "
+                f"{len(c['dimensions'])} dimensions, as of {c.get('data_as_of')}{stale}"
+            )
+    console.print()
+
+
+def _load_dotenv(path: Path) -> None:
+    """Same inline .env loader as web.py, so the CLI also Just Works."""
+    import os
+
+    if not path.exists():
+        return
+    for line in path.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 
 def main() -> None:
@@ -104,6 +126,7 @@ def main() -> None:
     args = parser.parse_args()
 
     console = Console()
+    _load_dotenv(Path(__file__).resolve().parents[2] / ".env")
     sl_dir = args.semantic_layer
     base_prompt = sl_dir / "base_prompt.md"
     kpi_dir = sl_dir / "kpis"

@@ -1,789 +1,718 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-glass="on" data-motion="on">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OIRP — Office of Institutional Research and Planning (concept demo)</title>
-  <style>
-    /* ─────────────────────────────────────────────────────────────────
-       Design tokens
-       Carleton-adjacent palette: deep institutional red, generous
-       whitespace, serif headings, clean sans body. NOT pixel-cloned.
-       ───────────────────────────────────────────────────────────────── */
-    :root {
-      /* Brand-adjacent reds — close enough to feel institutional,
-         not exact match to Carleton's brand assets. */
-      --red-700: #a4001f;
-      --red-600: #b8002a;
-      --red-50:  #fdf2f4;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OIRP · What would you like to know?</title>
+<style>
+/* ─────────────────────────────────────────────────────────────────────────
+   The "Calm" look: a warm grey ground, Carleton-adjacent red, white and
+   black; one frosted pane per section with a light that follows the pointer;
+   a pale red wave behind everything; room to breathe. Light only, by design.
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --bg: #efefed; --ink: #141414; --ink-2: #3c3c3c; --ink-3: #636360;
+  --line: #dcdcd8; --grid: #e6e6e3; --green: #d3e8d9;
+  --red: #e91c24; --red-ink: #c4161c; --black: #1a1a1a;
+  --glass: rgba(255,255,255,.66); --edge: rgba(255,255,255,.95);
+  --sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --wide: 1120px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 8px; z-index: 100; background: #fff; padding: 8px 12px; border-radius: 8px; }
 
-      --ink-900: #1a1a1a;
-      --ink-700: #3a3a3a;
-      --ink-500: #6b6b6b;
-      --ink-300: #c8c8c8;
-      --ink-100: #ececec;
-      --ink-50:  #f7f7f7;
+/* ---- the slim strip that says what this is -------------------------- */
+.strip { position: relative; z-index: 2; display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap;
+  padding: 7px 32px; font-size: 13px; background: #ecebe7; color: var(--ink-2); border-bottom: 1px solid var(--line); }
+.strip .spacer { flex: 1; }
+.strip button, .strip a.btn { font: inherit; font-size: 12.5px; padding: 3px 10px; border-radius: 99px; cursor: pointer; text-decoration: none;
+  background: transparent; color: var(--ink-2); border: 1px solid var(--line); }
+.strip button[aria-pressed="true"] { background: var(--black); color: #fff; border-color: var(--black); }
 
-      --bg:      #ffffff;
-      --canvas:  #fafaf8;
+/* ---- the red wave down the middle, behind everything ------------------ */
+.wave { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.wave svg { width: 100%; height: 100%; display: block; overflow: visible; transform: translateY(var(--drift, 0px)); }
 
-      --high:    #1f7a3f;
-      --medium:  #b76b00;
-      --low:     #b8002a;
-      --none:    #6b6b6b;
+/* ---- the frosted pane --------------------------------------------------- */
+.pane { position: relative; isolation: isolate; background: var(--glass); border: 1px solid var(--edge); border-radius: 22px;
+  -webkit-backdrop-filter: blur(20px) saturate(1.3); backdrop-filter: blur(20px) saturate(1.3);
+  box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 12px 32px -22px rgba(20,20,20,.28); }
+.pane::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(460px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,.7), transparent 45%); }
+.pane:hover::after { opacity: 1; }
+html[data-glass="off"] .pane { background: #fff; border-color: var(--line); -webkit-backdrop-filter: none; backdrop-filter: none; }
+@media (prefers-reduced-transparency: reduce) {
+  html:not([data-glass-chosen]) .pane { background: #fff; border-color: var(--line); -webkit-backdrop-filter: none; backdrop-filter: none; } }
 
-      --serif: Georgia, "Times New Roman", "Lora", serif;
-      --sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      --mono:  ui-monospace, "SF Mono", Menlo, monospace;
-    }
+.page { position: relative; z-index: 1; }
+.wrap { max-width: var(--wide); margin: 0 auto; padding: 0 32px; }
 
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    body {
-      font-family: var(--sans);
-      color: var(--ink-900);
-      background: var(--canvas);
-      font-size: 15px;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
+/* ---- header -------------------------------------------------------------- */
+.top { display: flex; align-items: center; gap: 18px; padding: 22px 0; }
+.brand { display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--ink); }
+.brand .mark { width: 38px; height: 38px; border-radius: 9px; background: var(--red-ink); color: #fff; display: grid; place-items: center;
+  font-weight: 800; font-size: 15px; letter-spacing: .02em; }
+.brand .sep { width: 1px; align-self: stretch; background: var(--ink-3); opacity: .45; margin: 2px 0; }
+.brand .name { display: grid; line-height: 1.2; }
+.brand .name b { font-size: 19px; letter-spacing: .06em; font-weight: 750; }
+.brand .name b abbr { text-decoration: none; }
+.brand .name small { font-size: 14px; color: var(--ink-2); }
+.top nav { margin-left: auto; display: flex; gap: 26px; flex-wrap: wrap; }
+.u { color: var(--ink); text-decoration: none; background: linear-gradient(var(--red), var(--red)) 0 100% / 0 1.5px no-repeat;
+  padding-bottom: 2px; transition: background-size .35s ease, color .35s; }
+.u:hover, .u:focus-visible { background-size: 100% 1.5px; }
+.u.red { color: var(--red-ink); font-weight: 600; }
 
-    /* ─────────────────────────────────────────────────────────────────
-       Concept-demo banner — sits above everything so it's read first
-       ───────────────────────────────────────────────────────────────── */
-    .concept-banner {
-      background: var(--ink-900);
-      color: #fff;
-      font-size: 12px;
-      letter-spacing: 0.02em;
-      padding: 8px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .concept-banner strong { color: #ffd0d6; font-weight: 600; }
-    .concept-banner a { color: #ffd0d6; text-decoration: underline; }
-    .concept-banner a:hover { color: #fff; }
+/* ---- the student journey across the top, which stays as you scroll ----- */
+.journey-wrap { position: sticky; top: 0; z-index: 10; }
+.journey { margin: 0 0 8px; border-radius: 20px; background: rgba(239,239,237,.78);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+html[data-glass="off"] .journey { background: rgba(239,239,237,.97); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.journey .inner { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); align-items: stretch; gap: 8px; padding: 12px 18px 30px; }
+.journey svg.line { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.journey svg.line .ghost { fill: none; stroke: var(--line); stroke-width: 2; }
+.journey svg.line .drawn { fill: none; stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+.journey svg.line .dot { fill: var(--bg); stroke: var(--line); stroke-width: 2; transition: fill .3s, stroke .3s; }
+.journey svg.line .dot.on { fill: var(--red); stroke: var(--red); }
+.journey button.box { z-index: 1; display: grid; gap: 1px; align-content: start; text-align: left; padding: 9px 13px; border-radius: 14px; cursor: pointer;
+  font: inherit; color: var(--ink-2); background: transparent; border: 0; transition: color .3s, background .3s, transform .3s, box-shadow .3s; }
+.journey button.box .n { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; }
+.journey button.box .t { font-size: 15px; font-weight: 600; }
+.journey button.box .v { font-size: 12.5px; color: var(--ink-3); }
+.journey button.box:hover, .journey button.box:focus-visible { color: var(--ink); transform: translateY(-2px); }
+.journey button.box.lit .n { color: var(--red-ink); }
+.journey button.box[aria-current="step"] { color: var(--ink); background: #fff; box-shadow: inset 0 -2px 0 var(--red), 0 10px 24px -18px rgba(20,20,20,.4); }
+@media (max-width: 860px) { .journey button.box .v { display: none; } .journey button.box .t { font-size: 12.5px; } }
 
-    /* ─────────────────────────────────────────────────────────────────
-       Top bar — wordmark + nav stubs
-       ───────────────────────────────────────────────────────────────── */
-    header.topbar {
-      background: var(--bg);
-      border-bottom: 1px solid var(--ink-100);
-      padding: 14px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 32px;
-    }
-    .wordmark {
-      font-family: var(--serif);
-      font-weight: 700;
-      font-size: 22px;
-      color: var(--red-700);
-      letter-spacing: 0.01em;
-      line-height: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .wordmark .small {
-      font-size: 11px;
-      font-weight: 400;
-      color: var(--ink-500);
-      font-family: var(--sans);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-    nav.nav-stubs {
-      display: flex;
-      gap: 28px;
-    }
-    nav.nav-stubs a {
-      color: var(--ink-700);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 4px 0;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
-    }
-    nav.nav-stubs a:hover {
-      color: var(--red-700);
-      border-bottom-color: var(--red-700);
-    }
+/* ---- the flow of panes, with the thread down its left side ------------- */
+.flow { position: relative; padding: 36px 0 40px 58px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+.flow::before { content: ""; position: absolute; left: 20px; top: 0; bottom: 40px; width: 2px; border-radius: 2px;
+  background: linear-gradient(var(--red), var(--red)) no-repeat; background-size: 2px var(--thread, 0%); opacity: .8; transition: background-size .6s ease; }
+.flow::after { content: ""; position: absolute; left: 20px; top: 0; bottom: 40px; width: 2px; background: var(--line); z-index: -1; }
+.flow > .pane::before { content: ""; position: absolute; left: -45px; top: 40px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--red); }
 
-    /* ─────────────────────────────────────────────────────────────────
-       Layout grid — main content + chat side panel
-       Desktop: 2 columns. Mobile: stacked, chat becomes floating button.
-       ───────────────────────────────────────────────────────────────── */
-    .layout {
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 48px;
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 48px 32px;
-    }
+/* ---- hero: the question box ------------------------------------------ */
+.hero { padding: 56px 60px 52px; scroll-margin-top: 110px; }
+.hero h1 { font-size: clamp(34px, 4.4vw, 52px); line-height: 1.08; letter-spacing: -.03em; font-weight: 700; margin: 0 0 18px; }
+.hero p.lede { font-size: 19px; color: var(--ink-2); max-width: 58ch; margin: 0 0 30px; }
 
-    @media (max-width: 960px) {
-      .layout {
-        grid-template-columns: 1fr;
-        padding: 24px 20px;
-        gap: 24px;
-      }
-    }
+.search { position: relative; max-width: 760px; }
+.search textarea { display: block; width: 100%; font: inherit; font-size: 18px; line-height: 1.45; padding: 16px 64px 16px 50px; border-radius: 14px;
+  color: var(--ink); background: #fff; border: 1.5px solid var(--line); resize: none; min-height: 60px; max-height: 200px;
+  transition: border-color .25s, box-shadow .25s; }
+.search textarea:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 4px rgba(233,28,36,.14); }
+.search textarea:disabled { background: #fafaf8; }
+.search .glass-icon { position: absolute; left: 17px; top: 20px; color: var(--ink-3); pointer-events: none; }
+.search button.send { position: absolute; right: 10px; bottom: 10px; width: 40px; height: 40px; border-radius: 10px; border: 0; cursor: pointer;
+  display: grid; place-items: center; background: var(--red-ink); color: #fff; transition: background .2s, opacity .2s; }
+.search button.send:hover { background: var(--red); }
+.search button.send:disabled { opacity: .35; cursor: default; }
+.hint { font-size: 13px; color: var(--ink-3); margin: 8px 2px 0; }
 
-    /* ─────────────────────────────────────────────────────────────────
-       Hero / page content
-       ───────────────────────────────────────────────────────────────── */
-    .hero h1 {
-      font-family: var(--serif);
-      font-size: 38px;
-      line-height: 1.15;
-      font-weight: 700;
-      color: var(--ink-900);
-      margin: 0 0 12px 0;
-      max-width: 680px;
-    }
-    .hero h1 .accent { color: var(--red-700); }
-    .hero .lede {
-      font-size: 17px;
-      color: var(--ink-700);
-      max-width: 620px;
-      margin: 0 0 28px 0;
-    }
+.quick { display: grid; justify-items: start; gap: 10px; margin-top: 24px; font-size: 15.5px; }
+.quick > span { color: var(--ink-3); }
+.quick button { font: inherit; text-align: left; color: var(--red-ink); font-weight: 600; background: linear-gradient(var(--red), var(--red)) 0 100% / 0 1.5px no-repeat;
+  border: 0; padding: 0 0 2px; cursor: pointer; transition: background-size .35s ease; }
+.quick button:hover, .quick button:focus-visible { background-size: 100% 1.5px; }
+.quick button small { color: var(--ink-3); font-weight: 400; }
 
-    .accent-bar {
-      width: 64px;
-      height: 4px;
-      background: var(--red-600);
-      margin: 0 0 24px 0;
-    }
+.convo-bar { display: none; align-items: center; gap: 14px; margin: 0 0 18px; font-size: 14px; color: var(--ink-3); }
+.has-convo .convo-bar { display: flex; }
+.has-convo .quick { display: none; }
+.convo-bar button { font: inherit; font-size: 14px; color: var(--ink-2); background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 4px 12px; cursor: pointer; }
+.convo-bar button:hover { border-color: var(--ink-3); }
 
-    .section-title {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--ink-900);
-      margin: 36px 0 12px 0;
-    }
+/* ---- answers: one card per turn, right where you ask ------------------ */
+.thread { display: grid; gap: 18px; max-width: 860px; margin: 0 0 26px; }
+.thread:empty { display: none; }
+.turn { display: grid; gap: 8px; scroll-margin-top: 120px; }
+.turn .asked { font-size: 15px; color: var(--ink-3); padding-left: 2px; }
+.turn .asked b { color: var(--ink); font-weight: 600; }
+.answer { display: grid; gap: 4px; padding: 24px 28px 20px; border-radius: 16px; background: #fff; border: 1px solid var(--line); animation: settle .45s ease both; }
+@keyframes settle { from { opacity: 0; transform: translateY(6px); } }
+html[data-motion="off"] .answer { animation: none; }
 
-    .body-prose {
-      max-width: 620px;
-      color: var(--ink-700);
-    }
-    .body-prose p { margin: 0 0 14px 0; }
+.thinking { display: flex; align-items: center; gap: 12px; color: var(--ink-3); font-size: 15.5px; }
+.thinking .bar { width: 64px; height: 2px; border-radius: 2px; background: var(--line); overflow: hidden; position: relative; }
+.thinking .bar::after { content: ""; position: absolute; inset: 0; width: 40%; background: var(--red); animation: slide 1.1s ease-in-out infinite; }
+@keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
+html[data-motion="off"] .thinking .bar::after { animation: none; width: 100%; opacity: .5; }
 
-    .pull-quote {
-      border-left: 3px solid var(--red-600);
-      padding: 4px 0 4px 18px;
-      margin: 24px 0;
-      max-width: 620px;
-      font-family: var(--serif);
-      font-size: 16px;
-      color: var(--ink-700);
-      font-style: italic;
-    }
+/* Markdown from the agent, in Calm's voice. */
+.md { color: var(--ink); font-size: 16.5px; line-height: 1.65; overflow-wrap: anywhere; }
+.md > :first-child { margin-top: 0; }
+.md > :last-child { margin-bottom: 0; }
+.md p { margin: 0 0 12px; max-width: 70ch; }
+.md h3, .md h4, .md h5 { margin: 22px 0 8px; line-height: 1.25; letter-spacing: -.01em; }
+.md h3 { font-size: 21px; } .md h4 { font-size: 18px; } .md h5 { font-size: 16px; color: var(--ink-2); }
+.md ul, .md ol { margin: 0 0 12px; padding-left: 22px; max-width: 70ch; }
+.md li { margin: 0 0 5px; }
+.md li.sub { margin-left: 20px; list-style-type: circle; }
+.md strong { font-weight: 680; }
+.md a { color: var(--red-ink); }
+.md code { font-family: var(--mono); font-size: .86em; background: #f4f4f1; border: 1px solid var(--grid); border-radius: 5px; padding: 1px 5px; overflow-wrap: anywhere; }
+.md pre { font-family: var(--mono); font-size: 13px; background: #f7f7f4; border: 1px solid var(--grid); border-radius: 10px; padding: 12px 14px; overflow-x: auto; }
+.md pre code { background: none; border: 0; padding: 0; }
+.md blockquote { margin: 0 0 12px; padding: 2px 0 2px 16px; border-left: 2px solid var(--red); color: var(--ink-2); }
+.md hr { border: 0; border-top: 1px solid var(--line); margin: 18px 0; }
 
-    .footer-note {
-      margin-top: 56px;
-      padding: 20px 0;
-      border-top: 1px solid var(--ink-100);
-      font-size: 13px;
-      color: var(--ink-500);
-      max-width: 620px;
-    }
-    .footer-note a {
-      color: var(--red-700);
-      text-decoration: none;
-    }
-    .footer-note a:hover { text-decoration: underline; }
+/* The calm table: room, thin green rules, bold names, numbers on the right. */
+.tablewrap { overflow-x: auto; margin: 6px 0 16px; }
+table.calm { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; font-size: 15.5px; }
+table.calm th, table.calm td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--green); }
+table.calm td.num, table.calm th.num { text-align: right; white-space: nowrap; }
+table.calm th:first-child, table.calm td:first-child { padding-left: 4px; }
+table.calm thead th { font-size: 12.5px; font-weight: 650; color: var(--ink-3); border-bottom: 1.5px solid var(--ink-3); vertical-align: bottom; }
+table.calm tbody td:first-child { font-weight: 650; }
+table.calm tbody tr { transition: background .2s; }
+table.calm tbody tr:hover { background: rgba(211,232,217,.35); }
+table.calm tbody tr:last-child td { border-bottom: 0; }
 
-    /* ─────────────────────────────────────────────────────────────────
-       Chat side panel
-       ───────────────────────────────────────────────────────────────── */
-    .chat-panel {
-      background: var(--bg);
-      border: 1px solid var(--ink-100);
-      border-radius: 10px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 200px);
-      min-height: 540px;
-      max-height: 760px;
-      position: sticky;
-      top: 24px;
-      overflow: hidden;
-    }
+/* What was counted, where it came from, and how it was answered. */
+.when { font-size: 13px; color: var(--ink-3); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--grid); }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 650; line-height: 1; padding: 6px 11px 6px 9px; border-radius: 99px; white-space: nowrap; }
+.pill .m { font-size: 11px; }
+.pill.high { background: #e3f4e6; color: #1e6b2d; }
+.pill.medium { background: #efeff1; color: #45454d; }
+.pill.low { background: #fde7dc; color: #8a3410; }
+.pill.none { background: #efeff1; color: #636360; }
+.pill.synthetic { background: #fff1cc; color: #6e4a00; }
+.pill.published { background: #e1edfb; color: #1d4f91; }
+.how { margin-left: auto; font: inherit; font-size: 13px; color: var(--ink-2); background: none; border: 0; padding: 0 0 2px; cursor: pointer;
+  background-image: linear-gradient(var(--ink-3), var(--ink-3)); background-size: 100% 1px; background-position: 0 100%; background-repeat: no-repeat; }
+.how:hover { color: var(--red-ink); background-image: linear-gradient(var(--red), var(--red)); }
+.steps { display: none; margin: 12px 0 0; padding: 0; list-style: none; counter-reset: s; }
+.steps.shown { display: grid; gap: 10px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 2px 8px; font-size: 14px; color: var(--ink-2); }
+.steps li::before { content: counter(s); grid-row: span 3; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--red); color: var(--red-ink);
+  font-size: 11.5px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
+.steps .what { font-weight: 600; color: var(--ink); }
+.steps .detail { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); overflow-wrap: anywhere; }
+.steps pre { margin: 4px 0 0; font-family: var(--mono); font-size: 12px; color: var(--ink-2); background: #f7f7f4; border: 1px solid var(--grid);
+  border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.answer.error { border-color: #f3c7b3; background: #fffaf7; }
+.answer.error .md { color: #8a3410; }
 
-    .chat-header {
-      padding: 14px 18px;
-      background: var(--red-700);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .chat-header .title {
-      font-family: var(--serif);
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 1.2;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .chat-header .title .small {
-      font-family: var(--sans);
-      font-size: 11px;
-      font-weight: 400;
-      opacity: 0.85;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .chat-header button {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-    }
-    .chat-header button:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
+/* ---- the panes below -------------------------------------------------- */
+section.pane { padding: 48px 56px 44px; scroll-margin-top: 110px; }
+.pane .step { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--red-ink); }
+.pane h2 { font-size: 32px; line-height: 1.15; letter-spacing: -.025em; margin: 10px 0 10px; font-weight: 700; }
+.pane .blurb { color: var(--ink-2); max-width: 64ch; margin: 0 0 30px; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; }
+.col { background: rgba(255,255,255,.6); border: 1px solid var(--edge); border-radius: 16px; padding: 22px 24px; }
+html[data-glass="off"] .col { background: #fff; border-color: var(--line); }
+.col h3 { margin: 6px 0 8px; font-size: 19px; letter-spacing: -.01em; }
+.col p { margin: 0 0 10px; color: var(--ink-2); font-size: 15.5px; }
+.col .big { font-size: 40px; font-weight: 650; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.col ul { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 15px; }
+.col li { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px 36px; }
+.rules h3 { font-size: 17px; margin: 0 0 6px; padding-bottom: 6px; display: table;
+  background: linear-gradient(var(--red), var(--red)) 0 100% / 1.6rem 2px no-repeat; transition: background-size .35s ease; }
+.rules > div:hover h3 { background-size: 100% 2px; }
+.rules p { margin: 0; color: var(--ink-2); font-size: 15.5px; }
 
-    .chat-meta {
-      padding: 8px 18px;
-      background: var(--ink-50);
-      border-bottom: 1px solid var(--ink-100);
-      font-size: 12px;
-      color: var(--ink-500);
-    }
+footer { padding: 30px 0 70px; color: var(--ink-3); font-size: 14px; display: flex; gap: 8px 22px; flex-wrap: wrap; }
 
-    #messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 18px;
-    }
+[data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+[data-reveal].is-in { opacity: 1; transform: none; }
+html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition: none; }
 
-    .placeholder {
-      color: var(--ink-700);
-    }
-    .placeholder h2 {
-      font-family: var(--serif);
-      font-size: 17px;
-      font-weight: 700;
-      margin: 0 0 8px 0;
-      color: var(--ink-900);
-    }
-    .placeholder p {
-      margin: 0 0 14px 0;
-      font-size: 14px;
-    }
-    .examples {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .examples button {
-      background: var(--bg);
-      border: 1px solid var(--ink-100);
-      color: var(--ink-900);
-      padding: 10px 12px;
-      border-radius: 8px;
-      text-align: left;
-      cursor: pointer;
-      font-size: 13.5px;
-      font-family: inherit;
-      width: 100%;
-      line-height: 1.4;
-      transition: border-color 0.15s ease;
-    }
-    .examples button:hover {
-      border-color: var(--red-700);
-    }
-    .examples em {
-      color: var(--ink-500);
-      font-style: normal;
-      font-size: 12px;
-      display: block;
-      margin-top: 2px;
-    }
-
-    .msg {
-      margin-bottom: 14px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .msg.user {
-      background: var(--red-50);
-      border: 1px solid #f4d4d9;
-    }
-    .msg.bot {
-      background: var(--bg);
-      border: 1px solid var(--ink-100);
-    }
-    .msg .role {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--ink-500);
-      margin-bottom: 6px;
-    }
-    .msg .role.bot-role { color: var(--red-700); }
-    .msg .body code {
-      background: var(--ink-50);
-      border: 1px solid var(--ink-100);
-      padding: 1px 4px;
-      border-radius: 3px;
-      font-size: 12px;
-      font-family: var(--mono);
-    }
-    .meta-row {
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--ink-500);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .badge {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 10px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .badge.high { background: #e3f3e8; color: var(--high); }
-    .badge.medium { background: #fbeed5; color: var(--medium); }
-    .badge.low { background: #fadcdc; color: var(--low); }
-    .badge.none { background: var(--ink-100); color: var(--none); }
-    .trace-toggle {
-      cursor: pointer;
-      color: var(--ink-500);
-      text-decoration: underline;
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 11px;
-      font-family: inherit;
-    }
-    .trace {
-      margin-top: 6px;
-      font-size: 11px;
-      font-family: var(--mono);
-      color: var(--ink-500);
-      background: var(--ink-50);
-      padding: 6px 8px;
-      border-radius: 4px;
-      display: none;
-    }
-    .trace.shown { display: block; }
-    .error {
-      color: var(--low);
-      font-size: 12px;
-      padding: 6px 10px;
-      background: #fadcdc;
-      border-radius: 4px;
-      margin-top: 6px;
-    }
-
-    .composer {
-      display: flex;
-      gap: 8px;
-      padding: 12px;
-      border-top: 1px solid var(--ink-100);
-      background: var(--bg);
-    }
-    .composer textarea {
-      flex: 1;
-      resize: none;
-      padding: 9px 11px;
-      font-size: 14px;
-      border-radius: 6px;
-      border: 1px solid var(--ink-100);
-      background: var(--bg);
-      color: var(--ink-900);
-      font-family: inherit;
-      line-height: 1.4;
-      min-height: 40px;
-      max-height: 120px;
-    }
-    .composer textarea:focus {
-      outline: none;
-      border-color: var(--red-700);
-    }
-    .composer button.send {
-      padding: 0 16px;
-      background: var(--red-700);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-    }
-    .composer button.send:hover { background: var(--red-600); }
-    .composer button.send:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* ─────────────────────────────────────────────────────────────────
-       Mobile: chat collapses to a floating launcher
-       ───────────────────────────────────────────────────────────────── */
-    .chat-fab {
-      display: none;
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      background: var(--red-700);
-      color: #fff;
-      border: none;
-      padding: 14px 20px;
-      border-radius: 28px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 8px 24px rgba(164, 0, 31, 0.32);
-      cursor: pointer;
-      z-index: 50;
-      gap: 8px;
-      align-items: center;
-    }
-    @media (max-width: 960px) {
-      .chat-panel {
-        position: fixed;
-        inset: 0;
-        height: 100vh;
-        max-height: none;
-        min-height: 0;
-        border-radius: 0;
-        border: none;
-        z-index: 60;
-        transform: translateY(100%);
-        transition: transform 0.25s ease;
-      }
-      .chat-panel.open { transform: translateY(0); }
-      .chat-fab { display: inline-flex; }
-      .chat-fab.hidden { display: none; }
-      .chat-header .close-mobile {
-        display: inline-flex;
-      }
-    }
-    .chat-header .close-mobile { display: none; }
-  </style>
+/* A phone: the header wraps, the six steps scroll inside their bar, and the
+   panes keep less padding so what they hold has the width. Last, so it wins. */
+@media (max-width: 700px) {
+  .strip, .wrap { padding-left: 16px; padding-right: 16px; }
+  .flow { padding-left: 30px; } .flow::before, .flow::after { left: 6px; } .flow > .pane::before { left: -30px; }
+}
+@media (max-width: 640px) {
+  .top { flex-wrap: wrap; }
+  .top nav { margin-left: 0; gap: 8px 18px; }
+  .journey { overflow-x: auto; }
+  .journey .inner { min-width: 560px; }
+  section.pane, .hero { padding: 28px 20px 26px; }
+  .answer { padding: 18px 16px 16px; }
+  .search textarea { font-size: 16px; }
+}
+</style>
 </head>
 <body>
-  <!-- ─────────── Concept-demo banner ─────────── -->
-  <div class="concept-banner" role="note">
-    <span><strong>Concept demo</strong> — unaffiliated portfolio project. Not endorsed by Carleton University or its Office of Institutional Research and Planning.</span>
-    <a href="/">View dev/technical version →</a>
+<a class="skip" href="#q">Skip to the question box</a>
+
+<div class="strip" role="note">
+  <span><b>Concept demo</b> · an unaffiliated portfolio project, not endorsed by Carleton University or its OIRP · warehouse numbers are synthetic</span>
+  <span class="spacer"></span>
+  <button type="button" data-switch="glass" aria-pressed="true">Glass: on</button>
+  <button type="button" data-switch="motion" aria-pressed="true">Motion: on</button>
+  <a class="btn" href="/">Technical view</a>
+</div>
+
+<div class="wave" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none" id="wave"></svg></div>
+
+<div class="page">
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/oirp"><span class="mark" aria-hidden="true">IR</span><span class="sep" aria-hidden="true"></span>
+        <span class="name"><b><abbr title="Office of Institutional Research and Planning">OIRP</abbr></b><small>Evidence-based decisions</small></span></a>
+      <nav aria-label="Site">
+        <a class="u" href="#ask" aria-current="page">Ask a question</a>
+        <a class="u" href="#sources">Where the numbers come from</a>
+        <a class="u" href="#rules">How it answers</a>
+        <a class="u" href="https://github.com/leandrovelazquez/oirp-chat" target="_blank" rel="noopener">Source</a>
+      </nav>
+    </header>
   </div>
 
-  <!-- ─────────── Top bar ─────────── -->
-  <header class="topbar">
-    <div class="wordmark">
-      OIRP
-      <span class="small">Office of Institutional Research and Planning</span>
+  <div class="wrap journey-wrap">
+    <nav class="journey" aria-label="The student journey: pick a step to ask about it"><div class="inner" id="journey"></div></nav>
+  </div>
+
+  <main class="wrap" id="main">
+    <div class="flow" id="flow">
+
+      <section class="pane hero" id="ask" aria-labelledby="h-ask" data-reveal>
+        <h1 id="h-ask">What would you like to know?</h1>
+        <p class="lede">Ask about Carleton's students in your own words, from the first application to the degree. Every answer says what was counted, where the number came from, and when.</p>
+
+        <div class="convo-bar"><span id="convo-count"></span><button type="button" id="reset">Start a new conversation</button></div>
+        <div class="thread" id="thread" aria-live="polite"></div>
+
+        <form class="search" id="form" role="search" aria-label="Ask a question">
+          <svg class="glass-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <label class="sr" for="q">Your question</label>
+          <textarea id="q" rows="1" placeholder="For example: what was first-year retention by faculty for the 2024 cohort?" autocomplete="off" aria-describedby="hint"></textarea>
+          <button type="submit" class="send" id="send" aria-label="Ask" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+        <p class="hint" id="hint">Enter to ask, Shift+Enter for a new line. Follow-up questions remember what came before.</p>
+
+        <div class="quick" id="quick"></div>
+      </section>
+
+      <section class="pane" id="sources" aria-labelledby="h-sources" data-reveal>
+        <span class="step">Where the numbers come from</span>
+        <h2 id="h-sources">Two kinds of number, never mixed</h2>
+        <p class="blurb">Every answer is labelled with where its numbers came from. The two are never compared with each other: one is what Carleton published, the other is invented data shaped like the institutional warehouse.</p>
+        <div class="cols">
+          <div class="col">
+            <span class="pill published"><span class="m" aria-hidden="true">✓</span>Published source</span>
+            <h3>What Carleton published</h3>
+            <p>Real figures, checked by hand against public reports (NSSE 2023, annual and budget reports), each with its file and page.</p>
+            <div class="big" id="kpi-count">–</div><p>published indicators</p>
+          </div>
+          <div class="col">
+            <span class="pill synthetic"><span class="m" aria-hidden="true">◔</span>Synthetic data</span>
+            <h3>A warehouse of invented students</h3>
+            <p>Generated records in the shape of the real retention, enrolment and admissions cubes, so the questions an analyst asks every day can be answered end to end.</p>
+            <ul id="cube-list"><li>Loading…</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane" id="rules" aria-labelledby="h-rules" data-reveal>
+        <span class="step">How it answers</span>
+        <h2 id="h-rules">Rules it keeps, every time</h2>
+        <p class="blurb">The assistant reads the same definitions an analyst would, and it asks the data through governed measures rather than writing its own SQL.</p>
+        <div class="rules">
+          <div><h3>No invented numbers</h3><p>Every number comes from a lookup. If the published figure isn't there, it says so and names the report that has it.</p></div>
+          <div><h3>Says what was counted</h3><p>Which count date, which term, which cohort year, and whether a student is placed in the faculty they entered or the one they're in now.</p></div>
+          <div><h3>Small groups stay hidden</h3><p>A cell with fewer than ten students is suppressed, and suppressed is never read as zero.</p></div>
+          <div><h3>Says how fresh it is</h3><p>Each cube reports when it was last loaded. When one is behind, the answer gives its date.</p></div>
+        </div>
+      </section>
+
     </div>
-    <nav class="nav-stubs" aria-label="Primary navigation (illustrative)">
-      <a href="#">Home</a>
-      <a href="#">Surveys</a>
-      <a href="#">Data Cubes</a>
-      <a href="#">Reports</a>
-      <a href="#">Methodology</a>
-    </nav>
-  </header>
-
-  <!-- ─────────── Main layout: content + chat panel ─────────── -->
-  <div class="layout">
-    <main class="hero">
-      <div class="accent-bar" aria-hidden="true"></div>
-
-      <h1>Institutional research, <span class="accent">on demand</span>.</h1>
-
-      <p class="lede">
-        OIRP curates and publishes the data Carleton uses to plan, evaluate,
-        and improve. This concept explores what it could look like to ask
-        questions of that data directly — in plain language — and get
-        cited, source-grounded answers.
-      </p>
-
-      <div class="body-prose">
-        <p>
-          Most institutional questions don't need a dashboard. They need an
-          answer with a footnote: <em>"What was first-year retention last year?
-          And where can I read more?"</em> The data is already published — the
-          friction is in finding it.
-        </p>
-
-        <p>
-          The assistant on the right is grounded in OIRP-published source
-          documents (NSSE summaries, Annual Reports, Operating Budget Reports).
-          Every numerical claim is traced to its source PDF and page.
-          When a value isn't in the verified store, the assistant declines
-          and points you to the right OIRP source rather than guessing.
-        </p>
-
-        <div class="pull-quote">
-          Schema is not the same thing as business context. Real institutional
-          questions live in the gap between the two.
-        </div>
-
-        <h2 class="section-title">How it works</h2>
-
-        <p>
-          A curated <strong>semantic layer</strong> documents each KPI Carleton
-          tracks — its definitions, calculation methods, synonyms,
-          comparison groups, and verified values with page-level citations.
-          The assistant queries this layer through structured tools, then
-          composes answers in natural language with explicit confidence
-          tiers (high / medium / low) so reviewers know how much to trust
-          each response.
-        </p>
-
-        <p>
-          Today the verified store covers six KPIs across student
-          engagement, retention, and enrolment. The architecture is
-          designed so OIRP's existing Power BI / Data Cubes back-end could
-          plug in without changing the assistant layer above.
-        </p>
-      </div>
-
-      <div class="footer-note">
-        Built as a portfolio project to demonstrate how a semantic-layer-grounded
-        agent could fit alongside OIRP's existing reporting tools.
-        <a href="https://github.com/leandrovelazquez/oirp-chat" target="_blank" rel="noopener">
-          View source on GitHub →
-        </a>
-      </div>
-    </main>
-
-    <!-- ─────────── Chat side panel ─────────── -->
-    <aside class="chat-panel" id="chatPanel" aria-label="OIRP assistant">
-      <div class="chat-header">
-        <div class="title">
-          OIRP Assistant
-          <span class="small" id="info">loading…</span>
-        </div>
-        <div style="display:flex; gap:6px;">
-          <button id="reset" type="button">Reset</button>
-          <button class="close-mobile" id="closeMobile" type="button">Close</button>
-        </div>
-      </div>
-
-      <div class="chat-meta" id="chatMeta">
-        Concept demo. Verified-value answers only — refuses on values not yet in the verified store.
-      </div>
-
-      <div id="messages">
-        <div class="placeholder" id="placeholder">
-          <h2>Ask about Carleton's institutional data</h2>
-          <p>Try one of these to start:</p>
-          <ul class="examples">
-            <li><button data-q="What percentage of first-year Carleton students rated their experience as good or excellent in 2023?">What percentage of first-year students rated their experience as good or excellent in 2023?</button></li>
-            <li><button data-q="Compare HIPs participation between 3-year and 4-year programs in 2023.">Compare HIPs participation between 3-year and 4-year programs in 2023.</button></li>
-            <li><button data-q="What was Carleton's first-year retention rate in 2022?">What was Carleton's first-year retention rate in 2022? <em>(Should refuse — not in verified store)</em></button></li>
-            <li><button data-q="What's projected for international undergraduate intake by Fall 2025?">What's projected for international undergraduate intake by Fall 2025?</button></li>
-          </ul>
-        </div>
-      </div>
-
-      <form class="composer" id="form">
-        <textarea id="input" placeholder="Ask a question…" rows="1"></textarea>
-        <button type="submit" class="send" id="send">Send</button>
-      </form>
-    </aside>
-  </div>
-
-  <!-- ─────────── Mobile FAB (hidden on desktop) ─────────── -->
-  <button class="chat-fab" id="chatFab" type="button">💬 Ask OIRP</button>
+    <footer>
+      <span>Office of Institutional Research and Planning (OIRP)-style concept demo</span>
+      <span>Unaffiliated portfolio project, for discussion</span>
+      <span id="model-line"></span>
+    </footer>
+  </main>
+</div>
 
 <script>
-const messagesEl   = document.getElementById("messages");
-const placeholderEl = document.getElementById("placeholder");
-const inputEl      = document.getElementById("input");
-const formEl       = document.getElementById("form");
-const sendBtn      = document.getElementById("send");
-const resetBtn     = document.getElementById("reset");
-const infoEl       = document.getElementById("info");
-const chatPanel    = document.getElementById("chatPanel");
-const chatFab      = document.getElementById("chatFab");
-const closeMobile  = document.getElementById("closeMobile");
+"use strict";
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const NS = "http://www.w3.org/2000/svg";
+  const RED = "#e91c24";
+  const root = document.documentElement;
 
-// ── info banner (KPI count, model) ──
-fetch("/api/info").then(r => r.json()).then(d => {
-  if (d.error) {
-    infoEl.textContent = "configuration error";
-    return;
+  /* ------------------------------------------------ preferences (per viewer) */
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch { /* private mode */ } },
+  };
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceGlass = matchMedia("(prefers-reduced-transparency: reduce)").matches;
+  const prefs = { glass: store.get("oirp.glass") ?? (reduceGlass ? "off" : "on"), motion: store.get("oirp.motion") ?? (reduceMotion ? "off" : "on") };
+  if (store.get("oirp.glass")) root.setAttribute("data-glass-chosen", "");
+  const applyPrefs = () => {
+    for (const k of ["glass", "motion"]) {
+      root.dataset[k] = prefs[k];
+      const b = document.querySelector(`[data-switch="${k}"]`);
+      b.setAttribute("aria-pressed", String(prefs[k] === "on"));
+      b.textContent = `${k[0].toUpperCase()}${k.slice(1)}: ${prefs[k]}`;
+    }
+  };
+  document.querySelectorAll("[data-switch]").forEach((b) => b.addEventListener("click", () => {
+    const k = b.dataset.switch;
+    prefs[k] = prefs[k] === "on" ? "off" : "on";
+    store.set(`oirp.${k}`, prefs[k]);
+    if (k === "glass") root.setAttribute("data-glass-chosen", "");
+    applyPrefs();
+  }));
+  applyPrefs();
+  const moving = () => prefs.motion === "on";
+
+  /* ------------------------------------------------------- the wave behind */
+  /* A wide ribbon of red down the middle of the page, very pale, with a finer
+     line inside it. It drifts a little slower than the page. */
+  $("wave").innerHTML = (() => {
+    const pts = [];
+    for (let y = -10; y <= 110; y += 2) pts.push([52 + 10 * Math.sin(y / 15 + 0.6) + 3.5 * Math.sin(y / 6), y]);
+    const edge = (dx, list) => list.map(([x, y]) => `${(x + dx).toFixed(2)} ${y}`).join(" L");
+    return `<path d="M${edge(-9, pts)} L${edge(9, pts.slice().reverse())} Z" fill="${RED}" opacity=".08"/>
+      <path d="M${edge(0, pts)}" fill="none" stroke="${RED}" stroke-width="2" opacity=".3" vector-effect="non-scaling-stroke"/>`;
+  })();
+  const waveSvg = $("wave");
+
+  /* ------------------------------------------- the student journey on top */
+  /* Six steps. Each says where its numbers live in this demo and carries a
+     question to start with. A step lights up once an answer has used it. */
+  const STAGES = [
+    { id: "apply", name: "Apply", where: "Admissions cube",
+      q: "Walk me through the admissions funnel for the fall 2025 intake." },
+    { id: "admitted", name: "Admitted", where: "Admissions cube",
+      q: "What share of approved applicants confirmed for fall 2025, by faculty?" },
+    { id: "enrolled", name: "Enrolled", where: "Enrolment cube",
+      q: "Which faculty had the most students in fall 2025, and what share were international?" },
+    { id: "experience", name: "Experience", where: "NSSE 2023, published",
+      q: "What percentage of first-year students rated their experience as good or excellent in 2023?" },
+    { id: "retained", name: "Retained", where: "Retention cube",
+      q: "What was first-year retention by faculty for the 2024 cohort?" },
+    { id: "graduated", name: "Graduated", where: "Retention cube",
+      q: "What share of the 2018 cohort had graduated within six years, by faculty?" },
+  ];
+  const lit = new Set();
+  $("journey").innerHTML = `<svg class="line" aria-hidden="true"><path class="ghost"/><path class="drawn"/></svg>`
+    + STAGES.map((st, i) => `<button type="button" class="box" data-stage="${st.id}" title="Ask: ${esc(st.q)}">
+        <span class="n">${String(i + 1).padStart(2, "0")}</span><span class="t">${esc(st.name)}</span><span class="v">${esc(st.where)}</span></button>`).join("");
+  const jline = document.querySelector(".journey svg.line");
+  const drawn = jline.querySelector(".drawn"), ghost = jline.querySelector(".ghost");
+  let dots = [], xs = [], len = 0;
+
+  function layoutLine() {
+    const host = $("journey").getBoundingClientRect();
+    const boxes = [...document.querySelectorAll(".journey .box")].map((b) => b.getBoundingClientRect());
+    if (!boxes.length || !host.width) return;
+    const y = host.height - 15;
+    xs = boxes.map((b) => b.left - host.left + b.width / 2);
+    let d = `M${boxes[0].left - host.left} ${y} L${xs[0]} ${y}`;
+    for (let i = 1; i < xs.length; i++) {
+      const mid = (xs[i - 1] + xs[i]) / 2, bump = i % 2 ? -4 : 4;
+      d += ` Q${mid} ${y + bump * 2} ${xs[i]} ${y}`;
+    }
+    d += ` L${boxes[boxes.length - 1].right - host.left} ${y}`;
+    jline.setAttribute("viewBox", `0 0 ${host.width} ${host.height}`);
+    ghost.setAttribute("d", d); drawn.setAttribute("d", d);
+    jline.querySelectorAll(".dot").forEach((n) => n.remove());
+    dots = xs.map((x) => {
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("class", "dot"); c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 4.5);
+      jline.append(c);
+      return c;
+    });
+    len = drawn.getTotalLength();
+    drawn.style.strokeDasharray = len;
+    paintJourney();
   }
-  infoEl.textContent = `${d.kpi_count} KPIs loaded`;
-}).catch(() => {
-  infoEl.textContent = "—";
-});
 
-// ── DOM helpers ──
-function escapeHtml(s) {
-  const div = document.createElement("div");
-  div.textContent = s;
-  return div.innerHTML;
-}
-function lightFormat(s) {
-  let out = escapeHtml(s);
-  out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
-  out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-  return out;
-}
+  /* The red line runs from the first step to the furthest step asked about,
+     and every step an answer used gets its dot. */
+  function paintJourney(current = []) {
+    const idx = STAGES.map((s, i) => (lit.has(s.id) ? i : -1)).filter((i) => i >= 0);
+    dots.forEach((c, i) => c.classList.toggle("on", lit.has(STAGES[i].id)));
+    document.querySelectorAll(".journey .box").forEach((b) => {
+      b.classList.toggle("lit", lit.has(b.dataset.stage));
+      if (current.includes(b.dataset.stage)) b.setAttribute("aria-current", "step");
+      else if (current.length) b.removeAttribute("aria-current");
+    });
+    if (!len) return;
+    if (!idx.length) { drawn.style.strokeDashoffset = len; return; }
+    const target = xs[Math.max(...idx)];
+    let lo = 0, hi = len;
+    for (let n = 0; n < 18; n++) { const m = (lo + hi) / 2; if (drawn.getPointAtLength(m).x < target) lo = m; else hi = m; }
+    drawn.style.strokeDashoffset = len - lo;
+    $("flow").style.setProperty("--thread", `${Math.min(100, 20 + (Math.max(...idx) + 1) * 13)}%`);
+  }
 
-function appendMessage(role, text, extra) {
-  if (placeholderEl && placeholderEl.parentNode) placeholderEl.remove();
+  /* Which steps did an answer touch? Read off the tool trace. */
+  function stagesFor(trace) {
+    const out = new Set();
+    for (const c of trace || []) {
+      const s = `${c.summary || ""}`;
+      if (c.name === "query_metric" || c.name === "describe_cube") {
+        if (/Retention/.test(s)) out.add(/Graduat/.test(s) ? "graduated" : "retained");
+        if (/Retention/.test(s) && /Graduat/.test(s) && /Continu|Retain|Persist/.test(s)) out.add("retained");
+        if (/Enrolment/.test(s)) out.add("enrolled");
+        if (/Admissions/.test(s)) {
+          if (/Applica|Applicants/.test(s) || !/Approv|Confirm|Offer|Admit|Regist/.test(s)) out.add("apply");
+          if (/Approv|Confirm|Offer|Admit|Regist/.test(s)) out.add("admitted");
+        }
+      } else if (/kpi_id='?(overall_experience|would_choose|nsse)/.test(s)) out.add("experience");
+      else if (/kpi_id='?first_year_retention/.test(s)) out.add("retained");
+      else if (/kpi_id='?undergraduate_enrolment|kpi_id='?international/.test(s)) out.add("enrolled");
+    }
+    return [...out];
+  }
 
-  const msg = document.createElement("div");
-  msg.className = "msg " + role;
+  document.querySelector(".journey").addEventListener("click", (e) => {
+    const b = e.target.closest(".box");
+    if (!b || busy) return;
+    const st = STAGES.find((s) => s.id === b.dataset.stage);
+    ask(st.q);
+  });
 
-  const roleEl = document.createElement("div");
-  roleEl.className = "role" + (role === "bot" ? " bot-role" : "");
-  roleEl.textContent = role === "user" ? "You" : "OIRP Assistant";
-  msg.appendChild(roleEl);
+  /* ------------------------------------------------------ small markdown */
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function inline(s) {
+    const codes = [];
+    let t = esc(s).replace(/`([^`]+)`/g, (_, c) => `\u0000${codes.push(c) - 1}\u0000`);
+    t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    t = t.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    t = t.replace(/(^|[^*\w])\*(?!\s)([^*]+?)\*(?!\*)/g, "$1<em>$2</em>");
+    t = t.replace(/(^|[\s(])_(?!\s)([^_]+?)_(?=[\s.,;:!?)]|$)/g, "$1<em>$2</em>");
+    return t.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${codes[+i]}</code>`);
+  }
+  const cells = (line) => line.trim().replace(/^\|/, "").replace(/\|$/, "").split(/(?<!\\)\|/).map((c) => c.trim().replace(/\\\|/g, "|"));
+  const NUMERIC = /^[\s$+\-–—~≈<>()]*[\d.,]+\s*(%|pts?|points?|pp)?[\s)*]*$|^[—–-]$|^suppressed/i;
+  function table(rows) {
+    const head = cells(rows[0]), body = rows.slice(2).map(cells);
+    const num = head.map((_, j) => j > 0 && body.length > 0 && body.every((r) => !r[j] || NUMERIC.test(r[j].replace(/\*/g, ""))));
+    const cls = (j) => (num[j] ? ' class="num"' : "");
+    return `<div class="tablewrap"><table class="calm"><thead><tr>${head.map((h, j) => `<th scope="col"${cls(j)}>${inline(h)}</th>`).join("")}</tr></thead>
+      <tbody>${body.map((r) => `<tr>${head.map((_, j) => `<td${cls(j)}>${inline(r[j] ?? "")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  const LIST = /^(\s*)([-*+]|\d+[.)])\s+(.*)$/;
+  function md(src) {
+    const lines = String(src || "").replace(/\r/g, "").split("\n");
+    const out = [];
+    let i = 0;
+    const isBlockStart = (l, next) => /^```/.test(l) || /^#{1,6}\s/.test(l) || /^>\s?/.test(l) || LIST.test(l)
+      || /^(-{3,}|\*{3,}|_{3,})\s*$/.test(l) || (/^\s*\|/.test(l) && /^\s*\|?\s*:?-{2,}/.test(next || ""));
+    while (i < lines.length) {
+      const l = lines[i];
+      if (!l.trim()) { i++; continue; }
+      if (/^```/.test(l)) {
+        const buf = []; i++;
+        while (i < lines.length && !/^```/.test(lines[i])) buf.push(lines[i++]);
+        i++; out.push(`<pre><code>${esc(buf.join("\n"))}</code></pre>`); continue;
+      }
+      const h = l.match(/^(#{1,6})\s+(.*)$/);
+      if (h) { const n = Math.min(5, Math.max(3, h[1].length + 2)); out.push(`<h${n}>${inline(h[2])}</h${n}>`); i++; continue; }
+      if (/^(-{3,}|\*{3,}|_{3,})\s*$/.test(l)) { out.push("<hr>"); i++; continue; }
+      if (/^\s*\|/.test(l) && /^\s*\|?\s*:?-{2,}/.test(lines[i + 1] || "")) {
+        const buf = [];
+        while (i < lines.length && /^\s*\|/.test(lines[i])) buf.push(lines[i++]);
+        out.push(table(buf)); continue;
+      }
+      if (/^>\s?/.test(l)) {
+        const buf = [];
+        while (i < lines.length && /^>\s?/.test(lines[i])) buf.push(lines[i++].replace(/^>\s?/, ""));
+        out.push(`<blockquote>${md(buf.join("\n"))}</blockquote>`); continue;
+      }
+      const li = l.match(LIST);
+      if (li) {
+        const ordered = /\d/.test(li[2]), items = [];
+        while (i < lines.length) {
+          const m = lines[i].match(LIST);
+          if (m) { items.push({ sub: m[1].length >= 2, text: m[3] }); i++; }
+          else if (lines[i].trim() && /^\s{2,}/.test(lines[i]) && items.length) { items[items.length - 1].text += " " + lines[i].trim(); i++; }
+          else break;
+        }
+        const tag = ordered ? "ol" : "ul";
+        out.push(`<${tag}>${items.map((x) => `<li${x.sub ? ' class="sub"' : ""}>${inline(x.text)}</li>`).join("")}</${tag}>`); continue;
+      }
+      const buf = [];
+      while (i < lines.length && lines[i].trim() && !(buf.length && isBlockStart(lines[i], lines[i + 1]))) buf.push(lines[i++]);
+      out.push(`<p>${buf.map(inline).join(" ")}</p>`);
+    }
+    return out.join("");
+  }
 
-  const body = document.createElement("div");
-  body.className = "body";
-  body.innerHTML = lightFormat(text);
-  msg.appendChild(body);
+  /* ---------------------------------------------------------- the answers */
+  const CONF = {
+    high: ["✓", "Grounded in a lookup"],
+    medium: ["◐", "Definitions and method"],
+    low: ["!", "Not in the data: see the note"],
+    none: ["·", "No lookup made"],
+  };
+  const SRC = { synthetic: ["◔", "Synthetic data"], published: ["✓", "Published source"] };
+  const TOOL = {
+    get_kpi_value: "Looked up a published figure",
+    search_methodology: "Read the definitions",
+    list_kpis: "Listed what is published",
+    query_metric: "Asked the synthetic warehouse",
+    describe_cube: "Checked a cube's measures and dimensions",
+  };
+  const pill = (cls, [m, text]) => `<span class="pill ${cls}"><span class="m" aria-hidden="true">${m}</span>${esc(text)}</span>`;
 
-  if (extra && extra.confidence) {
-    const meta = document.createElement("div");
-    meta.className = "meta-row";
-    const badge = document.createElement("span");
-    badge.className = "badge " + extra.confidence;
-    badge.textContent = extra.confidence;
-    meta.appendChild(badge);
+  const thread = $("thread"), input = $("q"), send = $("send"), hero = $("ask");
+  let busy = false, turns = 0;
 
-    if (extra.trace && extra.trace.length) {
-      const toggle = document.createElement("button");
-      toggle.className = "trace-toggle";
-      toggle.type = "button";
-      toggle.textContent = `${extra.trace.length} tool call${extra.trace.length === 1 ? "" : "s"}`;
-      const traceEl = document.createElement("div");
-      traceEl.className = "trace";
-      traceEl.textContent = extra.trace
-        .map((c, i) => `${i + 1}. ${c.name}(${c.summary})`)
-        .join("\n");
-      toggle.addEventListener("click", () => {
-        traceEl.classList.toggle("shown");
+  function steps(trace) {
+    return trace.map((c) => `<li><span class="what">${esc(TOOL[c.name] || c.name)}</span>
+      <span class="detail">${esc(c.summary || "")}</span>${c.detail ? `<pre>${esc(c.detail)}</pre>` : "<span></span>"}</li>`).join("");
+  }
+
+  function renderAnswer(card, data) {
+    const trace = data.trace || [];
+    const tier = CONF[data.confidence] ? data.confidence : "none";
+    const sources = (data.sources || []).filter((s) => SRC[s]);
+    card.innerHTML = `<div class="md">${md(data.text || "_(No answer came back.)_")}</div>
+      <div class="when">${pill(tier, CONF[tier])}${sources.map((s) => pill(s, SRC[s])).join("")}
+        ${trace.length ? `<button type="button" class="how" aria-expanded="false">How this was answered · ${trace.length} step${trace.length === 1 ? "" : "s"}</button>` : ""}</div>
+      ${trace.length ? `<ol class="steps">${steps(trace)}</ol>` : ""}`;
+    const how = card.querySelector(".how");
+    if (how) how.addEventListener("click", () => {
+      const open = card.querySelector(".steps").classList.toggle("shown");
+      how.setAttribute("aria-expanded", String(open));
+    });
+    const touched = stagesFor(trace);
+    touched.forEach((s) => lit.add(s));
+    paintJourney(touched);
+  }
+
+  function renderError(card, message, hint) {
+    card.classList.add("error");
+    card.innerHTML = `<div class="md"><p><strong>That didn't go through.</strong> ${esc(message)}</p>${hint ? `<p>${esc(hint)}</p>` : ""}</div>`;
+  }
+
+  async function ask(text) {
+    text = (text || "").trim();
+    if (!text || busy) return;
+    busy = true; send.disabled = true; input.disabled = true;
+    turns++;
+    hero.classList.add("has-convo");
+    $("convo-count").textContent = `${turns} question${turns === 1 ? "" : "s"} in this conversation`;
+
+    const turn = document.createElement("article");
+    turn.className = "turn";
+    turn.innerHTML = `<div class="asked">You asked: <b>${esc(text)}</b></div>
+      <div class="answer"><div class="thinking"><span class="bar" aria-hidden="true"></span><span class="t">Looking it up</span></div></div>`;
+    thread.append(turn);
+    input.value = ""; grow();
+    turn.scrollIntoView({ behavior: moving() ? "smooth" : "auto", block: "start" });
+
+    const card = turn.querySelector(".answer"), label = turn.querySelector(".thinking .t");
+    const started = Date.now();
+    const tick = setInterval(() => {
+      const s = Math.round((Date.now() - started) / 1000);
+      label.textContent = s < 4 ? "Looking it up" : s < 12 ? `Reading the definitions and asking the data · ${s}s` : `Still working: checking the numbers · ${s}s`;
+    }, 1000);
+
+    try {
+      const r = await fetch("/api/chat", {
+        method: "POST", credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
       });
-      meta.appendChild(toggle);
-      msg.appendChild(meta);
-      msg.appendChild(traceEl);
-    } else {
-      msg.appendChild(meta);
+      let data = {};
+      try { data = await r.json(); } catch { /* not JSON */ }
+      if (!r.ok || data.error) renderError(card, data.detail || data.error || `The server answered ${r.status}.`, data.hint);
+      else renderAnswer(card, data);
+    } catch (e) {
+      renderError(card, "The server couldn't be reached.", "Is uvicorn still running?");
+    } finally {
+      clearInterval(tick);
+      busy = false; input.disabled = false; send.disabled = !input.value.trim();
+      input.focus({ preventScroll: true });
     }
-  } else if (extra && extra.error) {
-    const err = document.createElement("div");
-    err.className = "error";
-    err.textContent = extra.error;
-    msg.appendChild(err);
   }
 
-  messagesEl.appendChild(msg);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
+  /* ------------------------------------------------------------ the box */
+  function grow() {
+    input.style.height = "auto";
+    input.style.height = `${Math.min(input.scrollHeight + 2, 200)}px`;
+    send.disabled = busy || !input.value.trim();
+  }
+  input.addEventListener("input", grow);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(input.value); }
+  });
+  $("form").addEventListener("submit", (e) => { e.preventDefault(); ask(input.value); });
 
-async function sendMessage(text) {
-  if (!text.trim()) return;
-  appendMessage("user", text);
-  inputEl.value = "";
-  inputEl.style.height = "auto";
-  sendBtn.disabled = true;
+  const QUICK = [
+    STAGES[4].q,
+    "How many undergraduates were enrolled in fall 2025, and what share were international?",
+    STAGES[3].q,
+  ];
+  $("quick").innerHTML = `<span>People often ask:</span>` + QUICK.map((q) => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join("");
+  $("quick").addEventListener("click", (e) => { const b = e.target.closest("button[data-q]"); if (b) ask(b.dataset.q); });
 
-  const pending = document.createElement("div");
-  pending.className = "msg bot";
-  pending.innerHTML = '<div class="role bot-role">OIRP Assistant</div><div class="body" style="color: var(--ink-500);">thinking…</div>';
-  messagesEl.appendChild(pending);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
+  $("reset").addEventListener("click", async () => {
+    if (busy) return;
+    try { await fetch("/api/reset", { method: "POST", credentials: "same-origin" }); } catch { /* the page resets anyway */ }
+    thread.innerHTML = ""; turns = 0; lit.clear();
+    hero.classList.remove("has-convo");
+    document.querySelectorAll(".journey .box").forEach((b) => b.removeAttribute("aria-current"));
+    $("flow").style.removeProperty("--thread");
+    paintJourney();
+    input.focus();
+  });
 
-  try {
-    const r = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "same-origin",
-      body: JSON.stringify({ message: text }),
+  /* ------------------------------------------- where the numbers come from */
+  fetch("/api/info").then((r) => r.json()).then((d) => {
+    if (d.error) throw new Error(d.error);
+    $("kpi-count").textContent = d.kpi_count ?? "–";
+    const cubes = d.cubes || [];
+    $("cube-list").innerHTML = cubes.length ? cubes.map((c) => `<li><b>${esc(c.cube)}</b><span>as of ${esc(c.data_as_of || "unknown")}</span>
+      ${c.stale ? `<span class="pill low"><span class="m" aria-hidden="true">!</span>Behind schedule</span>` : ""}</li>`).join("")
+      : "<li>No warehouse loaded.</li>";
+    if (d.model) $("model-line").textContent = `Model: ${d.model}`;
+  }).catch(() => { $("cube-list").innerHTML = "<li>Couldn't reach the server.</li>"; });
+
+  /* ------------------------------------------------ light, reveal, drift */
+  document.addEventListener("pointermove", (e) => {
+    const p = e.target.closest?.(".pane");
+    if (!p) return;
+    const r = p.getBoundingClientRect();
+    p.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    p.style.setProperty("--my", `${e.clientY - r.top}px`);
+  });
+  const io = "IntersectionObserver" in window
+    ? new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add("is-in"); io.unobserve(x.target); } }), { threshold: 0.08 })
+    : null;
+  document.querySelectorAll("[data-reveal]").forEach((el) => (io ? io.observe(el) : el.classList.add("is-in")));
+  let queued = false;
+  addEventListener("scroll", () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      waveSvg.style.setProperty("--drift", moving() ? `${(-Math.min(scrollY * 0.06, innerHeight * 0.09)).toFixed(1)}px` : "0px");
     });
-    const data = await r.json();
-    pending.remove();
+  }, { passive: true });
+  addEventListener("resize", layoutLine);
+  layoutLine();
+  input.focus({ preventScroll: true });
 
-    if (!r.ok || data.error) {
-      const errMsg = data.detail || data.error || `HTTP ${r.status}`;
-      const hint = data.hint ? `\n\n${data.hint}` : "";
-      appendMessage("bot", "Something went wrong.", { error: errMsg + hint });
-      return;
-    }
-    appendMessage("bot", data.text || "(empty response)", {
-      confidence: data.confidence,
-      trace: data.trace || [],
-    });
-  } catch (e) {
-    pending.remove();
-    appendMessage("bot", "Network error.", { error: String(e) });
-  } finally {
-    sendBtn.disabled = false;
-    inputEl.focus();
-  }
-}
-
-// ── form wiring ──
-formEl.addEventListener("submit", e => { e.preventDefault(); sendMessage(inputEl.value); });
-inputEl.addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage(inputEl.value);
-  }
-});
-inputEl.addEventListener("input", () => {
-  inputEl.style.height = "auto";
-  inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
-});
-
-document.addEventListener("click", e => {
-  const btn = e.target.closest("button[data-q]");
-  if (btn) sendMessage(btn.dataset.q);
-});
-
-resetBtn.addEventListener("click", async () => {
-  if (!confirm("Clear the conversation?")) return;
-  await fetch("/api/reset", { method: "POST", credentials: "same-origin" });
-  location.reload();
-});
-
-// ── mobile launcher ──
-chatFab.addEventListener("click", () => {
-  chatPanel.classList.add("open");
-  chatFab.classList.add("hidden");
-  inputEl.focus();
-});
-closeMobile.addEventListener("click", () => {
-  chatPanel.classList.remove("open");
-  chatFab.classList.remove("hidden");
-});
-
-inputEl.focus();
+  /* A question in the address, /oirp?q=..., is asked straight away, so a
+     question can be shared as a link. */
+  const asked = new URLSearchParams(location.search).get("q");
+  if (asked) { history.replaceState(null, "", location.pathname); ask(asked); }
+})();
 </script>
 </body>
 </html>

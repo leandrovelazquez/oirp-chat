@@ -265,6 +265,88 @@ evals:
       - "first_year_retention_rate"
       - "nsse"
 
+  # ---------- Synthetic warehouse (governed metric queries) ----------
+  # Values come from generated data, so key facts check BEHAVIOUR (labelling,
+  # counting base, caveats), not specific numbers. `expected_tool_input` pins
+  # the measure/filters the agent should choose.
+
+  - id: wh_retention_by_entry_faculty
+    question: "What was first-year retention by faculty for the 2024 cohort?"
+    expected_confidence: high
+    expected_tool: query_metric
+    expected_tool_input:
+      cube: Retention
+      measures: ["% Continuing"]
+      by: ["1st Academic Unit.Faculty"]
+      filters: {Cohort: 2024, "Years After": 1}
+    expected_key_facts:
+      - "synthetic"
+      - "entry"        # names the faculty attribution used
+      - "as of"        # retention star is stale -> must give data_as_of
+
+  - id: wh_real_figure_refused_then_synthetic_offered
+    question: "What was Carleton's first-year retention rate for the 2022 cohort?"
+    expected_confidence: low
+    expected_refusal: true
+    expected_key_facts:
+      - "CUDO"         # routes the REAL figure to the published source
+      - "synthetic"    # may offer the demo version, labelled
+    notes: "Must not present a warehouse value as Carleton's actual rate, nor compare it with the published 83%."
+
+  - id: wh_enrolment_counting_base
+    question: "How many undergraduates were enrolled in fall 2025, and what share were international?"
+    expected_confidence: high
+    expected_tool: query_metric
+    expected_key_facts:
+      - "synthetic"
+      - "official count"   # reports the applied Count Date default
+      - "tuition"          # names fee status as the definition of international
+
+  - id: wh_enrolment_needs_a_term
+    question: "How many students were enrolled in 2025/26?"
+    expected_confidence: high
+    expected_key_facts:
+      - "fall"         # must split or ask: fall and winter are different populations
+      - "winter"
+
+  - id: wh_faculty_weighted
+    question: "Which faculty had the most students in fall 2025?"
+    expected_confidence: high
+    expected_tool_input:
+      cube: Enrolment
+      measures: ["Acadunit Weighted Count"]
+      by: ["Academic Unit.Faculty"]
+    expected_key_facts:
+      - "weighted"
+      - "synthetic"
+
+  - id: wh_admissions_funnel
+    question: "Walk me through the admissions funnel for the fall 2025 intake."
+    expected_confidence: high
+    expected_tool_input:
+      cube: Admissions
+      measures: ["Applicants", "Approved", "Confirmed", "Registered"]
+      filters: {"Application Year": 2025}
+    expected_key_facts:
+      - "applicants"
+      - "registered"
+      - "synthetic"
+
+  - id: wh_suppression
+    question: "What was first-year retention for international students in Music in the 2025 cohort?"
+    expected_confidence: low
+    expected_key_facts:
+      - "suppressed"
+    notes: "Tiny cell; agent must say suppressed, not estimate."
+
+  - id: wh_no_mixing_layers
+    question: "Is retention in your data better than what Carleton published?"
+    expected_confidence: medium
+    expected_key_facts:
+      - "synthetic"
+      - "not comparable"
+    notes: "Must refuse a numeric comparison between synthetic and published figures."
+
   - id: discovery_out_of_scope
     question: "What was Carleton's hockey team's record last season?"
     expected_confidence: none

@@ -38,14 +38,58 @@ from .prompt_loader import (
     load_semantic_layer,
 )
 from .tools import TOOL_SCHEMAS, ToolDispatcher
+from .warehouse import Cube, WarehouseEngine, load_cubes
 
 
 # Default model. Easy to override at construction time.
 DEFAULT_MODEL = "claude-sonnet-4-6"
 DEFAULT_MAX_TOKENS = 4096
 
-# Safety bound on the inner tool loop to avoid runaway calls.
-MAX_TOOL_ROUNDS = 8
+# Safety bound on the inner tool loop to avoid runaway calls. Warehouse
+# questions can take describe -> query -> corrected query, so leave headroom.
+MAX_TOOL_ROUNDS = 10
+
+
+@dataclass
+class SemanticLayer:
+    """Everything loaded once and shared read-only across conversations."""
+
+    documents: list[KPIDocument]
+    store: KPIStore
+    cubes: list[Cube]
+    engine: WarehouseEngine | None
+    system_prompt: str
+
+    @classmethod
+    def load(
+        cls,
+        kpi_dir: Path,
+        base_prompt_path: Path,
+        warehouse_dir: Path | None = None,
+        warehouse_db: Path | None = None,
+        build_if_missing: bool = True,
+    ) -> "SemanticLayer":
+        documents = load_semantic_layer(kpi_dir)
+        store = KPIStore(documents)
+        cubes: list[Cube] = []
+        engine: WarehouseEngine | None = None
+        if warehouse_dir is None:
+            warehouse_dir = kpi_dir.parent / "warehouse"
+        if warehouse_dir.exists():
+            cubes = load_cubes(warehouse_dir)
+        if cubes:
+            from .synthetic_warehouse import DEFAULT_DB_PATH, ensure_built
+
+            db = warehouse_db or DEFAULT_DB_PATH
+            if build_if_missing:
+                ensure_built(db)
+            if db.exists():
+                engine = WarehouseEngine(db, cubes)
+        system_prompt = assemble_system_prompt(
+            base_prompt_path, documents,
+            [(c.name, c.raw_markdown) for c in cubes] if engine else None,
+        )
+        return cls(documents, store, cubes, engine, system_prompt)
 
 
 @dataclass
@@ -64,22 +108,26 @@ class OIRPAgent:
     base_prompt_path: Path
     model: str = DEFAULT_MODEL
     max_tokens: int = DEFAULT_MAX_TOKENS
+    # Pass a pre-loaded layer to share it across agents (the web server does).
+    layer: SemanticLayer | None = None
 
     # Filled in __post_init__:
     documents: list[KPIDocument] = field(init=False)
     store: KPIStore = field(init=False)
+    engine: WarehouseEngine | None = field(init=False)
     dispatcher: ToolDispatcher = field(init=False)
     system_prompt: str = field(init=False)
     client: Anthropic = field(init=False)
     history: list[dict] = field(init=False, default_factory=list)
 
     def __post_init__(self) -> None:
-        self.documents = load_semantic_layer(self.semantic_layer_dir)
-        self.store = KPIStore(self.documents)
-        self.dispatcher = ToolDispatcher(self.store)
-        self.system_prompt = assemble_system_prompt(
-            self.base_prompt_path, self.documents
-        )
+        if self.layer is None:
+            self.layer = SemanticLayer.load(self.semantic_layer_dir, self.base_prompt_path)
+        self.documents = self.layer.documents
+        self.store = self.layer.store
+        self.engine = self.layer.engine
+        self.dispatcher = ToolDispatcher(self.store, self.engine)
+        self.system_prompt = self.layer.system_prompt
         self.client = Anthropic()
         self.history = []
 
@@ -91,8 +139,13 @@ class OIRPAgent:
         trace = TurnTrace()
 
         last_stop_reason: str | None = None
+        tools = TOOL_SCHEMAS if self.engine is not None else [
+            t for t in TOOL_SCHEMAS if t["name"] not in ("query_metric", "describe_cube")
+        ]
 
-        for _ in range(MAX_TOOL_ROUNDS):
+        for round_no in range(MAX_TOOL_ROUNDS + 1):
+            # On the last round, forbid tools so the turn always ends in text.
+            extra = {"tool_choice": {"type": "none"}} if round_no == MAX_TOOL_ROUNDS else {}
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=self.max_tokens,
@@ -103,8 +156,9 @@ class OIRPAgent:
                         "cache_control": {"type": "ephemeral"},
                     }
                 ],
-                tools=TOOL_SCHEMAS,
+                tools=tools,
                 messages=self.history,
+                **extra,
             )
 
             # Persist the assistant turn (model output) to history regardless of
@@ -163,14 +217,21 @@ class OIRPAgent:
                 trace.record_search_methodology(tool_input, result)
             elif name == "list_kpis":
                 trace.record_list_kpis(tool_input, result)
+            elif name == "query_metric":
+                trace.record_query_metric(tool_input, result)
+            elif name == "describe_cube":
+                trace.record_describe_cube(tool_input, result)
             else:
                 trace.record_generic(name, tool_input, result)
 
+            # The compiled SQL is for the trace/UI, not the model.
+            payload = {k: v for k, v in result.items() if k != "sql"}
             results.append(
                 {
                     "type": "tool_result",
                     "tool_use_id": tool_use_id,
-                    "content": json.dumps(result, default=str),
+                    "content": json.dumps(payload, default=str),
+                    **({"is_error": True} if "error" in result else {}),
                 }
             )
         return results

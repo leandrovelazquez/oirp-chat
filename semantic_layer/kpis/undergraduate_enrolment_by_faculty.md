@@ -275,6 +275,14 @@ invent a number.
 > > For inter-institutional comparisons, CUDO Section B is the right
 > > source. Want me to point you to those?"*
 
+> **Synthetic warehouse equivalent.** Headcount, FTE, fee status, citizenship
+> and faculty/department breakdowns all exist in the **Enrolment cube** of the
+> synthetic demo warehouse (`Student Count`; by faculty, `Acadunit Weighted
+> Count`). The strict rule above covers only the *real* figure: give its
+> routing in one line, then **run `query_metric` in the same turn** and show the
+> synthetic result — don't ask whether to. Label it synthetic and never mix it
+> with the published proportions above.
+
 ## Headline Findings (qualitative, 2023–2026 context)
 
 The agent should reach for these as the canonical narrative when a user

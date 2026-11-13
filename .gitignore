@@ -44,3 +44,7 @@ data/extracted/**/*.png
 # what the LLM proposed, but they can also be regenerated. Default to NOT
 # committing them; flip if you want a review trail in Git.
 data/proposed/
+
+# Synthetic warehouse: generated deterministically from a fixed seed by
+# `python -m oirp_agent.synthetic_warehouse` (and automatically on first run).
+data/warehouse/

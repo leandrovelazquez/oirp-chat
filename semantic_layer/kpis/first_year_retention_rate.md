@@ -225,6 +225,14 @@ relevant source rather than invent a number.
 > > two-year retention as 'amongst historic highs.' Want me to point you at
 > > the source pages?"*
 
+> **Synthetic warehouse equivalent.** Every breakdown listed above (by cohort
+> year, faculty, domestic/international, entrance average, FT/PT) is a
+> dimension of the **Retention cube** in the synthetic demo warehouse
+> (`% Continuing` at Years After = 1). The strict rule above covers only the
+> *real* figure: give its routing in one line, then **run `query_metric` in the
+> same turn** and show the synthetic result — don't ask whether to. Label it
+> synthetic and never compare it numerically with the published 83%.
+
 ## Comparison Context
 
 Carleton retention is most meaningfully compared against:

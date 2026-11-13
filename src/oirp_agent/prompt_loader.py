@@ -139,11 +139,16 @@ def load_semantic_layer(kpi_dir: Path) -> list[KPIDocument]:
 def assemble_system_prompt(
     base_prompt_path: Path,
     documents: list[KPIDocument],
+    cube_documents: list[tuple[str, str]] | None = None,
 ) -> str:
-    """Fill the {{KPI_DOCUMENTS}} placeholder in base_prompt.md with all KPI files.
+    """Fill base_prompt.md's placeholders.
 
-    The KPI files are concatenated as-is (full markdown, including frontmatter)
-    so the agent sees the same authoring format the human author wrote.
+    {{KPI_DOCUMENTS}}       every published-layer KPI file
+    {{WAREHOUSE_DOCUMENTS}} every synthetic-warehouse cube file, as
+                            (cube name, raw markdown) pairs
+
+    Files are concatenated as-is (full markdown, including frontmatter) so the
+    agent sees the same authoring format the human author wrote.
     """
     base = base_prompt_path.read_text(encoding="utf-8")
     if "{{KPI_DOCUMENTS}}" not in base:
@@ -155,5 +160,15 @@ def assemble_system_prompt(
     for doc in documents:
         chunks.append(f"\n\n## KPI: `{doc.kpi_id}` (status: {doc.status})\n\n")
         chunks.append(doc.raw_markdown)
+    out = base.replace("{{KPI_DOCUMENTS}}", "".join(chunks))
 
-    return base.replace("{{KPI_DOCUMENTS}}", "".join(chunks))
+    if "{{WAREHOUSE_DOCUMENTS}}" in out:
+        wchunks = []
+        for name, raw in cube_documents or []:
+            wchunks.append(f"\n\n## Cube: `{name}` (SYNTHETIC)\n\n")
+            wchunks.append(raw)
+        out = out.replace(
+            "{{WAREHOUSE_DOCUMENTS}}",
+            "".join(wchunks) or "\n(No synthetic warehouse is loaded in this session.)\n",
+        )
+    return out
