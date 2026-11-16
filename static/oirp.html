@@ -145,6 +145,43 @@ html[data-motion="off"] .answer { animation: none; }
 .thinking .bar::after { content: ""; position: absolute; inset: 0; width: 40%; background: var(--red); animation: slide 1.1s ease-in-out infinite; }
 @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
 html[data-motion="off"] .thinking .bar::after { animation: none; width: 100%; opacity: .5; }
+.thinking .secs { margin-left: auto; font-size: 13px; font-variant-numeric: tabular-nums; }
+
+/* What it is doing right now, one line per step, while the answer is made. */
+.live { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 9px; font-size: 14.5px; color: var(--ink-2); }
+.live:empty { display: none; }
+.live li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 1px 8px; animation: settle .35s ease both; }
+.live li::before { content: ""; grid-row: span 2; width: 9px; height: 9px; margin: 7px 0 0 4px; border-radius: 50%; border: 1.5px solid var(--red); }
+.live li.run::before { background: var(--red); animation: pulse 1.1s ease-in-out infinite; }
+.live li.done::before { content: "✓"; width: auto; height: auto; margin: 0 0 0 3px; border: 0; color: #1e6b2d; font-size: 13px; font-weight: 700; }
+.live li.warn::before { content: "!"; width: auto; height: auto; margin: 0 0 0 6px; border: 0; color: #8a3410; font-size: 13px; font-weight: 800; }
+.live li small { font-size: 12.5px; color: var(--ink-3); }
+@keyframes pulse { 50% { opacity: .35; } }
+html[data-motion="off"] .live li, html[data-motion="off"] .live li.run::before { animation: none; }
+.wait-note { margin: 12px 0 0; font-size: 12.5px; color: var(--ink-3); }
+
+/* The guided tour: a note on each asked question, and a bar to move on. */
+.notice { margin: 2px 0 2px; padding: 12px 16px; border-radius: 12px; background: rgba(255,255,255,.7); border: 1px solid var(--edge);
+  border-left: 3px solid var(--red); font-size: 14.5px; color: var(--ink-2); max-width: 80ch; }
+.notice .k { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-ink); margin-bottom: 2px; }
+.tourbar { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; max-width: 860px; margin: 0 0 22px; padding: 14px 18px;
+  border-radius: 14px; background: var(--black); color: #fff; }
+.tourbar[hidden] { display: none; }
+.tourbar .where { display: grid; gap: 1px; }
+.tourbar .where .k { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #ff8a8f; }
+.tourbar .where b { font-size: 15.5px; font-weight: 650; }
+.tourbar .dots { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.tourbar .dots li { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.28); }
+.tourbar .dots li.on { background: var(--red); }
+.tourbar .dots li.past { background: #fff; }
+.tourbar .acts { margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+.tourbar button { font: inherit; font-size: 14px; font-weight: 600; border-radius: 99px; padding: 7px 16px; cursor: pointer; border: 1px solid rgba(255,255,255,.35);
+  background: transparent; color: #fff; }
+.tourbar button.next { background: var(--red-ink); border-color: var(--red-ink); }
+.tourbar button.next:hover { background: var(--red); }
+.tourbar button:disabled { opacity: .45; cursor: default; }
+.quick button.tour-start { color: var(--ink); }
+.quick button.tour-start small { margin-left: 6px; }
 
 /* Markdown from the agent, in Calm's voice. */
 .md { color: var(--ink); font-size: 16.5px; line-height: 1.65; overflow-wrap: anywhere; }
@@ -198,6 +235,71 @@ table.calm tbody tr:last-child td { border-bottom: 0; }
 .steps .detail { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); overflow-wrap: anywhere; }
 .steps pre { margin: 4px 0 0; font-family: var(--mono); font-size: 12px; color: var(--ink-2); background: #f7f7f4; border: 1px solid var(--grid);
   border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pill.prelim { background: #fff1cc; color: #6e4a00; }
+.pill.reason { background: #f3e9e9; color: var(--red-ink); }
+.pill.unverified { background: #fde7dc; color: #8a3410; }
+
+/* Can't answer: why, and what to ask instead. */
+.instead { display: grid; justify-items: start; gap: 8px; margin: 16px 0 0; padding: 14px 16px; border-radius: 12px; background: #fafaf8; border: 1px solid var(--grid); }
+.instead .k { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.instead button { font: inherit; font-size: 15px; text-align: left; color: var(--red-ink); font-weight: 600; cursor: pointer; border: 0; padding: 0 0 2px;
+  background: linear-gradient(var(--red), var(--red)) 0 100% / 0 1.5px no-repeat; transition: background-size .35s ease; }
+.instead button::before { content: "→ "; color: var(--ink-3); font-weight: 400; }
+.instead button:hover, .instead button:focus-visible { background-size: 100% 1.5px; }
+.instead button:disabled { color: var(--ink-3); cursor: default; }
+table.calm td .tag { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 650; padding: 2px 7px; border-radius: 99px;
+  background: #fff1cc; color: #6e4a00; vertical-align: 1px; }
+/* Next questions, worked out from the query (not the model). */
+.next { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0 0; }
+.next .k { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin-right: 2px; }
+.next button { font: inherit; font-size: 14px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 99px;
+  padding: 5px 13px; cursor: pointer; transition: border-color .2s, color .2s, background .2s; }
+.next button:hover, .next button:focus-visible { border-color: var(--red); color: var(--red-ink); }
+.next button:disabled { color: var(--ink-3); cursor: default; border-color: var(--line); }
+
+/* Charts: one series, drawn from the same rows as the table under them. */
+.chart { position: relative; margin: 10px 0 8px; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--sans); }
+.chart svg:focus { outline: none; }
+.chart svg:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; border-radius: 6px; }
+.chart .grid { stroke: var(--grid); stroke-width: 1; }
+.chart .tick { fill: var(--ink-3); font-size: 12px; font-variant-numeric: tabular-nums; }
+.chart .line { fill: none; stroke: var(--red); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chart .line.prelim { stroke-dasharray: 4 4; }
+.chart .dot { fill: var(--red); stroke: #fff; stroke-width: 2; }
+.chart .dot.prelim { fill: #fff; stroke: var(--red); }
+.chart .end { fill: var(--ink); font-size: 13px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.chart .cross { stroke: var(--ink-3); stroke-width: 1; }
+.chart .tip { position: absolute; z-index: 2; pointer-events: none; background: var(--black); color: #fff; font-size: 12.5px; line-height: 1.35;
+  padding: 6px 10px; border-radius: 8px; white-space: nowrap; transform: translate(-50%, calc(-100% - 10px)); opacity: 0; transition: opacity .12s; }
+.chart .tip.on { opacity: 1; }
+.chart .key { font-size: 12px; color: var(--ink-3); margin-top: 2px; display: flex; gap: 6px; align-items: center; }
+.chart .key svg { width: 26px; height: 8px; display: inline; }
+.hbars { display: grid; grid-template-columns: minmax(80px, max-content) minmax(0, 1fr); gap: 7px 14px; align-items: center; font-size: 14px; }
+.hbars .lbl { color: var(--ink-2); max-width: 280px; line-height: 1.3; }
+.hbars .track { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.hbars .bar { height: 12px; flex: none; background: var(--red); border-radius: 0 4px 4px 0; }
+.hbars .bar.prelim { opacity: .45; }
+.hbars .val { color: var(--ink); font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hbars .val.hidden { color: var(--ink-3); font-weight: 400; font-style: italic; }
+.hbars .val small { font-weight: 400; color: #6e4a00; margin-left: 6px; }
+@media (max-width: 640px) { .hbars { grid-template-columns: minmax(70px, 38%) minmax(0, 1fr); font-size: 13px; } }
+.pill.checked { background: #e3f4e6; color: #1e6b2d; }
+.pill.unchecked { background: #fde7dc; color: #8a3410; }
+
+/* The numbers, drawn from what the tools returned, never from the prose. */
+.numbers { margin: 18px 0 0; }
+.numbers + .numbers { margin-top: 22px; }
+.numbers figcaption { display: grid; gap: 2px; margin: 0 0 4px; }
+.numbers figcaption .k { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-ink); }
+.numbers figcaption b { font-size: 15.5px; font-weight: 650; }
+.numbers figcaption small { font-size: 13px; color: var(--ink-3); }
+.numbers .tablewrap { margin: 4px 0 6px; }
+.numbers table.calm { font-size: 15px; }
+.numbers table.calm td, .numbers table.calm th { padding: 10px 12px; }
+.numbers .fine { font-size: 12.5px; color: var(--ink-3); display: flex; gap: 6px 14px; flex-wrap: wrap; }
+.numbers .fine .warn { color: #8a3410; font-weight: 600; }
+.numbers table.calm td.hidden { color: var(--ink-3); font-style: italic; }
 .answer.error { border-color: #f3c7b3; background: #fffaf7; }
 .answer.error .md { color: #8a3410; }
 
@@ -251,6 +353,7 @@ html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition:
   <span class="spacer"></span>
   <button type="button" data-switch="glass" aria-pressed="true">Glass: on</button>
   <button type="button" data-switch="motion" aria-pressed="true">Motion: on</button>
+  <button type="button" id="tour-strip">Take the tour</button>
   <a class="btn" href="/">Technical view</a>
 </div>
 
@@ -283,6 +386,12 @@ html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition:
 
         <div class="convo-bar"><span id="convo-count"></span><button type="button" id="reset">Start a new conversation</button></div>
         <div class="thread" id="thread" aria-live="polite"></div>
+
+        <div class="tourbar" id="tourbar" role="region" aria-label="Guided tour" hidden>
+          <div class="where"><span class="k" id="tour-k">Guided tour</span><b id="tour-title"></b></div>
+          <ol class="dots" id="tour-dots" aria-hidden="true"></ol>
+          <div class="acts"><button type="button" class="next" id="tour-next" disabled>Next</button><button type="button" id="tour-end">End tour</button></div>
+        </div>
 
         <form class="search" id="form" role="search" aria-label="Ask a question">
           <svg class="glass-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -460,7 +569,7 @@ html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition:
     const out = new Set();
     for (const c of trace || []) {
       const s = `${c.summary || ""}`;
-      if (c.name === "query_metric" || c.name === "describe_cube") {
+      if (c.name === "query_metric" || c.name === "compare_metric" || c.name === "describe_cube") {
         if (/Retention/.test(s)) out.add(/Graduat/.test(s) ? "graduated" : "retained");
         if (/Retention/.test(s) && /Graduat/.test(s) && /Continu|Retain|Persist/.test(s)) out.add("retained");
         if (/Enrolment/.test(s)) out.add("enrolled");
@@ -564,6 +673,7 @@ html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition:
     search_methodology: "Read the definitions",
     list_kpis: "Listed what is published",
     query_metric: "Asked the synthetic warehouse",
+    compare_metric: "Worked out a change or share in the warehouse (the engine's arithmetic)",
     describe_cube: "Checked a cube's measures and dimensions",
   };
   const pill = (cls, [m, text]) => `<span class="pill ${cls}"><span class="m" aria-hidden="true">${m}</span>${esc(text)}</span>`;
@@ -576,19 +686,213 @@ html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition:
       <span class="detail">${esc(c.summary || "")}</span>${c.detail ? `<pre>${esc(c.detail)}</pre>` : "<span></span>"}</li>`).join("");
   }
 
-  function renderAnswer(card, data) {
+  /* ---------------------------------------------------------------- charts */
+  /* One series, in the page's red, drawn from the chart spec the server built
+     from the same rows as the table (numbers.chart_spec). Geometry comes from
+     each point's value; the only numbers written on the chart are the tool's
+     display strings, plus round axis ticks. The table below stays the full,
+     accessible view. */
+  const CHARTS = [];
+  const fmtTick = (v, unit) => unit === "percent" ? `${+v.toFixed(1)}%`
+    : Math.abs(v) >= 10000 ? new Intl.NumberFormat("en-CA", { notation: "compact", maximumFractionDigits: 1 }).format(v)
+    : v.toLocaleString("en-CA");
+
+  function niceTicks(lo, hi, count = 4) {
+    const raw = (hi - lo) / count || 1, mag = 10 ** Math.floor(Math.log10(raw));
+    const step = [1, 2, 2.5, 5, 10].map((s) => s * mag).find((s) => s >= raw);
+    const out = [];
+    for (let t = Math.floor(lo / step) * step; t <= hi + step * 1e-9; t += step) out.push(+t.toFixed(10));
+    if (out[out.length - 1] < hi) out.push(+(out[out.length - 1] + step).toFixed(10));
+    return out;
+  }
+
+  function barsHtml(c) {
+    const max = Math.max(...c.points.map((p) => p.value ?? 0)) || 1;
+    return `<div class="hbars">${c.points.map((p) => {
+      /* The bar's share of the track, leaving room for its value at the tip. */
+      const bar = p.value == null ? "" : `<div class="bar${p.preliminary ? " prelim" : ""}" style="width:max(2px, calc((100% - 120px) * ${(Math.max(0, p.value) / max).toFixed(4)}))"></div>`;
+      return `<div class="lbl">${esc(p.label)}</div>
+        <div class="track">${bar}
+        <span class="val${p.value == null ? " hidden" : ""}">${esc(p.display)}${p.preliminary ? "<small>preliminary</small>" : ""}</span></div>`;
+    }).join("")}</div>${c.note ? `<div class="key">${esc(c.note)}</div>` : ""}`;
+  }
+
+  function drawLine(el, c) {
+    const W = Math.max(280, el.clientWidth), H = 220, m = { t: 14, r: 74, b: 30, l: 48 };
+    const pw = W - m.l - m.r, ph = H - m.t - m.b, n = c.points.length;
+    const vals = c.points.map((p) => p.value).filter((v) => v != null);
+    let lo = Math.min(...vals), hi = Math.max(...vals);
+    const pad = (hi - lo) * 0.2 || Math.abs(hi) * 0.05 || 1;
+    lo -= pad; hi += pad;
+    if (Math.min(...vals) >= 0 && lo < 0) lo = 0;
+    const ticks = niceTicks(lo, hi);
+    lo = ticks[0]; hi = ticks[ticks.length - 1];
+    const x = (i) => m.l + (n === 1 ? pw / 2 : (i * pw) / (n - 1));
+    const y = (v) => m.t + ph - ((v - lo) / (hi - lo)) * ph;
+    const every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(pw / 70))));
+    let svg = ticks.map((t) => `<line class="grid" x1="${m.l}" x2="${W - m.r + 8}" y1="${y(t)}" y2="${y(t)}"/>
+      <text class="tick" x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${esc(fmtTick(t, c.unit))}</text>`).join("");
+    svg += c.points.map((p, i) => (i % every === 0 || i === n - 1) && (i === n - 1 || n - 1 - i >= every / 2)
+      ? `<text class="tick" x="${x(i)}" y="${H - 8}" text-anchor="middle">${esc(p.label)}</text>` : "").join("");
+    for (let i = 1; i < n; i++) {
+      const a = c.points[i - 1], b = c.points[i];
+      if (a.value == null || b.value == null) continue;
+      svg += `<path class="line${a.preliminary || b.preliminary ? " prelim" : ""}" d="M${x(i - 1)} ${y(a.value)}L${x(i)} ${y(b.value)}"/>`;
+    }
+    c.points.forEach((p, i) => { if (p.preliminary && p.value != null) svg += `<circle class="dot prelim" cx="${x(i)}" cy="${y(p.value)}" r="4.5"/>`; });
+    const li = c.points.map((p) => p.value != null).lastIndexOf(true), last = c.points[li];
+    if (!last.preliminary) svg += `<circle class="dot" cx="${x(li)}" cy="${y(last.value)}" r="4.5"/>`;
+    svg += `<text class="end" x="${x(li) + 10}" y="${y(last.value) + 4.5}">${esc(last.display)}</text>`;
+    svg += `<line class="cross" y1="${m.t}" y2="${m.t + ph}" visibility="hidden"/><circle class="dot hover" r="4.5" visibility="hidden"/>
+      <rect class="hit" x="${m.l - 10}" y="0" width="${pw + 20}" height="${H}" fill="transparent"/>`;
+    const label = `${c.measure} by ${c.x}, ${c.points[0].label} to ${c.points[n - 1].label}. Every value is in the table below.`;
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" tabindex="0" aria-label="${esc(label)}">${svg}</svg>
+      <div class="tip" aria-hidden="true"></div>
+      ${c.points.some((p) => p.preliminary) ? `<div class="key"><svg viewBox="0 0 26 8" aria-hidden="true"><path class="line prelim" d="M1 4H25"/></svg>Preliminary: can still change</div>` : ""}
+      ${c.note ? `<div class="key">${esc(c.note)}</div>` : ""}`;
+
+    /* Hover and keyboard: a crosshair at the nearest point, with its tooltip. */
+    const s = el.querySelector("svg"), tip = el.querySelector(".tip"), cross = s.querySelector(".cross"), hov = s.querySelector(".hover");
+    let at = -1;
+    const show = (i) => {
+      at = Math.max(0, Math.min(n - 1, i));
+      const p = c.points[at], scale = s.getBoundingClientRect().width / W;
+      cross.setAttribute("x1", x(at)); cross.setAttribute("x2", x(at)); cross.setAttribute("visibility", "visible");
+      if (p.value != null) { hov.setAttribute("cx", x(at)); hov.setAttribute("cy", y(p.value)); hov.setAttribute("visibility", "visible"); }
+      else hov.setAttribute("visibility", "hidden");
+      tip.innerHTML = `${esc(p.label)} · <b>${esc(p.display)}</b>${p.preliminary ? " · preliminary" : ""}`;
+      tip.style.left = `${x(at) * scale}px`;
+      tip.style.top = `${(p.value != null ? y(p.value) : m.t + ph / 2) * scale}px`;
+      tip.classList.add("on");
+    };
+    const hide = () => { at = -1; tip.classList.remove("on"); cross.setAttribute("visibility", "hidden"); hov.setAttribute("visibility", "hidden"); };
+    s.addEventListener("pointermove", (e) => {
+      const r = s.getBoundingClientRect(), px = ((e.clientX - r.left) * W) / r.width;
+      show(Math.round(((px - m.l) / pw) * (n - 1)));
+    });
+    s.addEventListener("pointerleave", hide);
+    s.addEventListener("focus", () => show(n - 1));
+    s.addEventListener("blur", hide);
+    s.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); show(at + (e.key === "ArrowLeft" ? -1 : 1)); }
+      else if (e.key === "Escape") hide();
+    });
+  }
+
+  function drawCharts(root) {
+    root.querySelectorAll(".chart[data-chart]").forEach((el) => {
+      const c = CHARTS[+el.dataset.chart];
+      if (!c) return;
+      if (c.type === "line") drawLine(el, c);
+      else if (!el.firstChild) el.innerHTML = barsHtml(c);
+    });
+  }
+  let resizeQueued = false;
+  addEventListener("resize", () => {
+    if (resizeQueued) return;
+    resizeQueued = true;
+    requestAnimationFrame(() => { resizeQueued = false; drawCharts(document); });
+  });
+
+  /* One table per tool result that carried numbers, deduplicated (a corrected
+     query can repeat an earlier one). Every cell is a display string from the
+     tool, so nothing here comes from the model's prose. */
+  function numbersHtml(tables) {
+    const seen = new Set();
+    return (tables || []).filter((t) => {
+      const key = JSON.stringify([t.title, t.subtitle, t.rows]);
+      if (seen.has(key)) return false;
+      seen.add(key); return true;
+    }).map((t) => {
+      const cls = (c) => (c.numeric ? ' class="num"' : "");
+      const flags = t.row_preliminary || [];
+      /* A preliminary row gets a tag beside its label (first column), when it has one. */
+      const tag = (i, j) => (j === 0 && flags[i] && !t.columns[0].numeric ? `<span class="tag">preliminary</span>` : "");
+      const cell = (c, v, i, j) => `<td${c.numeric && /^fewer than/i.test(v) ? ' class="num hidden"' : cls(c)}>${esc(v)}${tag(i, j)}</td>`;
+      const fine = [
+        t.kind === "synthetic" ? "Synthetic warehouse: invented students" : "Published: checked by hand against the source",
+        t.data_as_of ? `As of ${t.data_as_of}` : "",
+        ...(t.notes || []),
+      ].filter(Boolean).map((x) => `<span>${esc(x)}</span>`).join("")
+        + (t.stale ? `<span class="warn">Behind its usual refresh</span>` : "");
+      const chart = t.chart ? `<div class="chart" data-chart="${CHARTS.push(t.chart) - 1}"></div>` : "";
+      return `<figure class="numbers"><figcaption><span class="k">The numbers</span><b>${esc(t.title)}</b>${t.subtitle ? `<small>${esc(t.subtitle)}</small>` : ""}</figcaption>
+        ${chart}<div class="tablewrap"><table class="calm"><thead><tr>${t.columns.map((c) => `<th scope="col"${cls(c)}>${esc(c.name)}</th>`).join("")}</tr></thead>
+        <tbody>${t.rows.map((r, i) => `<tr>${t.columns.map((c, j) => cell(c, r[j] ?? "", i, j)).join("")}</tr>`).join("")}</tbody></table></div>
+        <div class="fine">${fine}</div></figure>`;
+    }).join("");
+  }
+
+  function checkPill(data) {
+    const bad = data.unverified || [];
+    if (bad.length) return pill("unchecked", ["!", `${bad.length} number${bad.length === 1 ? "" : "s"} not found in the data`]);
+    if (data.numbers_checked) return pill("checked", ["✓", `${data.numbers_checked} number${data.numbers_checked === 1 ? "" : "s"} checked against the data`]);
+    return "";
+  }
+
+  function checkStep(data) {
+    const bad = data.unverified || [], n = data.numbers_checked || 0, re = data.number_retries || 0;
+    if (!n && !bad.length) return "";
+    const what = bad.length ? "Some numbers could not be traced to the data" : "Checked every number against the tool results";
+    const detail = bad.length ? `Not found in any tool result: ${bad.join(", ")}. Treat them with care.`
+      : `${n} number${n === 1 ? "" : "s"} matched${re ? `, after ${re} rewrite${re === 1 ? "" : "s"} to remove figures no tool returned` : ""}.`;
+    return `<li><span class="what">${esc(what)}</span><span class="detail">${esc(detail)}</span><span></span></li>`;
+  }
+
+  /* Why it couldn't answer. `unverified` is set by the server's number check,
+     the rest by the assistant; each comes with questions it can answer instead. */
+  const REASON = {
+    no_data: ["·", "Not in the data"],
+    person: ["·", "About one person: never answered"],
+    limit: ["!", "Stopped by a rule"],
+    unclear: ["?", "Needs a choice"],
+    unverified: ["!", "Couldn't verify a number"],
+  };
+  const INSTEAD = {
+    unclear: "Which did you mean?",
+    person: "You could ask instead",
+  };
+
+  function insteadHtml(data) {
+    const asks = data.suggestions || [];
+    if (!asks.length) return "";
+    return `<div class="instead"><span class="k">${esc(INSTEAD[data.could_not_answer] || "Try asking")}</span>
+      ${asks.map((q) => `<button type="button" data-ask="${esc(q)}">${esc(q)}</button>`).join("")}</div>`;
+  }
+
+  function renderAnswer(card, data, opts = {}) {
     const trace = data.trace || [];
     const tier = CONF[data.confidence] ? data.confidence : "none";
     const sources = (data.sources || []).filter((s) => SRC[s]);
+    const nSteps = trace.length + (checkStep(data) ? 1 : 0);
+    const why = REASON[data.could_not_answer];
+    /* When it couldn't answer, the reason says more than the confidence tier.
+       The number check has its own pill, so `unverified` isn't shown twice. */
+    const lead = why && data.could_not_answer !== "unverified" ? pill("reason", why) : pill(tier, CONF[tier]);
+    const prelim = (data.tables || []).some((t) => t.preliminary) ? pill("prelim", ["◷", "Preliminary: can still change"]) : "";
+    const next = (data.follow_ups || []).length
+      ? `<div class="next"><span class="k">Ask next</span>${data.follow_ups.map((q) => `<button type="button" data-ask="${esc(q)}">${esc(q)}</button>`).join("")}</div>`
+      : "";
     card.innerHTML = `<div class="md">${md(data.text || "_(No answer came back.)_")}</div>
-      <div class="when">${pill(tier, CONF[tier])}${sources.map((s) => pill(s, SRC[s])).join("")}
-        ${trace.length ? `<button type="button" class="how" aria-expanded="false">How this was answered · ${trace.length} step${trace.length === 1 ? "" : "s"}</button>` : ""}</div>
-      ${trace.length ? `<ol class="steps">${steps(trace)}</ol>` : ""}`;
+      ${insteadHtml(data)}
+      ${numbersHtml(data.tables)}
+      ${next}
+      <div class="when">${lead}${sources.map((s) => pill(s, SRC[s])).join("")}${prelim}${checkPill(data)}
+        ${nSteps ? `<button type="button" class="how" aria-expanded="false">How this was answered · ${nSteps} step${nSteps === 1 ? "" : "s"}</button>` : ""}</div>
+      ${nSteps ? `<ol class="steps">${steps(trace)}${checkStep(data)}</ol>` : ""}`;
+    card.querySelectorAll(".instead button[data-ask], .next button[data-ask]").forEach((b) => b.addEventListener("click", () => {
+      if (busy) return;
+      ask(b.dataset.ask);
+    }));
+    drawCharts(card);
     const how = card.querySelector(".how");
-    if (how) how.addEventListener("click", () => {
-      const open = card.querySelector(".steps").classList.toggle("shown");
-      how.setAttribute("aria-expanded", String(open));
-    });
+    if (how) {
+      how.addEventListener("click", () => {
+        const open = card.querySelector(".steps").classList.toggle("shown");
+        how.setAttribute("aria-expanded", String(open));
+      });
+      if (opts.openSteps) how.click();
+    }
     const touched = stagesFor(trace);
     touched.forEach((s) => lit.add(s));
     paintJourney(touched);
@@ -599,47 +903,182 @@ html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition:
     card.innerHTML = `<div class="md"><p><strong>That didn't go through.</strong> ${esc(message)}</p>${hint ? `<p>${esc(hint)}</p>` : ""}</div>`;
   }
 
-  async function ask(text) {
+  /* While the answer is being made, the card lists what the assistant is doing,
+     step by step, from the progress lines /api/chat/stream sends. The answer's
+     text itself arrives whole, after its numbers have been checked. */
+  const PHASE = {
+    read: "Reading the question",
+    tools_back: "Reading what came back",
+    rewrite: "Rewriting without the numbers it couldn't trace",
+  };
+  const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+
+  function progressView(card) {
+    card.innerHTML = `<div class="thinking"><span class="bar" aria-hidden="true"></span><span class="t">Sending the question</span><span class="secs" aria-hidden="true"></span></div>
+      <ol class="live" aria-label="What it is doing"></ol>
+      <p class="wait-note">The answer appears once every number in it has been checked against the data.</p>`;
+    const label = card.querySelector(".thinking .t"), list = card.querySelector(".live"), secs = card.querySelector(".secs");
+    const started = Date.now();
+    const tick = setInterval(() => { secs.textContent = `${Math.round((Date.now() - started) / 1000)}s`; }, 1000);
+    let running = null;
+    const line = (cls, what, small) => {
+      const li = document.createElement("li");
+      li.className = cls;
+      li.innerHTML = `<span>${esc(what)}</span>${small ? `<small>${esc(small)}</small>` : ""}`;
+      list.append(li);
+      return li;
+    };
+    return {
+      stop() { clearInterval(tick); },
+      on(ev) {
+        if (ev.step === "model") label.textContent = PHASE[ev.phase] || "Thinking";
+        else if (ev.step === "tool") { label.textContent = "Asking the data"; running = line("run", ev.label); }
+        else if (ev.step === "tool_done" && running) {
+          running.className = ev.error ? "warn" : "done";
+          running.insertAdjacentHTML("beforeend", `<small>${esc(ev.summary || "")}</small>`);
+          running = null;
+        } else if (ev.step === "check") {
+          const n = ev.checked || 0, bad = ev.missing || [];
+          if (!bad.length) { label.textContent = "Done"; if (n) line("done", `Checked ${plural(n, "number")} against the tool results`); }
+          else if (ev.final) line("warn", `${plural(bad.length, "number")} still not found in the data`, bad.join(", "));
+          else line("warn", `Found ${plural(bad.length, "number")} no tool returned: asking for a rewrite`, bad.join(", "));
+        }
+      },
+    };
+  }
+
+  /* Read newline-delimited JSON as it arrives; hand each line to `each`. */
+  async function readLines(body, each) {
+    const reader = body.getReader(), dec = new TextDecoder();
+    let buf = "";
+    for (;;) {
+      const { value, done } = await reader.read();
+      buf += dec.decode(value || new Uint8Array(), { stream: !done });
+      let nl;
+      while ((nl = buf.indexOf("\n")) >= 0) {
+        const raw = buf.slice(0, nl).trim(); buf = buf.slice(nl + 1);
+        if (raw) each(JSON.parse(raw));
+      }
+      if (done) { if (buf.trim()) each(JSON.parse(buf)); return; }
+    }
+  }
+
+  /* opts: notice (a tour note shown above the answer), tag (its label),
+     openSteps (open "How this was answered" when the answer lands). */
+  async function ask(text, opts = {}) {
     text = (text || "").trim();
     if (!text || busy) return;
     busy = true; send.disabled = true; input.disabled = true;
     turns++;
     hero.classList.add("has-convo");
     $("convo-count").textContent = `${turns} question${turns === 1 ? "" : "s"} in this conversation`;
+    tourSync();
 
     const turn = document.createElement("article");
     turn.className = "turn";
     turn.innerHTML = `<div class="asked">You asked: <b>${esc(text)}</b></div>
-      <div class="answer"><div class="thinking"><span class="bar" aria-hidden="true"></span><span class="t">Looking it up</span></div></div>`;
+      ${opts.notice ? `<div class="notice"><span class="k">${esc(opts.tag || "What to notice")}</span>${esc(opts.notice)}</div>` : ""}
+      <div class="answer"></div>`;
     thread.append(turn);
     input.value = ""; grow();
     turn.scrollIntoView({ behavior: moving() ? "smooth" : "auto", block: "start" });
 
-    const card = turn.querySelector(".answer"), label = turn.querySelector(".thinking .t");
-    const started = Date.now();
-    const tick = setInterval(() => {
-      const s = Math.round((Date.now() - started) / 1000);
-      label.textContent = s < 4 ? "Looking it up" : s < 12 ? `Reading the definitions and asking the data · ${s}s` : `Still working: checking the numbers · ${s}s`;
-    }, 1000);
-
+    const card = turn.querySelector(".answer");
+    const view = progressView(card);
+    let settled = false;
     try {
-      const r = await fetch("/api/chat", {
+      const r = await fetch("/api/chat/stream", {
         method: "POST", credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text }),
       });
-      let data = {};
-      try { data = await r.json(); } catch { /* not JSON */ }
-      if (!r.ok || data.error) renderError(card, data.detail || data.error || `The server answered ${r.status}.`, data.hint);
-      else renderAnswer(card, data);
+      if (!r.ok || !r.body) {
+        let data = {};
+        try { data = await r.json(); } catch { /* not JSON */ }
+        renderError(card, data.detail || data.error || `The server answered ${r.status}.`, data.hint);
+        settled = true;
+      } else {
+        await readLines(r.body, (ev) => {
+          if (ev.event === "progress") view.on(ev);
+          else if (ev.event === "answer") { view.stop(); renderAnswer(card, ev, opts); settled = true; }
+          else if (ev.event === "error") { view.stop(); renderError(card, ev.detail || ev.error, ev.hint); settled = true; }
+        });
+        if (!settled) renderError(card, "The answer stopped part-way.", "Try asking again.");
+      }
     } catch (e) {
-      renderError(card, "The server couldn't be reached.", "Is uvicorn still running?");
+      if (!settled) renderError(card, "The server couldn't be reached.", "Is uvicorn still running?");
     } finally {
-      clearInterval(tick);
+      view.stop();
       busy = false; input.disabled = false; send.disabled = !input.value.trim();
-      input.focus({ preventScroll: true });
+      tourSync();
+      if (tour.i >= 0) $("tour-next").focus({ preventScroll: true });
+      else input.focus({ preventScroll: true });
     }
   }
+
+  /* ------------------------------------------------------- the guided tour */
+  /* Five questions, one capability each, asked in a fresh conversation. The
+     presenter moves on with Next, so each answer can be talked through. */
+  const TOUR = [
+    { title: "A published figure, with its page",
+      q: "What percentage of first-year students rated their experience as good or excellent in 2023?",
+      notice: "A real number from Carleton's NSSE 2023 report. The table under the answer comes straight from the lookup, and its Source column gives the file and page. The green pill counts the numbers in the text that were checked against it." },
+    { title: "Asking the warehouse",
+      q: "What was first-year retention by faculty for the 2024 cohort?",
+      notice: "Now the synthetic warehouse. Watch the steps while it works: it picks a governed measure and dimensions by name and cannot write its own SQL. When the answer lands, the query and the SQL it compiled to are open below it.",
+      openSteps: true },
+    { title: "A follow-up in plain words",
+      q: "What about the 2023 cohort?",
+      notice: "It remembers that the question was first-year retention by faculty, and changes only the cohort." },
+    { title: "Small groups stay hidden",
+      q: "What was first-year retention for international students in Music in the 2025 cohort?",
+      notice: "A question about a handful of students. A cell with fewer than ten is suppressed, and the answer says so rather than estimating." },
+    { title: "Two kinds of number, never mixed",
+      q: "Is retention in your data better than what Carleton published?",
+      notice: "A tempting comparison it won't make: invented students against published figures. It explains why, and says where the real number lives." },
+  ];
+  const tour = { i: -1 };
+  $("tour-dots").innerHTML = TOUR.map(() => "<li></li>").join("");
+
+  function tourSync() {
+    const bar = $("tourbar");
+    bar.hidden = tour.i < 0;
+    if (tour.i < 0) return;
+    const last = tour.i === TOUR.length - 1;
+    $("tour-k").textContent = `Guided tour · ${tour.i + 1} of ${TOUR.length}`;
+    $("tour-title").textContent = TOUR[tour.i].title;
+    $("tour-dots").querySelectorAll("li").forEach((d, j) => { d.className = j < tour.i ? "past" : j === tour.i ? "on" : ""; });
+    const next = $("tour-next");
+    next.disabled = busy;
+    next.textContent = busy ? "Answering…" : last ? "Finish the tour" : `Next: ${TOUR[tour.i + 1].title}`;
+    $("tour-end").hidden = last && !busy;
+  }
+
+  function tourStep(i) {
+    tour.i = i;
+    const s = TOUR[i];
+    ask(s.q, { notice: s.notice, tag: `Tour ${i + 1} of ${TOUR.length} · what to notice`, openSteps: s.openSteps });
+  }
+
+  async function startTour() {
+    if (busy) return;
+    await resetConversation();
+    tourStep(0);
+    $("ask").scrollIntoView({ behavior: moving() ? "smooth" : "auto", block: "start" });
+  }
+
+  function endTour() {
+    tour.i = -1; tourSync();
+    input.focus({ preventScroll: true });
+  }
+
+  $("tour-next").addEventListener("click", () => {
+    if (busy) return;
+    if (tour.i >= TOUR.length - 1) endTour();
+    else tourStep(tour.i + 1);
+  });
+  $("tour-end").addEventListener("click", endTour);
+  $("tour-strip").addEventListener("click", startTour);
 
   /* ------------------------------------------------------------ the box */
   function grow() {
@@ -658,17 +1097,26 @@ html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition:
     "How many undergraduates were enrolled in fall 2025, and what share were international?",
     STAGES[3].q,
   ];
-  $("quick").innerHTML = `<span>People often ask:</span>` + QUICK.map((q) => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join("");
-  $("quick").addEventListener("click", (e) => { const b = e.target.closest("button[data-q]"); if (b) ask(b.dataset.q); });
+  $("quick").innerHTML = `<span>People often ask:</span>` + QUICK.map((q) => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join("")
+    + `<button type="button" class="tour-start" data-tour>New here? Take the guided tour<small>5 questions, about 2 minutes</small></button>`;
+  $("quick").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-q], button[data-tour]");
+    if (!b) return;
+    if (b.dataset.q) ask(b.dataset.q); else startTour();
+  });
 
-  $("reset").addEventListener("click", async () => {
-    if (busy) return;
+  async function resetConversation() {
     try { await fetch("/api/reset", { method: "POST", credentials: "same-origin" }); } catch { /* the page resets anyway */ }
     thread.innerHTML = ""; turns = 0; lit.clear();
     hero.classList.remove("has-convo");
     document.querySelectorAll(".journey .box").forEach((b) => b.removeAttribute("aria-current"));
     $("flow").style.removeProperty("--thread");
     paintJourney();
+  }
+  $("reset").addEventListener("click", async () => {
+    if (busy) return;
+    tour.i = -1; tourSync();
+    await resetConversation();
     input.focus();
   });
 
@@ -710,8 +1158,10 @@ html[data-motion="off"] [data-reveal] { opacity: 1; transform: none; transition:
 
   /* A question in the address, /oirp?q=..., is asked straight away, so a
      question can be shared as a link. */
-  const asked = new URLSearchParams(location.search).get("q");
-  if (asked) { history.replaceState(null, "", location.pathname); ask(asked); }
+  const params = new URLSearchParams(location.search), asked = params.get("q");
+  if (asked || params.has("tour")) history.replaceState(null, "", location.pathname);
+  if (params.has("tour")) startTour();   /* /oirp?tour opens straight into the tour */
+  else if (asked) ask(asked);
 })();
 </script>
 </body>

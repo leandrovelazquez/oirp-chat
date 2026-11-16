@@ -7,7 +7,8 @@ Usage:
 
 Optional flags:
     --semantic-layer PATH    Override the path to the semantic_layer/ directory
-    --model MODEL_ID         Override the model (default: claude-sonnet-4-6)
+    --model MODEL_ID         Override the model (default: claude-sonnet-5-5)
+    --effort LEVEL           low | medium | high | xhigh | max, or none (default: medium)
     --once "QUESTION"        Single-shot mode (don't enter the REPL)
     --show-trace             Print the per-turn tool trace alongside the response
 """
@@ -23,7 +24,7 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
 
-from .agent import DEFAULT_MODEL, OIRPAgent
+from .agent import DEFAULT_EFFORT, DEFAULT_MODEL, OIRPAgent
 from .confidence import ConfidenceTier
 
 
@@ -117,6 +118,8 @@ def main() -> None:
         help="Path to the semantic_layer/ directory (default: ../../semantic_layer).",
     )
     parser.add_argument("--model", default=DEFAULT_MODEL, help="Anthropic model id.")
+    parser.add_argument("--effort", default=DEFAULT_EFFORT or "none",
+                        help="low | medium | high | xhigh | max, or none to send no effort.")
     parser.add_argument("--once", help="Run a single question and exit.")
     parser.add_argument(
         "--show-trace",
@@ -142,6 +145,7 @@ def main() -> None:
         semantic_layer_dir=kpi_dir,
         base_prompt_path=base_prompt,
         model=args.model,
+        effort=None if args.effort.lower() == "none" else args.effort.lower(),
     )
     _print_loaded_summary(console, agent)
 
@@ -178,7 +182,31 @@ def _ask(console: Console, agent: OIRPAgent, message: str, show_trace: bool) -> 
     result = agent.chat(message)
     console.print()
     console.print(Markdown(result.text or "_(empty response)_"))
+    # The numbers, drawn from the tool results rather than the prose.
+    for t in result.tables:
+        colour = "magenta" if t["kind"] == "synthetic" else "blue"
+        table = Table(title=f"[{colour}]{t['kind']}[/] · {t['title']}", caption=t.get("subtitle") or None,
+                      show_header=True, header_style="bold")
+        for c in t["columns"]:
+            table.add_column(c["name"], justify="right" if c["numeric"] else "left")
+        for r in t["rows"]:
+            table.add_row(*r)
+        console.print(table)
+        fine = [f"as of {t['data_as_of']}" if t.get("data_as_of") else "", "STALE" if t.get("stale") else "", *t.get("notes", [])]
+        if any(fine):
+            console.print(f"[dim]{' · '.join(x for x in fine if x)}[/]")
     console.print(f"\nConfidence: {_confidence_badge(result.confidence)}")
+    if result.unverified:
+        console.print(f"[bold red]Numbers not found in any tool result:[/] {', '.join(result.unverified)}")
+    elif result.numbers_checked:
+        again = f" after {result.number_retries} rewrite" if result.number_retries else ""
+        console.print(f"[green]{result.numbers_checked} numbers checked against tool results{again}[/]")
+    if result.could_not_answer:
+        console.print(f"[yellow]Could not answer:[/] {result.could_not_answer}")
+        for q in result.suggestions:
+            console.print(f"  [dim]try:[/] {q}")
+    for q in result.follow_ups:
+        console.print(f"  [dim]next:[/] {q}")
     if show_trace:
         _print_trace(console, agent, result)
 

@@ -92,6 +92,9 @@ Cohort = Y, Years After = 0, and the Enrolment cube's new-undergraduate
   "description": "Undergraduate admissions funnel by application year: applicants, offers, confirmations, registrations. SYNTHETIC data.",
   "freshness_sla_days": 7,
   "min_cell_size": 10,
+  "roles": {"time": ["Application Year"], "time_say": "the {} intake",
+            "trend": "Show the trend over the last five intakes.", "faculty": "Academic Unit.Faculty",
+            "funnel": ["Applicants", "Approved", "Confirmed", "Registered"]},
   "measure_groups": {
     "ADM FACT": {
       "fact_table": "ADM_FACT",

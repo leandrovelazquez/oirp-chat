@@ -46,6 +46,11 @@ Consequences the agent must respect:
 - The cohort window is **2011–2026** (`URET_COHORT`). The current academic
   year is 2026/27, so the newest cohort with a year-1 outcome is **2025**;
   cohort 2026 has only Years After = 0.
+- **Outcomes observed in 2026/27 are preliminary** (for example cohort 2025
+  at Years After = 1, or cohort 2024 at Years After = 2). They come from Fall
+  2026 registrations, which have no final count yet. The engine marks those
+  rows `preliminary: true` and lists the rule in the result's `preliminary`;
+  say "preliminary" in the answer.
 
 ## Answer recipes
 
@@ -113,6 +118,11 @@ when `stale` is true, say so and give the as-of date.
   "description": "Undergraduate entering cohorts tracked year by year: continuing, graduated, stopped out. SYNTHETIC data.",
   "freshness_sla_days": 7,
   "min_cell_size": 10,
+  "roles": {"time": ["Cohort", "Academic Year"], "time_say": "the {} cohort",
+            "trend": "Show the trend over the last five cohorts.", "faculty": "1st Academic Unit.Faculty"},
+  "preliminary": [
+    {"when": {"Academic Year": "2026/27"}, "why": "Outcomes in 2026/27 come from Fall 2026 registrations, which have no final count yet, so they can still change."}
+  ],
   "measure_groups": {
     "URET FACT": {
       "fact_table": "URET_FACT",

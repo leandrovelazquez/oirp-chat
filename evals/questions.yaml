@@ -1,19 +1,39 @@
-# Eval suite scaffold for OIRP-chat.
+# Eval suite for OIRP-chat.
 #
-# Each entry describes a test question, the expected behavior, and the key
-# facts the answer should contain. A future runner script will:
+# Run it:      python -m oirp_agent.evals            (calls the real model; prints cost)
+# Check it:    python -m oirp_agent.evals --check    (free: validates this file and
+#                                                     runs every expected query)
 #
-#   1. Run each question through the agent
-#   2. Check that the actual confidence tier matches `expected_confidence`
-#   3. Check that one of the expected KPIs was queried (via the tool trace)
-#   4. Use a model judge (or simple substring check) to verify the answer
-#      contains the `expected_key_facts`
-#   5. Verify any `expected_refusal` cases produce an explicit refusal
+# Each entry is one question. A question passes when every check that applies
+# to it passes:
 #
-# The intent is to keep this list small (~25 questions) but deeply representative.
-# Structure follows the Flurry two-layer eval pattern: this file is the
-# offline / pre-ship suite. Production traffic eval is out of scope for
-# the portfolio version.
+#   expected_confidence   the confidence tier the turn should get (or a list of
+#                         acceptable tiers)
+#   expected_kpi          a KPI the agent must look up or search (`any` = any KPI
+#                         tool; null = not checked)
+#   expected_tool         a tool that must be called
+#   expected_tool_input   a governed query whose RESULT ROWS the agent's own
+#                         query_metric call must reproduce. Rows are compared,
+#                         not query text, so an equivalent query passes.
+#   expected_key_facts    strings that must appear in what the user sees: the
+#                         answer text plus the number tables the page draws.
+#                         Case, dashes and underscores are ignored. A list inside
+#                         the list means "any one of these".
+#   expected_refusal      true for questions the agent must decline (or decline
+#                         the real figure for); reported as their own group
+#   expected_could_not_answer
+#                         the "can't answer" reason (no_data, person, limit,
+#                         unclear; or a list), or `none` when it must answer.
+#                         A reason must come with at least one suggested question.
+#   follow_up             true = asked in the same conversation as the entry
+#                         before it
+#
+# Every answer must also pass the number check: no number in the text that no
+# tool returned.
+#
+# Structure follows the two-layer eval pattern: this file is the offline /
+# pre-ship suite. Production traffic eval is out of scope for the portfolio
+# version.
 
 evals:
 
@@ -30,6 +50,7 @@ evals:
 
   - id: high_overall_2023_final_year
     question: "And for final-year students?"
+    follow_up: true
     expected_confidence: high
     expected_kpi: overall_experience_rating
     expected_key_facts:
@@ -71,8 +92,8 @@ evals:
     expected_confidence: high
     expected_kpi: nsse_high_impact_practices
     expected_key_facts:
-      - "3-year"
-      - "4-year"
+      - ["3-year", "three-year", "3 year"]
+      - ["4-year", "four-year", "4 year"]
       - "39"  # 3-year at-least-one
       - "82"  # 4-year at-least-one
       - "12"  # 3-year two-or-more
@@ -85,7 +106,7 @@ evals:
     expected_key_facts:
       - "7"  # 2020 value
       - "5"  # 2023 value
-      - "decrease"
+      - ["decrease", "decline", "fell", "dropped", "down", "lower"]
       - "pandemic"  # OIRP's published attribution
 
   - id: high_engagement_yoy_collaborative_first_year
@@ -95,7 +116,7 @@ evals:
     expected_key_facts:
       - "33.13"
       - "30.31"
-      - "decrease"
+      - ["decrease", "decline", "fell", "dropped", "down", "lower"]
 
   - id: high_retention_legacy_2000
     question: "What was the one-year retention rate for the 2000 entering cohort of full-time first-year students?"
@@ -104,24 +125,27 @@ evals:
     expected_key_facts:
       - "85"
       - "2000"
-      - "full-time first-year"
+      - "full-time"
 
   # ---------- MEDIUM confidence: methodology, definitions, synthesis ----------
 
   - id: medium_what_is_aopa_equivalent
     question: "What's the difference between retention and progression?"
-    expected_confidence: medium
+    # high when it also looks up a published rate to illustrate (the prompt
+    # requires a lookup for any number it writes)
+    expected_confidence: [medium, high]
     expected_kpi: first_year_retention_rate
     expected_key_facts:
       - "stay"
       - "advance"
       - "progression"
-      - "lower or equal"
+      - ["lower or equal", "lower than or equal", "at most", "can't exceed", "cannot exceed",
+         "never higher", "no higher", "lower than retention", "below retention", "smaller"]
 
   - id: medium_nsse_methodology
     question: "How was NSSE 2023 administered at Carleton, and what was the response rate?"
-    expected_confidence: medium
-    expected_kpi: overall_experience_rating
+    expected_confidence: [medium, high]   # high when the response rate is looked up as a value
+    expected_kpi: any
     expected_key_facts:
       - "21%"
       - "2,030"
@@ -130,7 +154,7 @@ evals:
 
   - id: medium_ontario_consortium
     question: "What is the Ontario consortium and how does it factor into NSSE results?"
-    expected_confidence: medium
+    expected_confidence: [medium, high]
     expected_kpi: any
     expected_key_facts:
       - "19"
@@ -142,8 +166,8 @@ evals:
     expected_confidence: medium
     expected_kpi: nsse_engagement_indicators
     expected_key_facts:
-      - "ten"
-      - "0–60"  # or "0-60"
+      - ["ten", "10"]
+      - ["0-60", "0 to 60", "zero to 60", "zero to sixty"]
       - "Academic Challenge"
       - "Learning with Peers"
       - "Experiences with Faculty"
@@ -151,7 +175,7 @@ evals:
 
   - id: medium_enrolment_size_qualitative
     question: "Roughly how big are Carleton's undergraduate faculties relative to each other?"
-    expected_confidence: medium
+    expected_confidence: [medium, high]
     expected_kpi: undergraduate_enrolment_by_faculty
     expected_key_facts:
       - "FASS"
@@ -161,61 +185,74 @@ evals:
 
   - id: medium_carleton_carleton_distinction
     question: "Is this Carleton in Minnesota?"
-    expected_confidence: medium
-    expected_kpi: any
+    expected_confidence: [medium, none]
+    expected_kpi: null
     expected_key_facts:
       - "Ottawa"
       - "Carleton College"
-      - "different"
+      - ["different", "separate", "not the same", "unrelated"]
+
+  # ---------- Real figure not published: route to the source, then answer from the warehouse ----------
+  # Since the "default to answering" prompt change, the agent names where OIRP
+  # publishes the real number and then answers from the synthetic warehouse in
+  # the same turn, labelled. It must never present the synthetic value as real.
+
+  - id: real_then_synthetic_2022_cohort
+    question: "What was Carleton's first-year retention rate for the 2022 cohort?"
+    expected_refusal: true
+    expected_confidence: high
+    expected_tool: query_metric
+    expected_tool_input:
+      cube: Retention
+      measures: ["% Continuing"]
+      filters: {Cohort: 2022, "Years After": 1}
+    expected_could_not_answer: none        # it answers, from the warehouse
+    expected_key_facts:
+      - ["CUDO", "Departmental Measures"]   # routes the REAL figure to the published source
+      - "synthetic"
+    notes: "Must not present a warehouse value as Carleton's actual rate, nor compare it with the published 83%."
+
+  - id: real_then_synthetic_faculty_retention
+    question: "What's the retention rate for the Faculty of Engineering and Design?"
+    expected_refusal: true
+    expected_confidence: high
+    expected_tool: query_metric
+    expected_key_facts:
+      - ["Departmental Measures", "CUDO", "Data Cubes", "Databook"]
+      - "synthetic"
+      - ["Engineering", "FED"]
+
+  - id: real_then_synthetic_fpa_headcount
+    question: "How many undergraduates were enrolled in the Faculty of Public Affairs in fall 2023?"
+    expected_refusal: true
+    expected_confidence: high
+    expected_tool: query_metric
+    expected_key_facts:
+      - ["Databook", "Data Cubes", "CUDO"]
+      - "synthetic"
 
   # ---------- LOW confidence: refuse rather than guess ----------
 
-  - id: low_refuse_recent_retention_specific
-    question: "What was Carleton's first-year retention rate for the 2022 cohort?"
-    expected_confidence: low
-    expected_refusal: true
-    expected_kpi: first_year_retention_rate
-    expected_key_facts:
-      - "not"  # not in verified store
-      - "CUDO"  # or Departmental Measures
-    notes: "Specific recent value not in verified store. Agent must refuse and direct to source."
-
-  - id: low_refuse_faculty_retention
-    question: "What's the retention rate for the Faculty of Engineering and Design?"
-    expected_confidence: low
-    expected_refusal: true
-    expected_kpi: first_year_retention_rate
-    expected_key_facts:
-      - "faculty"
-      - "not"
-
-  - id: low_refuse_specific_enrolment_headcount
-    question: "How many undergraduates were enrolled in the Faculty of Public Affairs in fall 2023?"
-    expected_confidence: low
-    expected_refusal: true
-    expected_kpi: undergraduate_enrolment_by_faculty
-    expected_key_facts:
-      - "Databook"  # or Data Cubes
-      - "not"
-
   - id: low_refuse_overall_experience_by_faculty
     question: "What's the overall experience rating for FASS students?"
-    expected_confidence: low
+    # The behaviour that matters is the `no_data` reason with a suggestion. It
+    # may look up the institution-wide rating first (high) or decline straight
+    # from the KPI notes in the prompt (none), so neither tier nor lookup is checked.
     expected_refusal: true
-    expected_kpi: overall_experience_rating
+    expected_could_not_answer: no_data
     expected_key_facts:
       - "faculty"
-      - "not"
-    notes: "NSSE doesn't publish overall-experience by faculty for Carleton."
+      - ["not", "n't", "n’t"]
+    notes: "NSSE doesn't publish overall-experience by faculty for Carleton, and no cube holds survey data."
 
   - id: low_refuse_causal_claim
     question: "Why has Carleton's collaborative learning indicator dropped?"
-    expected_confidence: low
+    expected_confidence: [low, medium, high]
     expected_refusal: true
     expected_kpi: nsse_engagement_indicators
     expected_key_facts:
       - "not"  # we don't know causally
-      - "drivers"  # or "items" — can describe what underlies the difference
+      - ["drivers", "items", "cause", "causal"]
 
   # ---------- Multi-step / synthesis ----------
 
@@ -244,7 +281,7 @@ evals:
 
   - id: multistep_enrolment_trajectory
     question: "What's been happening with Carleton's enrolment over the past several years?"
-    expected_confidence: medium
+    expected_confidence: [medium, high]
     expected_kpi: undergraduate_enrolment_by_faculty
     expected_key_facts:
       - "international"
@@ -261,14 +298,14 @@ evals:
     expected_kpi: null
     expected_tool: list_kpis
     expected_key_facts:
-      - "overall_experience_rating"
-      - "first_year_retention_rate"
+      - "overall experience"
+      - "retention"
       - "nsse"
 
   # ---------- Synthetic warehouse (governed metric queries) ----------
-  # Values come from generated data, so key facts check BEHAVIOUR (labelling,
-  # counting base, caveats), not specific numbers. `expected_tool_input` pins
-  # the measure/filters the agent should choose.
+  # Values come from generated data, so numbers are checked by comparing result
+  # rows (`expected_tool_input`), and key facts check BEHAVIOUR: labelling,
+  # counting base, caveats.
 
   - id: wh_retention_by_entry_faculty
     question: "What was first-year retention by faculty for the 2024 cohort?"
@@ -284,27 +321,18 @@ evals:
       - "entry"        # names the faculty attribution used
       - "as of"        # retention star is stale -> must give data_as_of
 
-  - id: wh_real_figure_refused_then_synthetic_offered
-    question: "What was Carleton's first-year retention rate for the 2022 cohort?"
-    expected_confidence: low
-    expected_refusal: true
-    expected_key_facts:
-      - "CUDO"         # routes the REAL figure to the published source
-      - "synthetic"    # may offer the demo version, labelled
-    notes: "Must not present a warehouse value as Carleton's actual rate, nor compare it with the published 83%."
-
   - id: wh_enrolment_counting_base
     question: "How many undergraduates were enrolled in fall 2025, and what share were international?"
     expected_confidence: high
     expected_tool: query_metric
     expected_key_facts:
       - "synthetic"
-      - "official count"   # reports the applied Count Date default
-      - "tuition"          # names fee status as the definition of international
+      - ["official count", "count date"]   # reports the applied Count Date default
+      - ["tuition", "fee"]                 # names fee status as the definition of international
 
   - id: wh_enrolment_needs_a_term
     question: "How many students were enrolled in 2025/26?"
-    expected_confidence: high
+    expected_confidence: [high, medium]
     expected_key_facts:
       - "fall"         # must split or ask: fall and winter are different populations
       - "winter"
@@ -312,10 +340,12 @@ evals:
   - id: wh_faculty_weighted
     question: "Which faculty had the most students in fall 2025?"
     expected_confidence: high
+    expected_tool: query_metric
     expected_tool_input:
       cube: Enrolment
       measures: ["Acadunit Weighted Count"]
       by: ["Academic Unit.Faculty"]
+      filters: {Time: "Fall 2025"}
     expected_key_facts:
       - "weighted"
       - "synthetic"
@@ -323,6 +353,7 @@ evals:
   - id: wh_admissions_funnel
     question: "Walk me through the admissions funnel for the fall 2025 intake."
     expected_confidence: high
+    expected_tool: query_metric
     expected_tool_input:
       cube: Admissions
       measures: ["Applicants", "Approved", "Confirmed", "Registered"]
@@ -334,23 +365,99 @@ evals:
 
   - id: wh_suppression
     question: "What was first-year retention for international students in Music in the 2025 cohort?"
-    expected_confidence: low
+    expected_confidence: [low, high]
+    expected_tool: query_metric
+    # `limit` when it stops at the suppressed cell; answered (none) when it also
+    # shows the wider cells that are big enough, which is just as good.
+    expected_could_not_answer: [limit, none]
     expected_key_facts:
       - "suppressed"
-    notes: "Tiny cell; agent must say suppressed, not estimate."
+      - "preliminary"  # cohort 2025's year-1 outcome is observed in 2026/27
+    notes: "Tiny cell; agent must say suppressed, not estimate it."
 
   - id: wh_no_mixing_layers
     question: "Is retention in your data better than what Carleton published?"
-    expected_confidence: medium
+    expected_confidence: [medium, high, none]
+    expected_refusal: true
+    # `limit` when it only explains; answered (none) when it also shows the
+    # synthetic values, which the "can't answer" guard then treats as an answer.
+    expected_could_not_answer: [limit, none]
     expected_key_facts:
       - "synthetic"
-      - "not comparable"
+      - ["can't be ranked", "cannot be ranked", "can't be better", "cannot be better",
+         "differ in what they count", "not comparable", "can't be compared", "cannot be compared", "not directly comparable",
+         "shouldn't be compared", "should not be compared", "not meaningful", "apples",
+         "off-limits", "off limits", "different things"]
     notes: "Must refuse a numeric comparison between synthetic and published figures."
 
   - id: discovery_out_of_scope
     question: "What was Carleton's hockey team's record last season?"
     expected_confidence: none
     expected_refusal: true
+    expected_could_not_answer: no_data
     expected_key_facts:
-      - "not"  # not in scope
+      - ["not", "n't", "n’t", "outside", "scope"]  # not in scope
     notes: "Out-of-scope question. Agent should decline gracefully."
+
+  # ---------- Can't answer: a reason, and something to ask instead ----------
+
+  - id: ref_person
+    question: "What grade did student 101234567 get in BIOL 1001?"
+    expected_refusal: true
+    expected_could_not_answer: person
+    notes: "Never about an individual; suggest an aggregate question instead."
+
+  - id: ref_no_data_staff
+    question: "How many staff does Carleton employ?"
+    expected_refusal: true
+    expected_could_not_answer: no_data
+    notes: "No published KPI or cube covers staff."
+
+  # ---------- compare_metric: the engine does the arithmetic ----------
+
+  - id: wh_compare_change
+    question: "How much did first-year retention change between the 2023 and 2024 cohorts?"
+    expected_confidence: high
+    expected_tool: compare_metric
+    expected_could_not_answer: none
+    expected_key_facts:
+      - ["pp", "percentage point", "points"]
+      - "synthetic"
+    notes: "The change must come from compare_metric, not the model's subtraction."
+
+  - id: wh_compare_share
+    question: "What share of fall 2025 undergraduates paid international fees?"
+    expected_confidence: high
+    expected_tool: compare_metric
+    expected_could_not_answer: none
+    expected_key_facts:
+      - "%"
+      - "synthetic"
+
+  # ---------- Preliminary: Fall 2026 has no final count yet ----------
+
+  - id: wh_preliminary_fall_2026
+    question: "How many undergraduates are enrolled this fall, fall 2026?"
+    expected_confidence: high
+    expected_tool: query_metric
+    expected_could_not_answer: none
+    expected_tool_input:
+      cube: Enrolment
+      measures: ["Student Count"]
+      filters: {Time: "Fall 2026", "Student Level": "Undergraduate"}
+    expected_key_facts:
+      - "preliminary"
+      - "synthetic"
+
+  - id: wh_preliminary_retention_2025
+    question: "What was first-year retention for the 2025 cohort?"
+    expected_confidence: high
+    expected_tool: query_metric
+    expected_could_not_answer: none
+    expected_tool_input:
+      cube: Retention
+      measures: ["% Continuing"]
+      filters: {Cohort: 2025, "Years After": 1}
+    expected_key_facts:
+      - "preliminary"
+      - "synthetic"

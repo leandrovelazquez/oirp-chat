@@ -48,6 +48,11 @@ Application Type and Campus are STDCOUNT-only).
   `F` Final. **The engine defaults to `P`, the official count**, and reports
   that it did (`applied_defaults`). Fall 2026 has no `F` yet; the final count
   hasn't been taken.
+- **Fall 2026 is preliminary.** Until its final count is taken, Fall 2026
+  numbers can still change. The engine marks those rows `preliminary: true`
+  and lists the rule in the result's `preliminary`; say "preliminary" in the
+  answer, and don't compare a preliminary term with a final one without saying
+  so.
 - **Term**: always one term. The engine refuses a query that spans terms
   without grouping by `Time`. Fall and winter headcounts are different
   populations; never add them.
@@ -113,6 +118,11 @@ levels.
   "description": "Registered students per term and count date: headcount, FTE, and weighted counts by academic unit. SYNTHETIC data.",
   "freshness_sla_days": 7,
   "min_cell_size": 10,
+  "roles": {"time": ["Time"], "time_say": "{}",
+            "trend": "Show the trend over the last five years.", "faculty": "Academic Unit.Faculty"},
+  "preliminary": [
+    {"when": {"Time": "Fall 2026"}, "why": "Fall 2026 has no final count yet, so these numbers can still change."}
+  ],
   "measure_groups": {
     "STDCOUNT": {
       "fact_table": "STDCOUNT",

@@ -5,7 +5,8 @@ Exposes a tiny HTTP API plus a single-page chat UI:
 
   GET  /                  → static/index.html (the chat page)
   POST /api/chat          → {"message": "..."} → {"text": "...", "confidence": "...", "trace": [...]}
-  POST /api/reset         → clears the current session's conversation history
+  POST /api/chat/stream   → the same answer, preceded by progress lines (NDJSON)
+  POST /api/reset        → clears the current session's conversation history
   GET  /api/info          → semantic layer summary (KPIs, record counts)
 
 Per-session state is keyed by a `session_id` cookie. For this local-dev
@@ -20,8 +21,11 @@ Run it with:
 
 from __future__ import annotations
 
+import json
 import os
+import queue
 import secrets
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -38,11 +42,11 @@ if _env_path.exists():
         os.environ.setdefault(_key.strip(), _value.strip().strip('"').strip("'"))
 
 from fastapi import FastAPI, Request, Response
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from .agent import DEFAULT_MODEL, OIRPAgent, SemanticLayer
+from .agent import DEFAULT_EFFORT, DEFAULT_MODEL, OIRPAgent, SemanticLayer
 
 
 # ---------- Paths (resolved relative to the project root) ----------
@@ -55,6 +59,9 @@ SEMANTIC_LAYER_DIR = Path(
 )
 STATIC_DIR = Path(os.environ.get("OIRP_STATIC_DIR", _PROJECT_ROOT / "static"))
 MODEL = os.environ.get("OIRP_MODEL", DEFAULT_MODEL)
+# low | medium | high | xhigh | max, or "none" to send no effort (older models).
+EFFORT = os.environ.get("OIRP_EFFORT", DEFAULT_EFFORT or "none")
+EFFORT = None if EFFORT.lower() == "none" else EFFORT.lower()
 
 BASE_PROMPT_PATH = SEMANTIC_LAYER_DIR / "base_prompt.md"
 KPI_DIR = SEMANTIC_LAYER_DIR / "kpis"
@@ -90,6 +97,7 @@ def _get_or_create_agent(session_id: str) -> OIRPAgent:
             semantic_layer_dir=KPI_DIR,
             base_prompt_path=BASE_PROMPT_PATH,
             model=MODEL,
+            effort=EFFORT,
             layer=_ensure_semantic_layer_loaded(),
         )
         _SESSIONS[session_id] = agent
@@ -109,11 +117,33 @@ class ToolCallSummary(BaseModel):
     detail: str | None = None   # e.g. the SQL a query_metric call compiled to
 
 
+class ResultTable(BaseModel):
+    """The numbers a tool returned, as the page draws them (never from `text`)."""
+    kind: str                   # "published" or "synthetic"
+    title: str
+    subtitle: str = ""
+    columns: list[dict[str, Any]]   # {"name": str, "numeric": bool}
+    rows: list[list[str]]       # display strings
+    notes: list[str] = []
+    data_as_of: str | None = None
+    stale: bool = False
+    preliminary: bool = False           # some row's numbers can still change
+    row_preliminary: list[bool] = []    # which rows (empty when none are)
+    chart: dict[str, Any] | None = None # line / bar / funnel, drawn from the same rows (numbers.chart_spec)
+
+
 class ChatResponse(BaseModel):
     text: str
     confidence: str
     sources: list[str]          # "published" and/or "synthetic"
     trace: list[ToolCallSummary]
+    tables: list[ResultTable] = []
+    numbers_checked: int = 0    # numbers in `text` matched against tool results
+    unverified: list[str] = []  # numbers no tool result supports (after one rewrite)
+    number_retries: int = 0
+    could_not_answer: str | None = None   # no_data | person | limit | unclear | unverified
+    suggestions: list[str] = []           # questions it can answer instead
+    follow_ups: list[str] = []            # next questions, worked out from the query
 
 
 # ---------- App ----------
@@ -151,41 +181,92 @@ def info() -> dict[str, Any]:
             for c in cubes
         ],
         "model": MODEL,
+        "effort": EFFORT,
         "active_sessions": len(_SESSIONS),
+    }
+
+
+def _session(request: Request) -> tuple[str, bool]:
+    """The caller's session id, and whether it is new (needs a cookie)."""
+    session_id = request.cookies.get(SESSION_COOKIE)
+    if session_id:
+        return session_id, False
+    return secrets.token_urlsafe(16), True
+
+
+def _set_session_cookie(response: Response, session_id: str) -> None:
+    response.set_cookie(
+        SESSION_COOKIE,
+        session_id,
+        httponly=True,
+        samesite="lax",
+        max_age=60 * 60 * 24,  # 24h
+    )
+
+
+def _error_body(e: Exception) -> dict[str, str]:
+    """SDK / API errors, surfaced cleanly to the browser."""
+    return {
+        "error": type(e).__name__,
+        "detail": str(e),
+        "hint": (
+            "If this says 'authentication', set ANTHROPIC_API_KEY in "
+            "the terminal where you ran uvicorn and restart."
+        ),
     }
 
 
 @app.post("/api/chat", response_model=ChatResponse)
 def chat(req: ChatRequest, request: Request, response: Response) -> ChatResponse:
-    session_id = request.cookies.get(SESSION_COOKIE)
-    if not session_id:
-        session_id = secrets.token_urlsafe(16)
-        response.set_cookie(
-            SESSION_COOKIE,
-            session_id,
-            httponly=True,
-            samesite="lax",
-            max_age=60 * 60 * 24,  # 24h
-        )
-
+    session_id, new = _session(request)
+    if new:
+        _set_session_cookie(response, session_id)
     agent = _get_or_create_agent(session_id)
-
     try:
         result = agent.chat(req.message)
     except Exception as e:
-        # Surface SDK / API errors cleanly to the browser.
-        return JSONResponse(
-            status_code=500,
-            content={
-                "error": type(e).__name__,
-                "detail": str(e),
-                "hint": (
-                    "If this says 'authentication', set ANTHROPIC_API_KEY in "
-                    "the terminal where you ran uvicorn and restart."
-                ),
-            },
-        )
+        return JSONResponse(status_code=500, content=_error_body(e))
+    return _to_response(result)
 
+
+@app.post("/api/chat/stream")
+def chat_stream(req: ChatRequest, request: Request) -> StreamingResponse:
+    """The same turn as /api/chat, reported as it happens.
+
+    The body is newline-delimited JSON: zero or more
+    `{"event": "progress", "step": ...}` lines (see OIRPAgent.chat), then one
+    `{"event": "answer", ...ChatResponse}` or `{"event": "error", ...}` line.
+    The answer's text arrives whole, after the number check, never in pieces.
+    """
+    session_id, new = _session(request)
+    events: queue.Queue = queue.Queue()
+    done = object()
+
+    def work() -> None:
+        try:
+            agent = _get_or_create_agent(session_id)
+            result = agent.chat(req.message, on_progress=lambda e: events.put({"event": "progress", **e}))
+            events.put({"event": "answer", **_to_response(result).model_dump()})
+        except Exception as e:  # noqa: BLE001 - reported to the page
+            events.put({"event": "error", **_error_body(e)})
+        finally:
+            events.put(done)
+
+    threading.Thread(target=work, daemon=True).start()
+
+    def lines():
+        while (item := events.get()) is not done:
+            yield json.dumps(item, default=str) + "\n"
+
+    # No-store and no proxy buffering, so each line reaches the page as it's written.
+    response = StreamingResponse(lines(), media_type="application/x-ndjson",
+                                 headers={"Cache-Control": "no-store", "X-Accel-Buffering": "no"})
+    if new:
+        _set_session_cookie(response, session_id)
+    return response
+
+
+def _to_response(result) -> ChatResponse:
     return ChatResponse(
         text=result.text,
         confidence=result.confidence.value,
@@ -194,6 +275,14 @@ def chat(req: ChatRequest, request: Request, response: Response) -> ChatResponse
             ToolCallSummary(name=c.name, summary=c.result_summary, detail=c.detail)
             for c in result.trace.calls
         ],
+        tables=[ResultTable(**{**t, "data_as_of": str(t["data_as_of"]) if t.get("data_as_of") else None})
+                for t in result.tables],
+        numbers_checked=result.numbers_checked,
+        unverified=result.unverified,
+        number_retries=result.number_retries,
+        could_not_answer=result.could_not_answer,
+        suggestions=result.suggestions,
+        follow_ups=result.follow_ups,
     )
 
 

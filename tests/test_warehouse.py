@@ -17,19 +17,13 @@ import pytest
 
 from oirp_agent.confidence import ConfidenceTier, TurnTrace
 from oirp_agent.prompt_loader import assemble_system_prompt, load_semantic_layer
-from oirp_agent.synthetic_warehouse import DEFAULT_DB_PATH, ensure_built
 from oirp_agent.tools import ToolDispatcher
 from oirp_agent.kpi_store import KPIStore
-from oirp_agent.warehouse import QueryError, WarehouseEngine, load_cubes
+from oirp_agent.warehouse import QueryError, load_cubes
 
 ROOT = Path(__file__).resolve().parents[1]
 SL = ROOT / "semantic_layer"
-
-
-@pytest.fixture(scope="session")
-def engine() -> WarehouseEngine:
-    ensure_built(DEFAULT_DB_PATH)
-    return WarehouseEngine(DEFAULT_DB_PATH, load_cubes(SL / "warehouse"))
+# The `engine` fixture lives in conftest.py.
 
 
 def one(result: dict, measure: str):

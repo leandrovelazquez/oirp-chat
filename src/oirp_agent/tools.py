@@ -128,7 +128,11 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
             "`applied_defaults`. Cells under the minimum size come back suppressed. "
             "Results carry `data_as_of` and `stale` -- mention the as-of date when "
             "`stale` is true. If the call returns an `error`, read it and retry with "
-            "a corrected query; use describe_cube to look up member names."
+            "a corrected query; use describe_cube to look up member names.\n\n"
+            "Values come back as display strings (90.7%, 1,513, fewer than 10): copy "
+            "them exactly. The user sees every result as a table under your answer, "
+            "so don't repeat the table; name the few numbers that answer the question. "
+            "For a change between two years or a share of a total, use compare_metric."
         ),
         "input_schema": {
             "type": "object",
@@ -155,6 +159,44 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         },
     },
     {
+        "name": "compare_metric",
+        "description": (
+            "Work out a CHANGE or a SHARE in the synthetic warehouse, so you never do "
+            "arithmetic yourself. Use it whenever the answer needs a difference, a gap "
+            "in percentage points, a percent change or a share of a total.\n\n"
+            "kind='change': the measure at `along` = `from` and at `along` = `to` "
+            "(e.g. along 'Cohort' from 2023 to 2024, or 'Time' from 'Fall 2024' to "
+            "'Fall 2025'), with the difference, optionally per `by` group (e.g. by "
+            "faculty). A rate's change comes back in percentage points ('+2.3 pp'); a "
+            "count's also as a percent change.\n"
+            "kind='share': each `by` member's share of the total (e.g. Student Count by "
+            "Tuition Assessment). Needs a count measure, not a rate or average.\n\n"
+            "Same names, filters, defaults, suppression and as-of rules as query_metric. "
+            "Values come back as display strings: copy them exactly. The result is drawn "
+            "as a table under your answer."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "cube": {"type": "string", "description": "Retention, Enrolment or Admissions."},
+                "measure": {"type": "string", "description": "One measure name, e.g. '% Continuing' or 'Student Count'."},
+                "kind": {"type": "string", "enum": ["change", "share"]},
+                "along": {"type": "string", "description": "change: the time dimension, e.g. 'Cohort', 'Time', 'Application Year'."},
+                "from": {"description": "change: the earlier value of `along`."},
+                "to": {"description": "change: the later value of `along`."},
+                "by": {
+                    "type": "array", "items": {"type": "string"},
+                    "description": "change: optional groups to compare within. share: required, the dimension that splits the total.",
+                },
+                "filters": {
+                    "type": "object", "additionalProperties": True,
+                    "description": "Same as query_metric (don't filter on `along` for a change).",
+                },
+            },
+            "required": ["cube", "measure", "kind"],
+        },
+    },
+    {
         "name": "describe_cube",
         "description": (
             "Discover the synthetic warehouse. With no arguments: list cubes and "
@@ -173,7 +215,7 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
     },
 ]
 
-WAREHOUSE_TOOLS = {"query_metric", "describe_cube"}
+WAREHOUSE_TOOLS = {"query_metric", "compare_metric", "describe_cube"}
 
 
 # ---------- Tool implementations ----------
@@ -208,6 +250,17 @@ class ToolDispatcher:
                         order_by=tool_input.get("order_by"),
                         descending=bool(tool_input.get("descending", False)),
                         limit=tool_input.get("limit"),
+                    )
+                if tool_name == "compare_metric":
+                    return self.engine.compare(
+                        tool_input.get("cube", ""),
+                        tool_input.get("measure", ""),
+                        tool_input.get("kind", ""),
+                        along=tool_input.get("along"),
+                        from_value=tool_input.get("from"),
+                        to_value=tool_input.get("to"),
+                        by=tool_input.get("by"),
+                        filters=tool_input.get("filters"),
                     )
                 return self.engine.describe(tool_input.get("cube"), tool_input.get("dimension"))
             except QueryError as e:

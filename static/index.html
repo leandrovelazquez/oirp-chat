@@ -233,6 +233,11 @@
     }
     .examples button:hover { border-color: var(--accent); }
 
+    .numtable { margin-top: 10px; white-space: normal; font-size: 13px; overflow-x: auto; }
+    .numtable table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+    .numtable th, .numtable td { padding: 5px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+    .numtable th.num, .numtable td.num { text-align: right; }
+    .numtable .cap { color: var(--muted); font-size: 12px; margin: 4px 0; }
     .error {
       color: var(--low);
       font-size: 13px;
@@ -325,6 +330,36 @@ function appendMessage(role, text, extra) {
   body.innerHTML = lightFormat(text);
   msg.appendChild(body);
 
+  // The numbers, drawn from the tool results (display strings), not the prose.
+  for (const t of (extra && extra.tables) || []) {
+    const box = document.createElement("div");
+    box.className = "numtable";
+    const cls = (c) => (c.numeric ? ' class="num"' : "");
+    box.innerHTML = `<div class="cap"><b>${escapeHtml(t.kind)}</b> · ${escapeHtml(t.title)}`
+      + (t.subtitle ? `<br><span>${escapeHtml(t.subtitle)}</span>` : "") + `</div>`
+      + `<table><thead><tr>${t.columns.map(c => `<th${cls(c)}>${escapeHtml(c.name)}</th>`).join("")}</tr></thead>`
+      + `<tbody>${t.rows.map(r => `<tr>${t.columns.map((c, j) => `<td${cls(c)}>${escapeHtml(r[j] ?? "")}</td>`).join("")}</tr>`).join("")}</tbody></table>`
+      + `<div class="cap"><span>${[t.data_as_of ? "as of " + t.data_as_of : "", t.stale ? "STALE" : "", ...(t.notes || [])]
+          .filter(Boolean).map(escapeHtml).join(" · ")}</span></div>`;
+    msg.appendChild(box);
+  }
+
+  // Questions it can answer instead, after a "can't answer"; or, after an
+  // answer, next questions worked out from the query.
+  const nextQs = extra ? ((extra.suggestions || []).length ? extra.suggestions : (extra.follow_ups || [])) : [];
+  if (nextQs.length) {
+    const box = document.createElement("div");
+    box.className = "meta-row";
+    for (const q of nextQs) {
+      const b = document.createElement("button");
+      b.className = "trace-toggle";
+      b.textContent = "→ " + q;
+      b.addEventListener("click", () => { if (!sendBtn.disabled) sendMessage(q); });
+      box.appendChild(b);
+    }
+    msg.appendChild(box);
+  }
+
   if (extra && extra.confidence) {
     const meta = document.createElement("div");
     meta.className = "meta-row";
@@ -333,6 +368,31 @@ function appendMessage(role, text, extra) {
     badge.className = "badge " + extra.confidence;
     badge.textContent = "confidence: " + extra.confidence;
     meta.appendChild(badge);
+
+    if (extra.could_not_answer) {
+      const chip = document.createElement("span");
+      chip.className = "badge low";
+      chip.textContent = "could not answer: " + extra.could_not_answer;
+      meta.appendChild(chip);
+    }
+    if ((extra.tables || []).some(t => t.preliminary)) {
+      const chip = document.createElement("span");
+      chip.className = "badge synthetic";
+      chip.textContent = "preliminary";
+      meta.appendChild(chip);
+    }
+
+    if ((extra.unverified || []).length) {
+      const chip = document.createElement("span");
+      chip.className = "badge low";
+      chip.textContent = "unverified numbers: " + extra.unverified.join(", ");
+      meta.appendChild(chip);
+    } else if (extra.numbers_checked) {
+      const chip = document.createElement("span");
+      chip.className = "badge high";
+      chip.textContent = `${extra.numbers_checked} numbers checked` + (extra.number_retries ? ` (after ${extra.number_retries} rewrite)` : "");
+      meta.appendChild(chip);
+    }
 
     for (const src of (extra.sources || [])) {
       const chip = document.createElement("span");
@@ -407,6 +467,13 @@ async function sendMessage(text) {
       confidence: data.confidence,
       sources: data.sources || [],
       trace: data.trace || [],
+      tables: data.tables || [],
+      numbers_checked: data.numbers_checked || 0,
+      unverified: data.unverified || [],
+      number_retries: data.number_retries || 0,
+      could_not_answer: data.could_not_answer || null,
+      suggestions: data.suggestions || [],
+      follow_ups: data.follow_ups || [],
     });
   } catch (e) {
     pending.remove();

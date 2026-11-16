@@ -45,6 +45,10 @@ data/extracted/**/*.png
 # committing them; flip if you want a review trail in Git.
 data/proposed/
 
+# Eval runs: the full per-question JSON is large and regenerated every run;
+# the Markdown summary beside it is small and worth keeping.
+evals/results/*.json
+
 # Synthetic warehouse: generated deterministically from a fixed seed by
 # `python -m oirp_agent.synthetic_warehouse` (and automatically on first run).
 data/warehouse/

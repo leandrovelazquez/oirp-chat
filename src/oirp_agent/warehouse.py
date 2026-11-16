@@ -36,6 +36,7 @@ from typing import Any
 
 import duckdb
 
+from .numbers import display_value
 from .prompt_loader import _split_frontmatter
 
 _JSON_BLOCK_RE = re.compile(r"```json\s*\n(.*?)\n```", re.DOTALL)
@@ -107,6 +108,13 @@ class Cube:
     dimensions: dict[str, Dimension]
     raw_markdown: str
     source_path: Path | None = None
+    # Members whose numbers can still change: [{"when": {dim: value(s)}, "why": str}].
+    # A result row is preliminary when it includes facts matching every `when`.
+    preliminary: list[dict] = field(default_factory=list)
+    # What some dimensions and measures are *for*, so the page can draw a chart
+    # and offer follow-ups without the model: {"time": [dims], "time_say": "the {}
+    # cohort", "trend": question, "faculty": "Dim.Level", "funnel": [measures]}.
+    roles: dict = field(default_factory=dict)
 
     def measure(self, name: str) -> Measure:
         m = _ci_get(self.measures, name)
@@ -194,13 +202,31 @@ def load_cube(path: Path) -> Cube:
             key=d.get("key"), label=d.get("label"), levels=levels,
             description=d.get("description", ""),
         )
-    return Cube(
+    cube = Cube(
         cube_id=fm.get("cube_id", path.stem), name=model["cube"], star=model.get("star", ""),
         description=model.get("description", ""),
         freshness_sla_days=int(model.get("freshness_sla_days", 7)),
         min_cell_size=int(model.get("min_cell_size", 10)),
         groups=groups, measures=measures, dimensions=dims, raw_markdown=raw, source_path=path,
+        preliminary=list(model.get("preliminary") or []),
+        roles=dict(model.get("roles") or {}),
     )
+    try:
+        for ref in [*cube.roles.get("time", []), *([cube.roles["faculty"]] if "faculty" in cube.roles else [])]:
+            cube.dimension(ref)
+        for name in cube.roles.get("funnel", []):
+            cube.measure(name)
+    except QueryError as e:
+        raise ValueError(f"{path}: roles: {e}") from None
+    for rule in cube.preliminary:
+        if not rule.get("when") or not rule.get("why"):
+            raise ValueError(f"{path}: each preliminary rule needs `when` and `why`")
+        for ref in rule["when"]:
+            try:
+                cube.dimension(ref)
+            except QueryError as e:
+                raise ValueError(f"{path}: preliminary rule names {ref!r}: {e}") from None
+    return cube
 
 
 def load_cubes(warehouse_dir: Path) -> list[Cube]:
@@ -447,27 +473,39 @@ class WarehouseEngine:
                 applied_defaults[dname] = str(req["default"])
                 filtered_single.add(dname)
 
-        where: list[str] = []
-        params: list[Any] = []
-        for ref, v in filters.items():
+        def condition(ref: str, v: Any) -> tuple[str, list[Any]]:
+            """SQL for 'this dimension (or level) is one of these keys or labels'."""
             dim, lvl, alias = resolve(ref)
             vals = [x.lower() for x in _as_list(v)]
             ph = ", ".join("?" for _ in vals)
             fc = f"f.{_q(dim.fact_columns[group.name])}"
             if lvl is not None:
                 cond = f"lower(cast({alias}.{_q(lvl.label)} as varchar)) in ({ph})"
-                params += vals
+                ps = list(vals)
                 if lvl.key:
                     cond = f"({cond} or lower(cast({alias}.{_q(lvl.key)} as varchar)) in ({ph}))"
-                    params += vals
-            elif dim.table:
-                cond = (f"(lower(cast({fc} as varchar)) in ({ph}) or "
-                        f"lower(cast({alias}.{_q(dim.label)} as varchar)) in ({ph}))")
-                params += vals + vals
-            else:
-                cond = f"lower(cast({fc} as varchar)) in ({ph})"
-                params += vals
+                    ps += vals
+                return cond, ps
+            if dim.table:
+                return (f"(lower(cast({fc} as varchar)) in ({ph}) or "
+                        f"lower(cast({alias}.{_q(dim.label)} as varchar)) in ({ph}))"), vals + vals
+            return f"lower(cast({fc} as varchar)) in ({ph})", list(vals)
+
+        where: list[str] = []
+        params: list[Any] = []
+        for ref, v in filters.items():
+            cond, ps = condition(ref, v)
             where.append(cond)
+            params += ps
+
+        # Preliminary rules that apply to this measure group, as conditions the
+        # main query evaluates per row (bool_or over the row's facts).
+        prelim: list[tuple[dict, str, list[Any]]] = []
+        for rule in cube.preliminary:
+            if not all(group.name in cube.dimension(r)[0].fact_columns for r in rule["when"]):
+                continue
+            parts = [condition(r, v) for r, v in rule["when"].items()]
+            prelim.append((rule, " and ".join(c for c, _ in parts), [p for _, ps in parts for p in ps]))
 
         join_sql = ""
         for dname, alias in joins.items():
@@ -500,22 +538,30 @@ class WarehouseEngine:
                    "count_nonnull": f"count({col})"}[b.agg]
             select_parts.append(f"{sql} as {_q('__' + b.name)}")
         select_parts.append(f"count(distinct f.{_q(group.person_key)}) as \"__n\"")
+        prelim_params: list[Any] = []
+        for i, (_, cond, ps) in enumerate(prelim):
+            select_parts.append(f"bool_or({cond}) as \"__prelim{i}\"")
+            prelim_params += ps
         group_sql = (" group by " + ", ".join(str(i + 1) for i in range(len(group_exprs)))) if group_exprs else ""
         sql = f"select {', '.join(select_parts)}{from_sql}{group_sql}"
-        names, rows = self._execute(sql, params)
+        # Placeholders in the select list come before those in the where clause.
+        names, rows = self._execute(sql, prelim_params + params)
         if len(rows) > MAX_ROWS:
             raise QueryError(f"{len(rows)} result rows; narrow the filters or group by fewer dimensions.")
 
         out_rows = []
         suppressed = 0
+        matched: set[int] = set()
         for r in rows:
             rec = dict(zip(names, r))
             n = rec.pop("__n") or 0
+            flags = [bool(rec.pop(f"__prelim{i}")) for i in range(len(prelim))]
             base_vals = {b.name: rec.pop("__" + b.name) for b in base_needed}
             row = {k: v for k, v in rec.items()}
             if n == 0 and all(v in (None, 0) for v in base_vals.values()):
                 continue
-            if 0 < n < cube.min_cell_size:
+            hidden = 0 < n < cube.min_cell_size
+            if hidden:
                 for m in ms:
                     row[m.name] = None
                 row["suppressed"] = True
@@ -523,6 +569,15 @@ class WarehouseEngine:
             else:
                 for m in ms:
                     row[m.name] = _value(m, base_vals, cube)
+            # Every value also carries the string every surface shows; the model
+            # is sent only these (numbers.model_payload).
+            row["display"] = {
+                m.name: display_value(row[m.name], m.unit, suppressed=hidden, threshold=cube.min_cell_size)
+                for m in ms
+            }
+            if any(flags):
+                row["preliminary"] = True
+                matched.update(i for i, f in enumerate(flags) if f)
             out_rows.append(row)
 
         if order_by:
@@ -549,9 +604,161 @@ class WarehouseEngine:
             "rows": out_rows,
             "suppressed_cells": suppressed,
             "suppression_rule": f"cells with fewer than {cube.min_cell_size} distinct people are suppressed",
+            # Only present when some row is preliminary; those rows carry
+            # `preliminary: true`.
+            **({"preliminary": [
+                {"applies_to": " and ".join(f"{k} = {_values_text(v)}" for k, v in prelim[i][0]["when"].items()),
+                 "why": prelim[i][0]["why"]}
+                for i in sorted(matched)]} if matched else {}),
             **self.freshness(cube, group),
+            "roles": cube.roles,   # for charts and follow-ups; not sent to the model
             "sql": sql,
         }
+
+    # ----- compare -----
+
+    def compare(
+        self,
+        cube_name: str,
+        measure: str,
+        kind: str,
+        along: str | None = None,
+        from_value: Any = None,
+        to_value: Any = None,
+        by: list[str] | None = None,
+        filters: dict[str, Any] | None = None,
+    ) -> dict:
+        """Changes and shares, worked out here so the model never does arithmetic.
+
+        kind="change": the measure at `along` = from_value and at `along` =
+        to_value (two governed queries), and the difference, per `by` group.
+        A rate's change is in percentage points; a count's also as a percent.
+        kind="share": each `by` member's share of the total, where the total is
+        its own ungrouped query (so overlapping or suppressed groups don't
+        distort it). Shares need a count measure, not a rate or an average.
+        """
+        cube = self.cube(cube_name)
+        m = cube.measure(measure)
+        by = list(by or [])
+        filters = dict(filters or {})
+        if kind == "change":
+            if not along or from_value is None or to_value is None:
+                raise QueryError("A change needs `along` (e.g. Cohort, Time, Application Year), `from` and `to`.")
+            along_dim = cube.dimension(along)[0].name
+            if any(cube.dimension(b)[0].name == along_dim for b in by):
+                raise QueryError(f"Don't group `by` {along}: it is what the change runs along.")
+            base = {k: v for k, v in filters.items() if cube.dimension(k)[0].name != along_dim}
+            a = self.query(cube.name, [m.name], by=by, filters={**base, along: from_value})
+            b = self.query(cube.name, [m.name], by=by, filters={**base, along: to_value})
+            cols = a["by"]
+            key = lambda r: tuple(str(r.get(c)) for c in cols)  # noqa: E731
+            a_rows, b_rows = {key(r): r for r in a["rows"]}, {key(r): r for r in b["rows"]}
+            keys = list(a_rows) + [k for k in b_rows if k not in a_rows]
+            rows, hidden = [], 0
+            for k in keys:
+                ra, rb = a_rows.get(k), b_rows.get(k)
+                va, vb = (ra or {}).get(m.name), (rb or {}).get(m.name)
+                row = dict(zip(cols, k))
+                row["from"] = (ra or {}).get("display", {}).get(m.name, "–")
+                row["to"] = (rb or {}).get("display", {}).get(m.name, "–")
+                if va is None or vb is None:
+                    row["change"] = "not shown"
+                    hidden += 1
+                else:
+                    row["change"] = _signed(vb - va, m.unit)
+                    if m.unit not in _NOT_ADDITIVE and va:
+                        row["change_pct"] = _signed(100.0 * (vb - va) / va, "pct_change")
+                if (ra or {}).get("preliminary") or (rb or {}).get("preliminary"):
+                    row["preliminary"] = True
+                rows.append(row)
+            return {
+                "data_origin": a["data_origin"], "cube": cube.name, "kind": "change",
+                "measure": m.name, "unit": m.unit, "along": along,
+                "from": str(from_value), "to": str(to_value), "by": cols,
+                "filters": base, "applied_defaults": {**a["applied_defaults"], **b["applied_defaults"]},
+                "rows": rows, "row_count": len(rows), "not_shown": hidden,
+                "how": ("change = to minus from, worked out by the engine from the two values shown"
+                        + ("; a rate's change is in percentage points (pp)" if m.unit == "percent" else "")
+                        + ". 'not shown' means one side is suppressed (fewer than "
+                        + f"{cube.min_cell_size}) or missing."),
+                **_merged_preliminary(a, b),
+                **{k: a.get(k) for k in ("data_as_of", "stale")},
+                "sql": [a["sql"], b["sql"]],
+            }
+        if kind == "share":
+            if not by:
+                raise QueryError("A share needs `by`: the dimension whose members split the total.")
+            if m.unit in _NOT_ADDITIVE or m.kind == "calculated":
+                raise QueryError(f"Shares need a count measure; {m.name} is a {m.unit}. "
+                                 "Use a count such as Student Count, Applicants or Cohort.")
+            parts = self.query(cube.name, [m.name], by=by, filters=filters)
+            total = self.query(cube.name, [m.name], filters=filters)
+            tv = total["rows"][0][m.name] if total["rows"] else None
+            rows, hidden, summed = [], 0, 0.0
+            for r in parts["rows"]:
+                v = r.get(m.name)
+                row = {c: r.get(c) for c in parts["by"]}
+                row["value"] = r["display"][m.name]
+                if v is None or not tv:
+                    row["share"] = "not shown"
+                    hidden += 1
+                else:
+                    row["share"] = f"{100.0 * v / tv:.1f}%"
+                    summed += v
+                if r.get("preliminary"):
+                    row["preliminary"] = True
+                rows.append(row)
+            notes = []
+            if tv and (hidden or abs(summed - tv) > 0.5):
+                notes.append("The groups overlap or some are suppressed, so the shares don't add up to 100%.")
+            return {
+                "data_origin": parts["data_origin"], "cube": cube.name, "kind": "share",
+                "measure": m.name, "unit": m.unit, "by": parts["by"], "filters": filters,
+                "applied_defaults": parts["applied_defaults"],
+                "total": total["rows"][0]["display"][m.name] if total["rows"] else "–",
+                "rows": rows, "row_count": len(rows), "not_shown": hidden, "notes": notes,
+                "how": "share = the member's value divided by the total from its own query, worked out by the engine.",
+                **_merged_preliminary(parts, total),
+                **{k: parts.get(k) for k in ("data_as_of", "stale")},
+                "sql": [parts["sql"], total["sql"]],
+            }
+        raise QueryError(f"Unknown kind {kind!r}: use 'change' or 'share'.")
+
+
+def _values_text(v: Any) -> str:
+    return " or ".join(_as_list(v))
+
+
+# Units a share or a percent change makes no sense for.
+_NOT_ADDITIVE = {"percent", "average", "gpa_12pt", "ratio"}
+_MINUS = "−"
+
+
+def _signed(diff: float, unit: str) -> str:
+    """A change as every surface shows it: +2.3 pp, −1,204, +5.6%."""
+    if unit == "percent":
+        text = f"{abs(diff):.1f} pp"
+    elif unit == "pct_change":
+        text = f"{abs(diff):.1f}%"
+    elif unit == "gpa_12pt":
+        text = f"{abs(diff):.2f}"
+    elif float(diff).is_integer():
+        text = f"{abs(diff):,.0f}"
+    else:
+        text = f"{abs(diff):,.1f}"
+    if text.strip("0.,% p") == "":
+        return text            # no change: no sign
+    return ("+" if diff > 0 else _MINUS) + text
+
+
+def _merged_preliminary(*results: dict) -> dict:
+    seen, out = set(), []
+    for r in results:
+        for p in r.get("preliminary") or []:
+            if p["applies_to"] not in seen:
+                seen.add(p["applies_to"])
+                out.append(p)
+    return {"preliminary": out} if out else {}
 
 
 def _value(m: Measure, base: dict, cube: Cube):
